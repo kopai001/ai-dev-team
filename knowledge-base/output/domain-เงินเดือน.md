@@ -79,17 +79,17 @@
 
 ─── External Module Integration (Read-Only) ───────────────────────
 
-┌───────────┐   ┌────────────┐   ┌───────────────┐   ┌──────────────────┐
-│ Employee  │   │  OTRecord  │   │  LeaveRequest │   │ AttendanceRecord │
-│ Module    │   │  Module    │   │  Module       │   │  Module          │
-├───────────┤   ├────────────┤   ├───────────────┤   ├──────────────────┤
-│ baseSalary│   │ approvedOT │   │ approvedLeave │   │ lateMinutes      │
-│ dailyWage │   │ hours      │   │ isPaid        │   │ absentDays       │
-│ bankAcct  │   │ rate (1.5x │   │ totalDays     │   │ per period       │
-│ type      │   │  / 2.0x)  │   │               │   │                  │
-└─────▲─────┘   └─────▲──────┘   └───────▲───────┘   └────────▲─────────┘
-      │               │                  │                     │
-      └───────────────┴──────────────────┴─────────────────────┘
+┌───────────┐   ┌────────────┐   ┌─────────────────────┐   ┌───────────────┐   ┌──────────────────┐
+│ Employee  │   │  OTRecord  │   │ SpecialPayRecord[MOCK]│   │  LeaveRequest │   │ AttendanceRecord │
+│ Module    │   │  Module    │   │  Module              │   │  Module       │   │  Module          │
+├───────────┤   ├────────────┤   ├─────────────────────┤   ├───────────────┤   ├──────────────────┤
+│ baseSalary│   │ approvedOT │   │ approvedSPHours      │   │ approvedLeave │   │ lateMinutes      │
+│ dailyWage │   │ hours      │   │ specialPayType       │   │ isPaid        │   │ absentDays       │
+│ bankAcct  │   │ rate (1.5x │   │ rate = 1.0x          │   │ totalDays     │   │ per period       │
+│ type      │   │  / 2.0x)  │   │ (design TBD)         │   │               │   │                  │
+└─────▲─────┘   └─────▲──────┘   └──────────▲──────────┘   └───────▲───────┘   └────────▲─────────┘
+      │               │                      │                      │                     │
+      └───────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
                     Payroll reads these when processing period
                     (via PayrollDataProviders — read-only interfaces)
 ```
@@ -226,7 +226,7 @@
 | `amount` | decimal(12,2) | ✓ | ค่าจริงที่ใช้ = `userAmount ?? autoAmount ?? null` |
 | `isUserOverridden` | boolean | ✓ | true = user แก้จากค่า auto (แสดง ✎ ใน UI) |
 | `isDeduction` | boolean | ✓ | true = รายหัก |
-| `sourceType` | enum | ✓ | `BASE` \| `OT` \| `LEAVE` \| `ATTENDANCE` \| `MANUAL` \| `COMPUTED` |
+| `sourceType` | enum | ✓ | `BASE` \| `OT` \| `SPECIAL_PAY_RECORD` \| `LEAVE` \| `ATTENDANCE` \| `MANUAL` \| `COMPUTED` |
 | `sourceId` | UUID | – | อ้างถึง OTRecord.id / LeaveRequest.id (ถ้ามี) |
 | `sortOrder` | int | ✓ | ลำดับแสดงผลในสลิป |
 | `createdAt` | timestamp | ✓ | |
@@ -302,12 +302,13 @@ enum PayrollCategoryType {
 }
 
 enum PayrollLineSourceType {
-  BASE       = 'BASE',        // คำนวณจาก baseSalary/dailyWage
-  OT         = 'OT',          // มาจาก OTRecord
-  LEAVE      = 'LEAVE',       // มาจาก LeaveRequest (หักไม่ได้รับเงิน)
-  ATTENDANCE = 'ATTENDANCE',  // มาจาก AttendanceRecord (สาย/ขาด)
-  MANUAL     = 'MANUAL',      // กรอกมือ
-  COMPUTED   = 'COMPUTED',    // คำนวณอัตโนมัติ (SS, tax)
+  BASE              = 'BASE',               // คำนวณจาก baseSalary/dailyWage
+  OT                = 'OT',                 // มาจาก OTRecord
+  SPECIAL_PAY_RECORD = 'SPECIAL_PAY_RECORD', // [MOCK] มาจาก SpecialPayRecord (design TBD)
+  LEAVE             = 'LEAVE',              // มาจาก LeaveRequest (หักไม่ได้รับเงิน)
+  ATTENDANCE        = 'ATTENDANCE',         // มาจาก AttendanceRecord (สาย/ขาด)
+  MANUAL            = 'MANUAL',             // กรอกมือ (custom categories เท่านั้น)
+  COMPUTED          = 'COMPUTED',           // คำนวณอัตโนมัติ (SS, tax)
 }
 
 enum BankTransferFileStatus {
@@ -365,14 +366,24 @@ netPay      = grossPay
 | OT วันหยุด นอกชั่วโมงกะปกติ | ×1.5 |
 | OT กะ STR ตี 3 หลัง 12:00 | ×1.5 |
 
-### 4.5 การจ่ายเงิน
+### 4.5 Special Pay Rate [MOCK]
+
+> ⚠️ ใช้สูตรเหมือน OT แต่อัตราคูณ = 1.0 ทุกประเภท — รอยืนยัน domain design จริง
+
+| ประเภทเวลา | อัตราคูณ |
+|-----------|---------|
+| วันทำงาน (หลังเวลาเลิกงาน) | × 1.0 |
+| วันหยุด — ชั่วโมงในกะปกติ | × 1.0 |
+| วันหยุด — ชั่วโมงนอกกะปกติ | × 1.0 |
+
+### 4.6 การจ่ายเงิน
 
 | ประเภท | วิธีจ่าย | เงื่อนไข |
 |--------|---------|---------|
 | รายเดือน | โอนธนาคาร Krungthai | ต้องมีเลขบัญชีในโปรไฟล์ |
 | รายวัน | เงินสด (มีช่องเซ็นรับ) | พิมพ์ใบจ่ายเงินสด |
 
-### 4.6 Period Lock Rules
+### 4.7 Period Lock Rules
 
 - เมื่อ lock: status → `LOCKED`, `PayrollRecord.status` ทุกรายการ → `CONFIRMED`
 - หลัง lock ห้ามแก้ PayrollRecord ทุกกรณี
@@ -495,7 +506,8 @@ INSERT INTO payroll_category (code, name, category_type, is_default, sort_order)
 
 -- ============== PAYROLL LINE ITEM ==============
 CREATE TYPE payroll_line_source AS ENUM
-  ('BASE','OT','LEAVE','ATTENDANCE','MANUAL','COMPUTED');
+  ('BASE','OT','SPECIAL_PAY_RECORD','LEAVE','ATTENDANCE','MANUAL','COMPUTED');
+-- SPECIAL_PAY_RECORD [MOCK]: จาก SpecialPayRecord domain (design TBD)
 
 CREATE TABLE payroll_line_item (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -580,6 +592,7 @@ CREATE INDEX idx_cpd_period ON cash_payment_document(period_id);
 │  ─────────────────────────────                          │
 │  • Employee (baseSalary, bankAccount, type)             │
 │  • OTRecord (approved OT per period)                    │
+│  • SpecialPayRecord [MOCK] (approved special pay hours) │
 │  • AttendanceRecord (late/absent)                       │
 │  • LeaveRequest (approved, isPaid flag)                 │
 └─────────────────────────────────────────────────────────┘
@@ -632,6 +645,18 @@ interface ILeavePayrollProvider {
     endDate: string,
   ): Promise<Map<string, LeavePayrollSummaryDto>>
   // LeavePayrollSummaryDto: { unpaidDays, unpaidDeduction }
+}
+
+// [MOCK] ISpecialPayProvider — design TBD, โครงสร้างอาจเปลี่ยน
+interface ISpecialPayProvider {
+  // ดึง special pay ที่ approved ของพนักงานในช่วงงวด
+  getApprovedSpecialPayByPeriod(
+    employeeIds: string[],
+    startDate: string,
+    endDate: string,
+  ): Promise<Map<string, SpecialPaySummaryDto>>
+  // SpecialPaySummaryDto: { totalSpecialPayDays, totalSpecialPay,
+  //   items: [{ date, hours, specialPayType, hourlyRate, amount }] }
 }
 ```
 

@@ -160,7 +160,7 @@
 
 #### Step 1: คำนวณและกรอกข้อมูล
 
-ระบบ auto-คำนวณและเติมค่าเริ่มต้นจาก Attendance / OT / Leave modules
+ระบบ auto-คำนวณและเติมค่าเริ่มต้นจาก Attendance / OT / SpecialPay[MOCK] / Leave modules
 **ทุก column ยกเว้น รหัส, ชื่อ, สุทธิ = input ที่ user แก้ไขได้**
 เซลล์ที่ user แก้เองจะแสดง mark ✎ (สีส้ม) แทนค่าที่ระบบคำนวณ
 
@@ -478,7 +478,7 @@ Payroll Staff                    System                           Output
 
 2. [ดำเนินการต่อ] ────────►  period.status → PROCESSING
 
-3. [คำนวณใหม่ทั้งหมด] ────►  Batch query: Employee+OT+Attendance+Leave
+3. [คำนวณใหม่ทั้งหมด] ────►  Batch query: Employee+OT+SpecialPay[MOCK]+Attendance+Leave
    (Step 1)                   Loop พนักงาน → UPSERT PayrollRecord
                               พร้อม line items ทุกหมวด (default + custom)
                               เซลล์ที่ auto-fill จะ mark isAutoCalculated=true
@@ -542,8 +542,8 @@ Payroll Staff                    System                           Output
 | ฐานเงินเดือน | default income | auto จาก Employee | ✓ | ✓ ถ้าแก้ | ✓ |
 | เวลา OT (วัน) | default income | auto จาก OT module | ✓ | ✓ ถ้าแก้ | ✓ |
 | เงิน OT | default income | auto จาก OT module | ✓ | ✓ ถ้าแก้ | ✓ |
-| เวลาพิเศษ (วัน) | default income | — | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |
-| เงินพิเศษ | default income | — | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |
+| เวลาพิเศษ (วัน) | default income | auto จาก SpecialPayRecord [MOCK] | ✓ | ✓ ถ้าแก้ | ✓ |
+| เงินพิเศษ | default income | auto จาก SpecialPayRecord [MOCK] | ✓ | ✓ ถ้าแก้ | ✓ |
 | [custom income] | custom income | null | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |
 | ประกันสังคม | default deduct | auto คำนวณ | ✓ | ✓ ถ้าแก้ | ✓ |
 | ภาษีหัก ณ ที่จ่าย | default deduct | — (null) | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |

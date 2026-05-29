@@ -1,6 +1,6 @@
 # Knowledge Base Index — CLRS (Chana Latex HR System)
 
-> อัปเดตล่าสุด: 2026-05-29
+> อัปเดตล่าสุด: 2026-05-29 (เพิ่ม sections 12-20 ใน system-requirement-เงินเดือน.md)
 > อ่านไฟล์นี้ก่อนเปิดไฟล์อื่น — ประหยัด token, เข้าใจโครงสร้างเร็ว
 
 ---
@@ -21,6 +21,7 @@ knowledge-base/
 └── output/
     ├── domain-เงินเดือน.md            ← Domain Model: Payroll (entities, DB schema, business rules)
     ├── system-design-เงินเดือน.md     ← System Design: Payroll (services, APIs, integrations)
+    ├── system-requirement-เงินเดือน.md ← System Requirement: Payroll calculation formulas, OT, SS, tax rules
     └── flow-เงินเดือน.md              ← UI/UX Flow: Payroll (wizard, slips, bank file, cash list)
 ```
 
@@ -50,18 +51,19 @@ knowledge-base/
 |------|---------|---------|
 | `domain-เงินเดือน.md` | Domain Model: `PayrollPeriod`, `PayrollRecord`, `PayrollLineItem`, `BankTransferFile` — entities, DB schema, business rules, SS/tax logic | ออกแบบ DB schema หรือ business logic เงินเดือน |
 | `system-design-เงินเดือน.md` | System Design: module structure, services (PayrollProcessing wizard, Calculation, Reports), API endpoints, integration interfaces | พัฒนา Payroll module backend |
+| `system-requirement-เงินเดือน.md` | System Requirement: สูตรคำนวณเงินเดือน (basePay/OT/SS/tax), กฎ pro-rate, รายวัน/รายเดือน, open questions | implement calculation logic |
 | `flow-เงินเดือน.md` | UI/UX flow: Payroll wizard (5 steps), withholding tax screen, payslip, bank transfer file, cash payment list, payment status | พัฒนา frontend โมดูลเงินเดือน |
 
 ---
 
 ## แผนที่โมดูล (Module Map)
 
-| โมดูล | Requirement | Domain | Flow | System Design |
-|-------|-------------|--------|------|---------------|
-| Employee Management | `Employee_Requirement.md` | — | — | — |
-| Shift Planning (กะ) | `CLRS_Dev_Spec.md` | `domain - กะการทำงาน.md` | `flow - กะการทำงาน.md` | — |
-| Leave Management (ลา) | `CLRS_Dev_Spec.md` | `domain - การลา.md` | `flow - การลา.md` | — |
-| Payroll (เงินเดือน) | `CLRS_Dev_Spec.md` | `output/domain-เงินเดือน.md` | `output/flow-เงินเดือน.md` | `output/system-design-เงินเดือน.md` |
+| โมดูล | Requirement | Domain | Flow | System Design | Calc Rules |
+|-------|-------------|--------|------|---------------|------------|
+| Employee Management | `Employee_Requirement.md` | — | — | — | — |
+| Shift Planning (กะ) | `CLRS_Dev_Spec.md` | `domain - กะการทำงาน.md` | `flow - กะการทำงาน.md` | — | — |
+| Leave Management (ลา) | `CLRS_Dev_Spec.md` | `domain - การลา.md` | `flow - การลา.md` | — | — |
+| Payroll (เงินเดือน) | `CLRS_Dev_Spec.md` | `output/domain-เงินเดือน.md` | `output/flow-เงินเดือน.md` | `output/system-design-เงินเดือน.md` | `output/system-requirement-เงินเดือน.md` |
 
 ---
 

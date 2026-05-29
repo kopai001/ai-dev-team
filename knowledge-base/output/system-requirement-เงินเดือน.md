@@ -81,9 +81,49 @@ otPay          = ∑ otPayPerRecord ทุกรายการในงวด
 
 > ❓ **Open Question #4:** ประเภท specialPay ทั้งหมดและผู้มีสิทธิ์รับรอยืนยัน
 
-### 4.1 กฎ specialPay
+### 4.1 สูตรคำนวณ specialPay
 
-- บันทึกเป็น `PayrollLineItem` แยกรายการ (sourceType = `MANUAL`)
+คำนวณเหมือน OT ทุกประการ แต่ **อัตราคูณ = 1.0 ทุกประเภท**
+
+```
+specialPayPerRecord = อัตราค่าจ้างต่อชั่วโมง × ชั่วโมงที่อนุมัติ × 1.0
+specialPay          = ∑ specialPayPerRecord ทุกรายการในงวด
+```
+
+| ประเภทเวลา | อัตราคูณ | หมายเหตุ |
+|-----------|---------|---------|
+| วันทำงาน (หลังเวลาเลิกงาน) | × 1.0 | |
+| วันหยุด — ชั่วโมงในกะปกติ | × 1.0 | |
+| วันหยุด — ชั่วโมงนอกกะปกติ | × 1.0 | |
+
+### 4.2 แหล่งข้อมูล (sourceType)
+
+> ⚠️ **[MOCK — design ยังไม่ชัดเจน]** โครงสร้างด้านล่างเป็น draft รอยืนยัน
+
+- sourceType = `SPECIAL_PAY_RECORD` (ไม่ใช่ `MANUAL`)
+- บันทึกผ่าน **SpecialPayRecord domain** — แยกต่างหากจาก OTRecord แต่มีโครงสร้างการบันทึกเหมือนกัน
+- flow การอนุมัติ: คาดว่าคล้าย OT (บันทึก → อนุมัติ → ดึงเข้า Payroll)
+- ดึงเฉพาะรายการที่ **อนุมัติแล้ว** เท่านั้น (เหมือน OTRecord)
+
+```typescript
+// [MOCK] SpecialPayRecord — โครงสร้างเบื้องต้น รอ domain design จริง
+interface SpecialPayRecord {
+  id: string
+  employeeId: string
+  periodId: string
+  specialPayType: string        // e.g. "วันหยุดนักขัตฤกษ์", "ขึ้นยาง", custom
+  workDate: Date
+  approvedHours: number         // ชั่วโมงที่อนุมัติ (เหมือน OTRecord.approvedHours)
+  actualHours?: number          // ชั่วโมงจริง (เก็บไว้ แต่ไม่ใช้คำนวณ)
+  status: 'PENDING' | 'APPROVED' | 'REJECTED'
+  approvedBy?: string
+  note?: string
+}
+```
+
+### 4.3 กฎ specialPay
+
+- บันทึกเป็น `PayrollLineItem` แยกรายการ (sourceType = `SPECIAL_PAY_RECORD`)
 - **ไม่นำไปคิดฐาน SS** (ห้ามรวมใน `socialSecurityBase`)
 - นำไปรวมใน `grossPay` ปกติ
 
@@ -165,8 +205,8 @@ socialSecurityAmt  = socialSecurityBase × 5%
 ```
 ─── รายรับ ───────────────────────────────────────────────
 basePay      = baseSalary (รายเดือน) หรือ dailyWage × วันทำงาน (รายวัน)
-otPay        = ∑ (ชั่วโมง OT × อัตราค่าจ้าง/ชั่วโมง × rate) per งวด
-specialPay   = ∑ รายการพิเศษที่บันทึกมือ (วันหยุด/ขึ้นยาง/อื่นๆ)
+otPay        = ∑ (ชั่วโมง OT × อัตราค่าจ้าง/ชั่วโมง × rate[1.5|2.0]) per งวด
+specialPay   = ∑ (ชั่วโมงพิเศษ × อัตราค่าจ้าง/ชั่วโมง × 1.0) per งวด  ← จาก SpecialPayRecord [MOCK]
 grossPay     = basePay + otPay + specialPay
 
 ─── รายหัก ───────────────────────────────────────────────
@@ -266,3 +306,171 @@ netPay = grossPay − SS Amt − withholdingTax − lateDeduction − otherDeduc
 | 4 | specialPay: มีประเภทอะไรบ้าง? ใครบันทึก? | PayrollCategory master data |
 | 5 | กองทุนสำรองเลี้ยงชีพ: มีหรือไม่? | รายการหักเพิ่มเติม |
 | 6 | กระบวนการ "เปิดงวดใหม่" หลัง lock: flow เป็นอย่างไร? | adjustment period design |
+
+---
+
+## 12. การ Snapshot ข้อมูลพนักงาน (Employee Snapshot Rules)
+
+เมื่อสร้าง `PayrollRecord` ต้อง snapshot ข้อมูล ณ วันประมวลผล ไม่ใช่อ้างอิง live
+
+| Field ที่ต้อง Snapshot | แหล่งข้อมูล | เหตุผล |
+|----------------------|------------|--------|
+| `employeeNo` | Employee Module | รหัสพนักงานอาจเปลี่ยนได้ |
+| `fullName` | Employee Module | ชื่อเปลี่ยนได้ (แต่งงาน ฯลฯ) |
+| `departmentName` | Employee Module | ย้ายแผนกได้ |
+| `positionName` | Employee Module | เลื่อนตำแหน่งได้ |
+| `employeeType` | Employee Module | เปลี่ยนประเภทได้ |
+| `bankCode` / `bankAccountNo` | Employee Module | MONTHLY เท่านั้น |
+
+**กฎ:** DAILY ไม่มี `bankCode`/`bankAccountNo` (จ่ายเงินสด ไม่ต้องโอน)
+
+---
+
+## 13. กฎ User Override ใน PayrollLineItem
+
+ระบบรองรับ 2 ค่าต่อ line item: `autoAmount` (ระบบคำนวณ) และ `userAmount` (user กรอก)
+
+```
+amount = userAmount ?? autoAmount   ← ค่าจริงที่ใช้คำนวณ
+```
+
+| กรณี | ผลลัพธ์ |
+|------|---------|
+| ระบบคำนวณเท่านั้น | `autoAmount = X`, `userAmount = null`, `amount = X` |
+| User แก้ไข | `autoAmount = X`, `userAmount = Y`, `amount = Y`, `isUserOverridden = true` |
+| User ยกเลิก override | `userAmount = null`, `amount = autoAmount` |
+| ระบบคำนวณใหม่ (recalculate) | UPDATE `autoAmount` เท่านั้น — **ห้าม reset `userAmount`** |
+| `amount = null` | ไม่แสดงในสลิป ไม่นำไปคิดใน grossPay/netPay |
+
+**UI:** เซลล์ที่ user แก้แสดง ✎ สีส้ม — ต่างจากค่า auto
+
+---
+
+## 14. หมวดรายรับ/รายหัก Default (PayrollCategory Seed)
+
+> ห้ามลบ ห้ามปิด — แก้ไขชื่อได้เท่านั้น
+
+| code | ชื่อ | ประเภท | sortOrder |
+|------|------|--------|-----------|
+| `WORK_DAYS` | เวลางานรวม (วัน) | INCOME | 1 |
+| `BASE_SALARY` | ฐานเงินเดือน | INCOME | 2 |
+| `OT_DAYS` | เวลา OT (วัน) | INCOME | 3 |
+| `OT_PAY` | เงิน OT | INCOME | 4 |
+| `SPECIAL_DAYS` | เวลาพิเศษ (วัน) | INCOME | 5 |
+| `SPECIAL_PAY` | เงินพิเศษ | INCOME | 6 |
+| `SOCIAL_SECURITY` | ประกันสังคม | DEDUCTION | 1 |
+| `WITHHOLDING_TAX` | ภาษีหัก ณ ที่จ่าย | DEDUCTION | 2 |
+| `LATE_DEDUCTION` | หักสาย | DEDUCTION | 3 |
+
+**Custom Category:** Sys Admin / HR Admin เพิ่มได้ไม่จำกัด (เปิด/ปิด/ลบได้)
+- เมื่อ `isActive = false` → ไม่แสดงในงวดที่สร้างใหม่ (งวดเก่าไม่กระทบ)
+- ลบได้เฉพาะกรณีไม่มี `PayrollLineItem` ใช้ code นั้นอยู่
+
+---
+
+## 15. กระบวนการประมวลผล (Wizard 3 ขั้นตอน)
+
+```
+Step 1: คำนวณและกรอกข้อมูล
+   ├─ ระบบ batch query: Employee + OT + SpecialPay[MOCK] + Attendance + Leave (parallel)
+   ├─ UPSERT PayrollRecord + PayrollLineItem ทุกหมวด (default + custom active)
+   ├─ ค่า auto-fill: WORK_DAYS, BASE_SALARY, OT_DAYS, OT_PAY, SPECIAL_DAYS, SPECIAL_PAY, SS, LATE_DEDUCTION
+   ├─ ค่า null (user กรอกเอง): WITHHOLDING_TAX, custom ทุกตัว
+   ├─ [MOCK] SPECIAL_DAYS / SPECIAL_PAY: ดึงจาก SpecialPayRecord ที่อนุมัติแล้ว (เหมือน OT flow)
+   ├─ User แก้ไขเซลล์ได้ → mark isUserOverridden = true
+   ├─ [คำนวณใหม่ทั้งหมด]: re-fetch จาก providers, preserve user override
+   └─ [นำเข้าภาษีจากงวดก่อน]: copy WITHHOLDING_TAX ทั้งหมดจากงวดล่าสุด
+
+Step 2: ยืนยันก่อนล็อก
+   ├─ Read-only summary table (รายบุคคล)
+   ├─ แสดง ✎ เซลล์ที่ user เคยแก้
+   ├─ แสดง ⚠️ จำนวน override cells + [ดูรายการ] → modal รายละเอียด
+   ├─ ยอดรวม: รายรับ / หักรวม / สุทธิรวม
+   └─ [ดาวน์โหลด Preview PDF]
+
+Step 3: ล็อกงวด + สร้างผลลัพธ์
+   ├─ period.status → LOCKED
+   ├─ PayrollRecord.status ทุกรายการ → CONFIRMED
+   ├─ MONTHLY: สร้าง BankTransferFile (Krungthai format)
+   └─ DAILY: สร้าง CashPaymentDocument (ใบเซ็นรับเงิน)
+```
+
+**หลังล็อก:** ถ้าพบข้อผิดพลาด → สร้าง Adjustment Period ใหม่ (ห้าม unlock)
+
+---
+
+## 16. วิธีการจ่ายเงิน (Payment Methods)
+
+| ประเภทพนักงาน | วิธีจ่าย | เงื่อนไข |
+|-------------|---------|---------|
+| MONTHLY (รายเดือน) | โอนธนาคาร — Krungthai Payroll | ต้องมี `bankCode` + `bankAccountNo` ใน profile |
+| DAILY (รายวัน) | เงินสด — พิมพ์ใบเซ็นรับเงิน | ไม่มีเลขบัญชี |
+
+### 16.1 ไฟล์โอนธนาคาร Krungthai
+
+- Format: fixed-width ตามมาตรฐาน Krungthai Corporate Payroll
+- Mapping: `internalEmployeeId → bankRef` (กำหนดใน Payroll Config)
+- Status flow: `GENERATED → DOWNLOADED → SUBMITTED`
+- สร้างได้เฉพาะหลัง period `LOCKED`
+
+### 16.2 ใบรายการเงินสด (DAILY)
+
+- พิมพ์ได้เท่านั้น (ไม่มี digital workflow)
+- มีช่องลายเซ็นต์รับเงินต่อรายคน
+- แสดง: ลำดับ, ชื่อ-นามสกุล, แผนก, เงินสุทธิ, ช่องลายเซ็น
+
+---
+
+## 17. รายงานตามกฎหมาย (Legal Reports)
+
+| รายงาน | รายละเอียด | ความถี่ | ผู้มีสิทธิ์ |
+|--------|-----------|---------|-----------|
+| ภ.ง.ด. 1 | ภาษีหัก ณ ที่จ่าย — ใบสรุปบริษัท + ใบแนบรายบุคคล | รายเดือน | Payroll |
+| ภ.ง.ด. 1ก | ภาษีทั้งปี ม.ค.–ธ.ค. ทุกคน — ใบสรุป + ใบแนบ | รายปี | Payroll |
+| หนังสือรับรอง ทวิ 50 | ใบรับรองภาษีรายบุคคล | รายปี | Payroll |
+| สปส. 1-10 | ประกันสังคมรายเดือน (รวมพนักงานต่างชาติ) | รายเดือน | Payroll |
+| สปส. 1-03 | แจ้งพนักงานเข้าใหม่ | ตามเหตุการณ์ | Payroll |
+| สปส. 6-09 | แจ้งพนักงานลาออก | ตามเหตุการณ์ | Payroll |
+| กท.20 | กองทุนเงินทดแทน (นายจ้างจ่าย) | รายปี | Payroll |
+| รายงานประจำงวด | สรุปเงินเดือน กรองแผนก/ประเภทพนักงาน | ทุกงวด | HR Admin, Payroll |
+| รายงานเข้า-ออก | สรุปการเข้า-ออกรายบุคคล/รายแผนก — Export PDF/Excel | ตามต้องการ | Dept Head, HR Admin, Payroll |
+
+---
+
+## 18. สิทธิ์การเข้าถึง (Permission Matrix)
+
+| การกระทำ | Employee | Dept Head | Factory Mgr | GM | HR Monthly (R05) | HR Daily (R08) | Payroll (R06) | Sys Admin |
+|----------|----------|-----------|-------------|-----|-----------------|----------------|---------------|-----------|
+| ดูสลิปตัวเอง | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – |
+| ดูสลิปพนักงาน | – | – | – | – | รายเดือน | รายวัน | ทั้งหมด | – |
+| สร้าง/จัดการ Period | – | – | – | – | – | – | ✓ | – |
+| คำนวณ/ล็อก Period | – | – | – | – | – | – | ✓ | – |
+| กรอก Withholding Tax | – | – | – | – | รายเดือน | รายวัน | ✓ | – |
+| Generate Bank File | – | – | – | – | – | – | ✓ | – |
+| ออกรายงานกฎหมาย | – | – | – | – | – | – | ✓ | – |
+| ดูรายงานประจำงวด | – | – | – | – | รายเดือน | รายวัน | ✓ | – |
+| ตั้งค่า PayrollCategory | – | – | – | – | ✓ | ✓ | ✓ | ✓ |
+| ตั้งค่า SS / OT / งวด | – | – | – | – | ✓ (SS) | ✓ (SS) | – | ✓ |
+| Payroll Config (ธนาคาร) | – | – | – | – | – | – | – | ✓ |
+
+> หมายเหตุ: พนักงาน 1 คนมีหลาย Role ได้ (เช่น R05 + R06 พร้อมกัน)
+
+---
+
+## 19. การแจ้งเตือน (Notifications)
+
+| เหตุการณ์ | ผู้รับ | ข้อความ |
+|-----------|--------|---------|
+| ล็อกงวดแล้ว | Payroll, HR Admin | "งวด [ปี/เดือน/งวด] ล็อกแล้ว สลิปพร้อมดูแล้ว" |
+| ไฟล์ธนาคารพร้อม | Payroll | "ไฟล์โอนเงิน [งวด] พร้อมดาวน์โหลด" |
+| งวด PAID | Payroll, HR Admin | "จ่ายเงินงวด [ปี/เดือน/งวด] เรียบร้อย วันที่ [X]" |
+| มีสลิปใหม่ | พนักงานทุกคน (in-app) | "สลิปเงินเดือน [เดือน] พร้อมดูแล้ว" |
+
+---
+
+## 20. ประวัติเงินเดือน (Salary History)
+
+- บันทึกการปรับเงินเดือนแต่ละครั้ง (วันที่มีผล, ค่าเก่า, ค่าใหม่)
+- บันทึกวันเริ่มงาน + คำนวณอายุงาน (ปี/เดือน)
+- ใช้อ้างอิงใน report ทวิ 50 (รายได้สะสมทั้งปี)
+- ผู้มีสิทธิ์แก้ไข: HR Admin รายเดือน, HR Admin รายวัน, Payroll

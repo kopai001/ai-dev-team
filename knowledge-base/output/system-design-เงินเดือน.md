@@ -46,6 +46,7 @@ src/modules/payroll/
 ├── interfaces/
 │   ├── payroll-employee-provider.interface.ts
 │   ├── ot-provider.interface.ts
+│   ├── special-pay-provider.interface.ts      // [MOCK] design TBD
 │   ├── attendance-payroll-provider.interface.ts
 │   └── leave-payroll-provider.interface.ts
 ├── guards/
@@ -131,6 +132,10 @@ class PayrollCalculationService {
 
   // คำนวณ OT pay รวม
   calculateOTPay(otItems: OTLineItem[]): number
+
+  // [MOCK] คำนวณ special pay รวม — สูตรเหมือน OT แต่ rate = 1.0
+  calculateSpecialPay(specialPayItems: SpecialPayLineItem[]): number
+  // specialPayLineItem: { hours: number; hourlyRate: number } → amount = hours × hourlyRate × 1.0
 
   // คำนวณ SS amount
   calculateSocialSecurity(
@@ -415,8 +420,9 @@ GET    /payroll/reports/attendance            รายงานเข้า-อ
 │  │  ─────────────────────────────────────────────  │              │
 │  │  1. getPayrollEmployees()  ──► IEmployeeProvider│──► Employee  │
 │  │  2. getApprovedOT()        ──► IOTProvider      │──► OT Module │
-│  │  3. getAttendanceSummary() ──► IAttendProvider  │──► Attendance│
-│  │  4. getLeavePayrollData()  ──► ILeaveProvider   │──► Leave Mod │
+│  │  3. getApprovedSpecialPay()──► ISpecialPayProv  │──► SPay[MOCK]│
+│  │  4. getAttendanceSummary() ──► IAttendProvider  │──► Attendance│
+│  │  5. getLeavePayrollData()  ──► ILeaveProvider   │──► Leave Mod │
 │  │                                                 │              │
 │  │  All providers: batch query (1 call per step)   │              │
 │  └─────────────────────────────────────────────────┘              │
@@ -494,10 +500,11 @@ calculateAll(periodId):
    activeCategories = PayrollCategoryService.getActiveCategories()
 
 4. Batch query (parallel):
-   employees  = IEmployeeProvider.getBatch(employeeIds, period.endDate)
-   otData     = IOTProvider.getApprovedOTByPeriod(employeeIds, startDate, endDate)
-   attendance = IAttendanceProvider.getAttendanceSummary(employeeIds, startDate, endDate)
-   leaveData  = ILeaveProvider.getLeavePayrollSummary(employeeIds, startDate, endDate)
+   employees      = IEmployeeProvider.getBatch(employeeIds, period.endDate)
+   otData         = IOTProvider.getApprovedOTByPeriod(employeeIds, startDate, endDate)
+   specialPayData = ISpecialPayProvider.getApprovedSpecialPayByPeriod(employeeIds, startDate, endDate)  // [MOCK]
+   attendance     = IAttendanceProvider.getAttendanceSummary(employeeIds, startDate, endDate)
+   leaveData      = ILeaveProvider.getLeavePayrollSummary(employeeIds, startDate, endDate)
 
 5. For each employee:
    a. UPSERT payroll_record (snapshot employee data)
@@ -507,8 +514,8 @@ calculateAll(periodId):
       BASE_SALARY:      calcBasePay(type, wage, workingDays)
       OT_DAYS:          otData.totalOTDays
       OT_PAY:           calcOTPay(otData.items)
-      SPECIAL_DAYS:     null  (user กรอกเอง)
-      SPECIAL_PAY:      null  (user กรอกเอง)
+      SPECIAL_DAYS:     specialPayData.totalSpecialPayDays  // [MOCK] จาก ISpecialPayProvider
+      SPECIAL_PAY:      calcSpecialPay(specialPayData.items)  // [MOCK] rate × 1.0
       SOCIAL_SECURITY:  calcSS(basePay, type, periodNumber).ssAmt
       WITHHOLDING_TAX:  null  (user กรอกเอง)
       LATE_DEDUCTION:   calcLateDeduction(attendance.lateMinutes)
