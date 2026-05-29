@@ -40,7 +40,7 @@
 
 | Agent | ไฟล์ | หน้าที่หลัก |
 |-------|------|------------|
-| Orchestrator | `team-member/orchestrator.md` | แจกจ่ายงาน, ตัดสินใจ, ประสานทีม |
+| Orchestrator (Sara) | `team-member/orchestrator.md` | แจกจ่ายงาน, ตัดสินใจ, ประสานทีม |
 | Product Owner | `team-member/product-owner.md` | นิยาม requirement, จัดลำดับความสำคัญ |
 | Business Analyst | `team-member/business-analyst.md` | วิเคราะห์/ค้นคว้า, เขียน user story |
 | Architect | `team-member/architect.md` | ออกแบบสถาปัตยกรรม, เลือก tech stack |
