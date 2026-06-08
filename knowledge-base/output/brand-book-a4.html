@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>EI CHARGE — Brand Book A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Kanit', sans-serif; background: #E8E7E2; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 24px; }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    background: #F5F4EF;
+    padding: 14mm 14mm 12mm;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── HEAD ── */
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10mm;
+    padding-bottom: 6mm;
+    border-bottom: 1.5px solid #E8E7E2;
+  }
+  .logo-lockup { display: flex; align-items: center; gap: 10px; }
+  .logo-mark {
+    width: 44px; height: 44px;
+    background: #1A1A35;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-mark svg { width: 26px; height: 26px; }
+  .brand-name { font-size: 28px; font-weight: 900; color: #1A1A35; letter-spacing: -0.02em; line-height: 1; }
+  .brand-name em { color: #FFD100; font-style: normal; }
+  .brand-sub { font-size: 9px; font-weight: 600; color: #9E9E9E; letter-spacing: .15em; text-transform: uppercase; margin-top: 3px; }
+  .head-meta { text-align: right; }
+  .head-meta .version { font-size: 9px; color: #9E9E9E; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  .head-meta .tagline { font-size: 13px; font-weight: 700; color: #1A1A35; margin-top: 3px; }
+  .head-meta .tagline span { color: #FFD100; }
+
+  /* ── COLORS ── */
+  .colors-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8mm;
+  }
+  .color-tile {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .color-swatch { height: 36mm; }
+  .color-info { padding: 8px 12px; background: #fff; }
+  .color-info .color-name { font-size: 11px; font-weight: 700; color: #1A1A35; }
+  .color-info .color-role { font-size: 9px; color: #9E9E9E; }
+  .color-info .color-hex  { font-family: 'Courier New', monospace; font-size: 10px; color: #3D3D6B; margin-top: 2px; }
+
+  /* ── MIDDLE 2-col ── */
+  .mid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8mm;
+  }
+  .mid-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .mid-card.dark { background: #1A1A35; }
+  .card-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #9E9E9E;
+    margin-bottom: 8px;
+  }
+  .dark .card-label { color: rgba(255,255,255,.35); }
+
+  .type-display { font-size: 26px; font-weight: 900; color: #1A1A35; line-height: 1; margin-bottom: 6px; }
+  .type-display span { color: #FFD100; }
+  .type-h2   { font-size: 16px; font-weight: 700; color: #1A1A35; margin-bottom: 3px; }
+  .type-body { font-size: 10px; font-weight: 400; color: #9E9E9E; line-height: 1.5; }
+  .type-font-name { font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #9E9E9E; margin-top: 8px; border-top: 1px solid #E8E7E2; padding-top: 6px; }
+
+  .principle-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 7px; }
+  .principle-num {
+    width: 18px; height: 18px; flex-shrink: 0;
+    background: linear-gradient(135deg, #FFD100, #FF8C00);
+    border-radius: 50%;
+    font-size: 9px; font-weight: 900; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .principle-text .pt { font-size: 10px; font-weight: 700; color: #fff; line-height: 1.2; }
+  .principle-text .ps { font-size: 9px; color: rgba(255,255,255,.45); }
+
+  /* ── WORDMARKS ── */
+  .wm-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8mm;
+  }
+  .wm-tile {
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 28mm;
+  }
+  .wm-tile-label { font-size: 8px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .wm-dark   { background: #1A1A35; }
+  .wm-yellow { background: #FFD100; }
+  .wm-light  { background: #fff; border: 1px solid #E8E7E2; }
+
+  .wm-logotype {
+    display: flex; align-items: center; gap: 7px;
+  }
+  .wm-icon-sm {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .wm-name-lg { font-size: 18px; font-weight: 900; letter-spacing: -0.02em; }
+  .wm-name-split-black { font-size: 20px; font-weight: 900; color: #1A1A35; letter-spacing: -0.02em; }
+  .wm-name-split-light { font-size: 20px; font-weight: 300; color: rgba(26,26,53,.5); letter-spacing: -0.02em; }
+
+  /* ── FOOTER ── */
+  .bb-footer {
+    margin-top: auto;
+    padding-top: 5mm;
+    border-top: 1px solid #E8E7E2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bb-footer-left { display: flex; flex-direction: column; gap: 2px; }
+  .bb-footer-left .contact { font-size: 11px; font-weight: 700; color: #1A1A35; }
+  .bb-footer-left .filepath { font-size: 8px; color: #9E9E9E; font-family: 'Courier New', monospace; }
+  .bb-footer-right { text-align: right; }
+  .bb-footer-right .app-label { font-size: 8px; color: #9E9E9E; }
+  .bb-footer-right .app-platforms { font-size: 10px; font-weight: 700; color: #1A1A35; }
+
+  /* decorative bolt BG */
+  .bolt-bg {
+    position: absolute;
+    right: 10mm;
+    top: 10mm;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- decorative background bolt -->
+  <svg class="bolt-bg" width="200" height="280" viewBox="0 0 200 280" fill="none">
+    <path d="M120 10L30 150h80L90 270 200 100h-90L120 10z" fill="#FFD100"/>
+  </svg>
+
+  <!-- ── HEAD ── -->
+  <div class="head">
+    <div class="logo-lockup">
+      <div class="logo-mark">
+        <svg viewBox="0 0 26 26" fill="none">
+          <path d="M15 2L6 14h8l-2 10 14-15h-9l2-7z" fill="#FFD100"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name"><em>EI</em> CHARGE</div>
+        <div class="brand-sub">EV Charging Investment Platform</div>
+      </div>
+    </div>
+    <div class="head-meta">
+      <div class="version">Brand Book v1.0 · 2026</div>
+      <div class="tagline">ลงทุนสถานีชาร์จ <span>EV</span></div>
+      <div style="font-size:9px; color:#9E9E9E; margin-top:2px; font-weight:400">รับ Passive Income ทุกเดือน</div>
+    </div>
+  </div>
+
+  <!-- ── COLOR HIERARCHY ── -->
+  <div class="colors-row">
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#FFD100; display:flex; align-items:flex-end; padding:8px 12px;">
+        <span style="font-size:9px; font-weight:700; background:rgba(0,0,0,.2); color:#fff; padding:2px 7px; border-radius:4px;">PRIMARY</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">Electric Yellow</div>
+        <div class="color-role">CTA · Logo mark · Highlights</div>
+        <div class="color-hex">#FFD100</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#1A1A35; display:flex; align-items:flex-end; padding:8px 12px;">
+        <span style="font-size:9px; font-weight:700; background:rgba(255,255,255,.15); color:#fff; padding:2px 7px; border-radius:4px;">SECONDARY</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">Charge Navy</div>
+        <div class="color-role">Backgrounds · Authority · Text</div>
+        <div class="color-hex">#1A1A35</div>
+      </div>
+    </div>
+    <div class="color-tile">
+      <div class="color-swatch" style="background:#1E73E8; display:flex; align-items:flex-end; padding:8px 12px;">
+        <span style="font-size:9px; font-weight:700; background:rgba(0,0,0,.2); color:#fff; padding:2px 7px; border-radius:4px;">TERTIARY</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">EV Blue</div>
+        <div class="color-role">Tech accents · Links · Station</div>
+        <div class="color-hex">#1E73E8</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MIDDLE ROW ── -->
+  <div class="mid-row">
+
+    <!-- Typography card -->
+    <div class="mid-card">
+      <div class="card-label">Typography</div>
+      <div class="type-display"><span>EI</span>CHARGE</div>
+      <div class="type-h2">ลงทุนวันนี้ รับรายได้ทุกเดือน</div>
+      <div class="type-body">รายได้ Passive income ไม่ต้องบริหารเอง ลงทุนครั้งเดียว เครื่องชาร์จทำเงินแทนทุกวัน ไม่มีผลขาดทุน รับเงินทุกเดือน</div>
+      <div class="type-font-name">
+        <strong>Kanit</strong> — 900 Display · 700 Heading · 400 Body<br>
+        <span style="font-size:8px; color:#B0B0B0">Thai + Latin · Google Fonts</span>
+      </div>
+    </div>
+
+    <!-- Principles card -->
+    <div class="mid-card dark">
+      <div class="card-label">Investment Principles</div>
+
+      <div class="principle-item">
+        <div class="principle-num">1</div>
+        <div class="principle-text">
+          <div class="pt">ความต้องการพุ่งสูง</div>
+          <div class="ps">รถ EV โตเร็ว สถานีชาร์จยังขาดแคลน</div>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">2</div>
+        <div class="principle-text">
+          <div class="pt">Passive Income แท้จริง</div>
+          <div class="ps">ลงทุนครั้งเดียว รับเงินทุกวัน</div>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">3</div>
+        <div class="principle-text">
+          <div class="pt">คืนทุนเร็ว ผลตอบแทนสูง</div>
+          <div class="ps">ไม่มีผลขาดทุน รับเงินทุกเดือน</div>
+        </div>
+      </div>
+      <div class="principle-item" style="margin-bottom:0">
+        <div class="principle-num">4</div>
+        <div class="principle-text">
+          <div class="pt">ความยั่งยืน &amp; สิ่งแวดล้อม</div>
+          <div class="ps">ร่วมสร้างอนาคต EV ของไทย</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── WORDMARKS ── -->
+  <div class="wm-row">
+
+    <!-- Dark lockup -->
+    <div class="wm-tile wm-dark">
+      <div class="wm-logotype">
+        <div class="wm-icon-sm" style="background:#FFD100;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M9 1.5L4 8.5h4.5L7 14.5l8.5-9H11L9 1.5z" fill="#1A1A35"/>
+          </svg>
+        </div>
+        <div class="wm-name-lg" style="color:#fff;">EI <span style="color:#FFD100">CHARGE</span></div>
+      </div>
+      <div class="wm-tile-label" style="color:rgba(255,255,255,.3);">Mark + Wordmark · Dark</div>
+    </div>
+
+    <!-- Yellow split -->
+    <div class="wm-tile wm-yellow">
+      <div style="text-align:center">
+        <div>
+          <span class="wm-name-split-black">EI</span><span class="wm-name-split-light">CHARGE</span>
+        </div>
+        <div style="font-size:7px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(26,26,53,.45); margin-top:3px;">EV INVESTMENT</div>
+      </div>
+      <div class="wm-tile-label" style="color:rgba(26,26,53,.35);">Split Weight · Yellow</div>
+    </div>
+
+    <!-- Light accent -->
+    <div class="wm-tile wm-light">
+      <div class="wm-logotype">
+        <div class="wm-icon-sm" style="background:#1A1A35;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M9 1.5L4 8.5h4.5L7 14.5l8.5-9H11L9 1.5z" fill="#FFD100"/>
+          </svg>
+        </div>
+        <div>
+          <div class="wm-name-lg" style="color:#1A1A35;"><span style="color:#FFD100;">EI</span> CHARGE</div>
+          <div style="font-size:7px; font-weight:600; letter-spacing:.15em; color:#9E9E9E; text-transform:uppercase;">Invest · Earn · Sustain</div>
+        </div>
+      </div>
+      <div class="wm-tile-label" style="color:#9E9E9E;">Accent Lockup · Light</div>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="bb-footer">
+    <div class="bb-footer-left">
+      <div class="contact">📞 084-225-5928 · info@eichargeev.com</div>
+      <div class="filepath">knowledge-base/output/brand-book-a4.html · EI CHARGE Brand Book v1.0 · 2026-06-08</div>
+    </div>
+    <div class="bb-footer-right">
+      <div class="app-label">ดาวน์โหลดแอป</div>
+      <div class="app-platforms">iOS · Android</div>
+      <div style="font-size:8px; color:#9E9E9E; margin-top:1px;">See: design-system.html</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EI CHARGE — แผนการลงทุนสถานีชาร์จ EV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFD100;
+      --yellow-dark: #E6B800;
+      --yellow-soft: #FFF3B0;
+      --navy: #1A1A35;
+      --navy-mid: #2C2C52;
+      --navy-light: #3D3D6B;
+      --blue: #1E73E8;
+      --blue-light: #5B9CF6;
+      --white: #FFFFFF;
+      --off-white: #F5F4EF;
+      --gray-light: #E8E7E2;
+      --gray-mid: #9E9E9E;
+      --success: #22C55E;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+      --radius-full: 999px;
+      --font: 'Kanit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--off-white);
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(26, 26, 53, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      border-bottom: 1px solid rgba(255, 209, 0, 0.2);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span {
+      color: var(--yellow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--yellow);
+    }
+
+    .nav-cta {
+      background: var(--yellow);
+      color: var(--navy);
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(255, 209, 0, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 209, 0, 0.1);
+      border: 1px solid rgba(255, 209, 0, 0.3);
+      border-radius: var(--radius-full);
+      padding: 6px 18px;
+      margin-bottom: 32px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--yellow);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--yellow);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .hero-title .accent {
+      color: var(--yellow);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 40px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-stat-value {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-divider {
+      width: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      align-self: stretch;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      font-family: var(--font);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all .15s;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 16px 32px;
+    }
+
+    .btn-primary {
+      background: var(--yellow);
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: var(--yellow-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(6px);
+      }
+    }
+
+    .hero-scroll svg {
+      opacity: 0.3;
+    }
+
+    /* ── SECTION BASE ── */
+    .section-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 8px;
+    }
+
+    .section-heading {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .section-heading .accent {
+      color: var(--yellow);
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--gray-mid);
+      font-weight: 400;
+      margin-bottom: 48px;
+      max-width: 560px;
+    }
+
+    .yellow-line {
+      width: 48px;
+      height: 4px;
+      background: var(--yellow);
+      border-radius: 2px;
+      margin: 16px 0 32px;
+    }
+
+    /* ── WHY INVEST ── */
+    .why-section {
+      background: var(--white);
+    }
+
+    .reason-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .reason-card {
+      background: var(--off-white);
+      border-radius: var(--radius-xl);
+      padding: 28px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .reason-num {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--yellow), #FF9800);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+    }
+
+    .reason-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .reason-sub {
+      font-size: 13px;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    /* ── PACKAGES ── */
+    .package-section {
+      background: var(--navy);
+    }
+
+    .package-section .section-heading {
+      color: var(--white);
+    }
+
+    .package-section .section-sub {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .package-section .section-label {
+      color: rgba(255, 209, 0, 0.6);
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .pkg-card {
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pkg-card-std {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pkg-card-pro {
+      background: var(--yellow);
+      border: 1px solid var(--yellow-dark);
+    }
+
+    .pkg-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      margin-bottom: 20px;
+    }
+
+    .pkg-badge-std {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .pkg-badge-pro {
+      background: var(--navy);
+      color: var(--yellow);
+    }
+
+    .pkg-name-std {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .pkg-name-pro {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .pkg-sub-std {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 28px;
+    }
+
+    .pkg-sub-pro {
+      font-size: 13px;
+      color: rgba(26, 26, 53, 0.5);
+      margin-bottom: 28px;
+    }
+
+    .pkg-price-std {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .pkg-price-pro {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+    }
+
+    .pkg-price-unit-std {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+      margin-bottom: 28px;
+    }
+
+    .pkg-price-unit-pro {
+      font-size: 14px;
+      color: rgba(26, 26, 53, 0.5);
+      margin-top: 4px;
+      margin-bottom: 28px;
+    }
+
+    .pkg-divider-std {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 24px;
+    }
+
+    .pkg-divider-pro {
+      height: 1px;
+      background: rgba(26, 26, 53, 0.15);
+      margin-bottom: 24px;
+    }
+
+    .pkg-includes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pkg-includes li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .pkg-includes li .check-std {
+      color: var(--success);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pkg-includes li .check-pro {
+      color: var(--navy);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pkg-includes li span {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .pkg-includes li span.dark {
+      color: rgba(26, 26, 53, 0.8);
+    }
+
+    .pkg-exclude li span {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .pkg-exclude li span.dark {
+      color: rgba(26, 26, 53, 0.4);
+    }
+
+    .pkg-exclude li .check-std {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pkg-exclude li .check-pro {
+      color: rgba(26, 26, 53, 0.25);
+    }
+
+    .pkg-future {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      border-left: 3px solid var(--blue-light);
+    }
+
+    .pkg-future-pro {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(26, 26, 53, 0.08);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      color: rgba(26, 26, 53, 0.6);
+      border-left: 3px solid var(--navy);
+    }
+
+    /* ── FRANCHISE ── */
+    .franchise-bar {
+      margin-top: 24px;
+      background: rgba(255, 209, 0, 0.07);
+      border: 1px solid rgba(255, 209, 0, 0.2);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .franchise-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .franchise-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(255, 209, 0, 0.15);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .franchise-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .franchise-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 2px;
+    }
+
+    .franchise-price {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--yellow);
+    }
+
+    .franchise-period {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* ── PAYMENT ── */
+    .payment-section {
+      background: var(--off-white);
+    }
+
+    .payment-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .payment-track::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: var(--gray-light);
+      z-index: 0;
+    }
+
+    .pay-step {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pay-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-weight: 900;
+    }
+
+    .pay-circle-num {
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.7;
+    }
+
+    .pay-circle-pct {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .pay-c1 {
+      background: var(--yellow);
+      color: var(--navy);
+    }
+
+    .pay-c2 {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .pay-c3 {
+      background: var(--navy-mid);
+      color: var(--white);
+    }
+
+    .pay-c4 {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .pay-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .pay-desc {
+      font-size: 11px;
+      color: var(--gray-mid);
+      line-height: 1.5;
+    }
+
+    .pay-amount {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy-light);
+      font-family: var(--font-mono);
+    }
+
+    /* ── LOCATION ── */
+    .location-section {
+      background: var(--white);
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .location-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loc-card {
+      background: var(--off-white);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .loc-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .loc-icon-yellow {
+      background: var(--yellow);
+    }
+
+    .loc-icon-navy {
+      background: var(--navy);
+    }
+
+    .loc-icon-blue {
+      background: #EFF6FF;
+    }
+
+    .loc-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .loc-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .loc-sub {
+      font-size: 12px;
+      color: var(--gray-mid);
+      margin-top: 2px;
+    }
+
+    .rent-table {
+      background: var(--off-white);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .rent-header {
+      background: var(--navy);
+      padding: 16px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .rent-row {
+      padding: 16px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid var(--gray-light);
+      align-items: center;
+    }
+
+    .rent-row:last-child {
+      border-bottom: none;
+    }
+
+    .rent-size {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .rent-monthly {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .rent-deposit {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-mid);
+    }
+
+    .rent-note {
+      padding: 12px 24px;
+      background: var(--yellow-soft);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .map-embed {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .map-embed iframe {
+      width: 100%;
+      height: 420px;
+      border: none;
+      display: block;
+    }
+
+    .map-cta {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius-full);
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .15s;
+    }
+
+    .map-cta:hover {
+      background: var(--navy-mid);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline-section {
+      background: var(--navy);
+    }
+
+    .timeline-section .section-heading {
+      color: var(--white);
+    }
+
+    .timeline-section .section-sub {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .timeline-section .section-label {
+      color: rgba(255, 209, 0, 0.6);
+    }
+
+    .timeline-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .tl-month {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-xl);
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .tl-month-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 12px;
+    }
+
+    .tl-month-tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tl-task {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      text-align: left;
+    }
+
+    .tl-task.active {
+      background: rgba(255, 209, 0, 0.15);
+      color: var(--yellow);
+    }
+
+    .tl-total {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(255, 209, 0, 0.08);
+      border: 1px solid rgba(255, 209, 0, 0.2);
+      border-radius: var(--radius-xl);
+      padding: 20px 32px;
+    }
+
+    .tl-total-num {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .tl-total-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ── ADVANTAGES ── */
+    .adv-section {
+      background: var(--off-white);
+    }
+
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .adv-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    }
+
+    .adv-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--yellow);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 16px;
+    }
+
+    .adv-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .adv-desc {
+      font-size: 13px;
+      color: var(--gray-mid);
+      line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--navy) 0%, #0D1B4B 100%);
+      text-align: center;
+      padding: 100px 24px;
+    }
+
+    .cta-title {
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .cta-title .accent {
+      color: var(--yellow);
+    }
+
+    .cta-sub {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .cta-phone {
+      display: inline-block;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--yellow);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: var(--font-mono);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ── STAT PILL ── */
+    .stat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .stat-pill {
+      background: rgba(255, 209, 0, 0.1);
+      border: 1px solid rgba(255, 209, 0, 0.2);
+      border-radius: var(--radius-full);
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-pill-val {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--yellow);
+    }
+
+    .stat-pill-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .reason-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .package-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-track {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .payment-track::before {
+        display: none;
+      }
+
+      .location-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .adv-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-stats {
+        gap: 24px;
+      }
+
+      .hero-divider {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-mark">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M18 4L8 18h8l-2 10 14-16h-8l2-8z" fill="#1A1A35" />
+        </svg>
+      </div>
+      <div class="nav-brand"><span>EI</span> CHARGE</div>
+    </div>
+    <div class="nav-links">
+      <a href="#why">ทำไมต้องลงทุน</a>
+      <a href="#packages">แพ็กเกจ</a>
+      <a href="#location">ทำเล</a>
+      <a href="#payment">การชำระเงิน</a>
+      <a href="#timeline">ระยะเวลา</a>
+    </div>
+    <a class="nav-cta" href="#cta">สอบถามเพิ่มเติม</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      เปิดรับนักลงทุน — หาดใหญ่
+    </div>
+    <h1 class="hero-title">
+      ลงทุนสถานีชาร์จ EV<br>
+      <span class="accent">รับ Passive Income</span>
+    </h1>
+    <p class="hero-subtitle">EI CHARGE · แฟรนไชส์ชาร์จ EV คุ้มค่า ราคาถูก บริการเต็มรูปแบบ</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-value">3.2M฿</div>
+        <div class="hero-stat-label">เริ่มต้นลงทุน</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div>
+        <div class="hero-stat-value">4 ช่อง</div>
+        <div class="hero-stat-label">จอดชาร์จพร้อมกัน</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div>
+        <div class="hero-stat-value">160 kWh</div>
+        <div class="hero-stat-label">กำลังไฟรวม</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div>
+        <div class="hero-stat-value">4 เดือน</div>
+        <div class="hero-stat-label">ติดตั้งแล้วเสร็จ</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#packages" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M10 3L5 9.5h5l-1 5.5L17 8h-5l1-5z" fill="currentColor" />
+        </svg>
+        ดูแพ็กเกจลงทุน
+      </a>
+      <a href="#why" class="btn btn-outline">ทำไมต้อง EI CHARGE?</a>
+    </div>
+    <div class="hero-scroll">
+      <span>เลื่อนลง</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 3v10M3 9l5 5 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- WHY INVEST -->
+  <section class="why-section" id="why">
+    <div class="section-wrap">
+      <div class="section-label">เหตุผลที่ควรลงทุน</div>
+      <h2 class="section-heading">ทำไม <span class="accent">EI CHARGE</span><br>ถึงน่าลงทุน?</h2>
+      <div class="yellow-line"></div>
+      <div class="reason-grid">
+        <div class="reason-card">
+          <div class="reason-num">1</div>
+          <div>
+            <div class="reason-title">ราคาลงทุนถูก คุ้มค่ากว่าคู่แข่ง</div>
+            <div class="reason-sub">แพ็กเกจเริ่มต้นเพียง 3.2 ล้านบาท รวมทุกอย่างครบถ้วน ทั้งเครื่องชาร์จ ระบบไฟ
+              และการตกแต่ง</div>
+          </div>
+        </div>
+        <div class="reason-card">
+          <div class="reason-num">2</div>
+          <div>
+            <div class="reason-title">ค่าชาร์จถูก จูงใจลูกค้าได้มากกว่า</div>
+            <div class="reason-sub">ราคาชาร์จแข่งขันได้ ดึงดูดลูกค้ากลับซ้ำ สร้างรายได้สม่ำเสมอ ไม่ขาดสาย</div>
+          </div>
+        </div>
+        <div class="reason-card">
+          <div class="reason-num">3</div>
+          <div>
+            <div class="reason-title">มีสาขาในหาดใหญ่แล้ว รู้จักตลาด</div>
+            <div class="reason-sub">EI CHARGE มีฐานในหาดใหญ่ เข้าใจพฤติกรรมลูกค้าในพื้นที่
+              ทำเลที่เลือกผ่านการวิเคราะห์แล้ว</div>
+          </div>
+        </div>
+        <div class="reason-card">
+          <div class="reason-num">4</div>
+          <div>
+            <div class="reason-title">แอปใช้งานง่าย ลูกค้าสะดวก</div>
+            <div class="reason-sub">ระบบแอปพลิเคชันที่ออกแบบมาเพื่อผู้ใช้ ชาร์จ-จ่ายเงิน-ตรวจสอบสถานะ ครบจบในแอปเดียว
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVANTAGES MINI -->
+  <section class="adv-section" id="advantages">
+    <div class="section-wrap" style="padding-top:60px;padding-bottom:60px">
+      <div class="adv-grid">
+        <div class="adv-card">
+          <div class="adv-icon">⚡</div>
+          <div class="adv-title">160 kWh</div>
+          <div class="adv-desc">กำลังชาร์จสูง รองรับรถ EV ทุกรุ่นทุกยี่ห้อ</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">🅿️</div>
+          <div class="adv-title">4 ช่องจอด</div>
+          <div class="adv-desc">รองรับลูกค้าพร้อมกัน 4 คัน รายได้คูณสี่</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">📱</div>
+          <div class="adv-title">App สะดวก</div>
+          <div class="adv-desc">รองรับ iOS และ Android จัดการทุกอย่างผ่านมือถือ</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">🤝</div>
+          <div class="adv-title">แฟรนไชส์ 3 ปี</div>
+          <div class="adv-desc">รวมอยู่ในแพ็กเกจ รับการสนับสนุนจาก EI CHARGE ครบถ้วน</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="package-section" id="packages">
+    <div class="section-wrap">
+      <div class="section-label">แพ็กเกจการลงทุน</div>
+      <h2 class="section-heading">เลือก<span class="accent">แพ็กเกจ</span>ที่ใช่สำหรับคุณ</h2>
+      <div class="yellow-line"></div>
+      <p class="section-sub">ทั้งสองแพ็กเกจ: 2 เครื่อง 4 ช่องจอด กำลัง 160 kWh รวมเครื่องชาร์จ ระบบไฟ การตกแต่ง
+        และแฟรนไชส์ 3 ปี</p>
+
+      <div class="package-grid">
+        <!-- Standard -->
+        <div class="pkg-card pkg-card-std">
+          <div class="pkg-badge pkg-badge-std">Standard</div>
+          <div class="pkg-name-std">สถานีชาร์จ 160 kWh</div>
+          <div class="pkg-sub-std">2 เครื่อง · 4 ช่องจอด</div>
+          <div class="pkg-price-std">3.2<span style="font-size:24px">ล้านบาท</span></div>
+          <div class="pkg-price-unit-std">ราคาประมาณ รวม VAT</div>
+          <div class="pkg-divider-std"></div>
+          <ul class="pkg-includes">
+            <li><span class="check-std">✓</span><span>เครื่องชาร์จ DC Fast 160 kWh (2 เครื่อง)</span></li>
+            <li><span class="check-std">✓</span><span>ระบบไฟฟ้าและการติดตั้ง</span></li>
+            <li><span class="check-std">✓</span><span>การตกแต่งสถานีทั้งหมด</span></li>
+            <li><span class="check-std">✓</span><span>ค่าแฟรนไชส์ 3 ปี (196,000฿)</span></li>
+            <li class="pkg-exclude"><span class="check-std">✗</span><span>โครงสร้างหลังคา (ยังไม่รวม)</span></li>
+          </ul>
+        </div>
+
+        <!-- Pro -->
+        <div class="pkg-card pkg-card-pro">
+          <div class="pkg-badge pkg-badge-pro">Future Ready</div>
+          <div class="pkg-name-pro">สถานีชาร์จ 160 kWh + Expansion</div>
+          <div class="pkg-sub-pro">2 เครื่อง · 4 ช่องจอด · รองรับการขยายในอนาคต</div>
+          <div class="pkg-price-pro">3.77<span style="font-size:24px">ล้านบาท</span></div>
+          <div class="pkg-price-unit-pro">ราคาประมาณ รวม VAT</div>
+          <div class="pkg-divider-pro"></div>
+          <ul class="pkg-includes">
+            <li><span class="check-pro" style="color:#1A1A35">✓</span><span class="dark">เครื่องชาร์จ DC Fast 160 kWh (2
+                เครื่อง)</span></li>
+            <li><span class="check-pro" style="color:#1A1A35">✓</span><span class="dark">ระบบไฟฟ้าและการติดตั้ง</span>
+            </li>
+            <li><span class="check-pro" style="color:#1A1A35">✓</span><span class="dark">การตกแต่งสถานีทั้งหมด</span>
+            </li>
+            <li><span class="check-pro" style="color:#1A1A35">✓</span><span class="dark">ค่าแฟรนไชส์ 3 ปี
+                (196,000฿)</span></li>
+            <li><span class="check-pro" style="color:#1A1A35">✓</span><span class="dark"
+                style="font-weight:700">ระบบไฟรองรับ 160 kWh เครื่องที่ 3 ในอนาคต</span></li>
+            <li class="pkg-exclude"><span class="check-pro" style="color:rgba(26,26,53,0.25)">✗</span><span class="dark"
+                style="opacity:0.5">โครงสร้างหลังคา (ยังไม่รวม)</span></li>
+          </ul>
+          <div class="pkg-future-pro">
+            💡 เพิ่มเพียง 570,000 บาท เพื่อเตรียมพร้อมขยายเป็น 3 เครื่องได้ทันที ไม่ต้องรื้อระบบไฟใหม่
+          </div>
+        </div>
+      </div>
+
+      <!-- Franchise bar -->
+      <div class="franchise-bar">
+        <div class="franchise-left">
+          <div class="franchise-icon">🤝</div>
+          <div>
+            <div class="franchise-title">ค่าแฟรนไชส์ EI CHARGE</div>
+            <div class="franchise-sub">รวมอยู่ในราคาแพ็กเกจทั้งสองข้างต้นแล้ว</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="franchise-price">196,000 ฿</div>
+          <div class="franchise-period">ระยะเวลา 3 ปี</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section class="payment-section" id="payment">
+    <div class="section-wrap">
+      <div class="section-label">เงื่อนไขการชำระเงิน</div>
+      <h2 class="section-heading">แบ่งจ่าย <span class="accent">4 งวด</span><br>ตามความคืบหน้า</h2>
+      <div class="yellow-line"></div>
+      <p class="section-sub">ไม่ต้องจ่ายทั้งหมดล่วงหน้า — ชำระตามสถานะงานจริง</p>
+
+      <div class="payment-track">
+        <div class="pay-step">
+          <div class="pay-circle pay-c1">
+            <span class="pay-circle-num">งวดที่ 1</span>
+            <span class="pay-circle-pct">20%</span>
+          </div>
+          <div class="pay-label">มัดจำ</div>
+          <div class="pay-desc">หลังเซ็นสัญญา<br>ภายใน 30 วัน</div>
+          <div class="pay-amount">~640,000 ฿</div>
+        </div>
+        <div class="pay-step">
+          <div class="pay-circle pay-c2">
+            <span class="pay-circle-num">งวดที่ 2</span>
+            <span class="pay-circle-pct">30%</span>
+          </div>
+          <div class="pay-label">ก่อนติดตั้ง</div>
+          <div class="pay-desc">ก่อนเริ่ม<br>ดำเนินการติดตั้ง</div>
+          <div class="pay-amount">~960,000 ฿</div>
+        </div>
+        <div class="pay-step">
+          <div class="pay-circle pay-c3">
+            <span class="pay-circle-num">งวดที่ 3</span>
+            <span class="pay-circle-pct">30%</span>
+          </div>
+          <div class="pay-label">หลังติดตั้งเสร็จ</div>
+          <div class="pay-desc">หลังติดตั้งแล้วเสร็จ<br>ภายใน 30 วัน</div>
+          <div class="pay-amount">~960,000 ฿</div>
+        </div>
+        <div class="pay-step">
+          <div class="pay-circle pay-c4">
+            <span class="pay-circle-num">งวดที่ 4</span>
+            <span class="pay-circle-pct">20%</span>
+          </div>
+          <div class="pay-label">ส่งมอบสถานี</div>
+          <div class="pay-desc">หลังส่งมอบ<br>สถานีสมบูรณ์</div>
+          <div class="pay-amount">~640,000 ฿</div>
+        </div>
+      </div>
+
+      <div
+        style="margin-top:32px; background:var(--yellow-soft); border-left:4px solid var(--yellow); border-radius:var(--radius-md); padding:16px 20px; font-size:14px; color:var(--navy);">
+        <strong>⚡ หมายเหตุ:</strong> ตัวเลขข้างต้นคำนวณจากแพ็กเกจ Standard (3.2M฿) เป็นค่าประมาณเพื่ออ้างอิง
+        ราคาจริงขึ้นอยู่กับแพ็กเกจที่เลือก
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location-section" id="location">
+    <div class="section-wrap">
+      <div class="section-label">ทำเลที่ตั้ง</div>
+      <h2 class="section-heading">โลเคชันพรีเมียม<br><span class="accent">หาดใหญ่</span></h2>
+      <div class="yellow-line"></div>
+      <div class="location-grid">
+        <div class="location-info">
+          <div class="loc-card">
+            <div class="loc-icon loc-icon-yellow">📍</div>
+            <div>
+              <div class="loc-title">ที่ตั้ง</div>
+              <div class="loc-value">ที่จอดรถตรงข้ามตลาดสมอล์</div>
+              <div class="loc-sub">หาดใหญ่ สงขลา</div>
+            </div>
+          </div>
+
+          <div class="rent-table">
+            <div class="rent-header">
+              <span>ขนาดพื้นที่</span>
+              <span>ค่าเช่า/เดือน</span>
+              <span>แรกเข้า</span>
+            </div>
+            <div class="rent-row">
+              <div class="rent-size">6 × 10 เมตร</div>
+              <div class="rent-monthly">8,000 ฿</div>
+              <div class="rent-deposit">36,000 ฿</div>
+            </div>
+            <div class="rent-row">
+              <div class="rent-size">6 × 15 เมตร</div>
+              <div class="rent-monthly">12,000 ฿</div>
+              <div class="rent-deposit">48,000 ฿</div>
+            </div>
+            <div class="rent-note">
+              ⚡ เริ่มจ่ายค่าเช่าเดือนแรก หลัง 45 วัน นับจากเซ็นสัญญา
+            </div>
+          </div>
+
+          <a href="https://maps.app.goo.gl/JuinBjEPPBtUTd1b9" target="_blank" class="map-cta">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path
+                d="M9 2C6.24 2 4 4.24 4 7c0 3.94 5 9 5 9s5-5.06 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"
+                fill="#FFD100" />
+            </svg>
+            เปิด Google Maps
+          </a>
+        </div>
+
+        <div>
+          <div class="map-embed">
+            <iframe
+              src="https://maps.google.com/maps?q=%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%88%E0%B8%AD%E0%B8%94%E0%B8%A3%E0%B8%96%E0%B8%95%E0%B8%A3%E0%B8%87%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A1%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%AA%E0%B8%A1%E0%B8%AD%E0%B8%A5%E0%B9%8C+%E0%B8%AB%E0%B8%B2%E0%B8%94%E0%B9%83%E0%B8%AB%E0%B8%8D%E0%B9%88&output=embed"
+              allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="timeline-section" id="timeline">
+    <div class="section-wrap">
+      <div class="section-label">ระยะเวลาดำเนินการ</div>
+      <h2 class="section-heading">เปิดสถานีใน <span class="accent">4 เดือน</span></h2>
+      <div class="yellow-line"></div>
+      <p class="section-sub">ตั้งแต่เซ็นสัญญาจนถึงส่งมอบสถานีพร้อมใช้งาน</p>
+
+      <div class="timeline-bar">
+        <div class="tl-month">
+          <div class="tl-month-num">เดือนที่ 1</div>
+          <div class="tl-month-tasks">
+            <div class="tl-task active">เซ็นสัญญา</div>
+            <div class="tl-task active">ชำระมัดจำ 20%</div>
+            <div class="tl-task">ออกแบบผังสถานี</div>
+            <div class="tl-task">ยื่นขออนุญาต</div>
+          </div>
+        </div>
+        <div class="tl-month">
+          <div class="tl-month-num">เดือนที่ 2</div>
+          <div class="tl-month-tasks">
+            <div class="tl-task active">ชำระงวด 2 (30%)</div>
+            <div class="tl-task">งานโยธา / ฐานราก</div>
+            <div class="tl-task">สั่งผลิตเครื่องชาร์จ</div>
+          </div>
+        </div>
+        <div class="tl-month">
+          <div class="tl-month-num">เดือนที่ 3</div>
+          <div class="tl-month-tasks">
+            <div class="tl-task">ติดตั้งระบบไฟฟ้า</div>
+            <div class="tl-task">ติดตั้งเครื่องชาร์จ</div>
+            <div class="tl-task">การตกแต่งสถานี</div>
+          </div>
+        </div>
+        <div class="tl-month">
+          <div class="tl-month-num">เดือนที่ 4</div>
+          <div class="tl-month-tasks">
+            <div class="tl-task active">ชำระงวด 3 (30%)</div>
+            <div class="tl-task">ทดสอบระบบ</div>
+            <div class="tl-task active">ส่งมอบสถานี</div>
+            <div class="tl-task active">ชำระงวดสุดท้าย (20%)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-total">
+        <div>
+          <div class="tl-total-num">4</div>
+        </div>
+        <div>
+          <div class="tl-total-label">เดือน</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px">ตั้งแต่เซ็นสัญญาจนส่งมอบ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="section-label" style="color:rgba(255,209,0,0.6);margin-bottom:16px">ติดต่อเราวันนี้</div>
+    <h2 class="cta-title">พร้อมเริ่ม<span class="accent">สร้าง Passive Income</span>?</h2>
+    <p class="cta-sub">ที่จอดรถตรงข้ามตลาดสมอล์ หาดใหญ่ — โลเคชันพรีเมียม รอคุณอยู่</p>
+    <div class="cta-phone">EI CHARGE Hat Yai</div>
+    <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:36px">สอบถามรายละเอียดการลงทุน แพ็กเกจ
+      และเงื่อนไขพิเศษ</p>
+    <div class="cta-actions">
+      <a href="https://maps.app.goo.gl/JuinBjEPPBtUTd1b9" target="_blank" class="btn btn-primary">
+        📍 ดูทำเลบน Google Maps
+      </a>
+      <a href="#packages" class="btn btn-outline">ดูแพ็กเกจอีกครั้ง</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>EI CHARGE — สถานีชาร์จ EV แฟรนไชส์ · หาดใหญ่</span>
+    <span>knowledge-base/output/ei-charge-presentation.html · 2026-06-08</span>
+  </footer>
+
+</body>
+
+</html>
