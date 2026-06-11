@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+
+<body>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <main class="container">
+    <header class="header">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="13" height="13" rx="2" fill="currentColor" />
+          <rect x="19" width="13" height="13" rx="2" fill="currentColor" />
+          <rect y="19" width="13" height="13" rx="2" fill="currentColor" />
+          <rect x="3" y="3" width="7" height="7" rx="1" fill="var(--bg)" />
+          <rect x="22" y="3" width="7" height="7" rx="1" fill="var(--bg)" />
+          <rect x="3" y="22" width="7" height="7" rx="1" fill="var(--bg)" />
+          <rect x="19" y="19" width="3" height="3" fill="currentColor" />
+          <rect x="25" y="19" width="3" height="3" fill="currentColor" />
+          <rect x="19" y="25" width="3" height="3" fill="currentColor" />
+          <rect x="25" y="25" width="3" height="3" fill="currentColor" />
+          <rect x="22" y="22" width="3" height="3" fill="currentColor" />
+        </svg>
+        <span>QR Generator</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+    </header>
+
+    <section class="hero">
+      <h1>Turn any link into<br /><span class="gradient-text">a QR Code</span></h1>
+      <p>Paste your URL below — generates instantly</p>
+    </section>
+
+    <div class="card">
+      <div class="input-group">
+        <label for="urlInput">URL or Text</label>
+        <div class="input-wrapper">
+          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+          <input type="url" id="urlInput" placeholder="https://example.com" autocomplete="off" spellcheck="false" />
+          <button class="clear-btn" id="clearBtn" title="Clear">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <div class="option-group">
+          <label>Size</label>
+          <div class="size-presets">
+            <button class="size-btn" data-size="256">256</button>
+            <button class="size-btn active" data-size="512">512</button>
+            <button class="size-btn" data-size="1024">1024</button>
+            <div class="size-custom">
+              <input type="number" id="sizeCustom" placeholder="px" min="64" max="2048" />
+            </div>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label>Correction</label>
+          <div class="ec-group">
+            <button class="ec-btn" data-ec="L" title="Low (7%)">L</button>
+            <button class="ec-btn active" data-ec="M" title="Medium (15%)">M</button>
+            <button class="ec-btn" data-ec="Q" title="Quartile (25%)">Q</button>
+            <button class="ec-btn" data-ec="H" title="High (30%)">H</button>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label>Colors</label>
+          <div class="color-row">
+            <label class="color-label" title="Foreground">
+              <span>Dark</span>
+              <input type="color" id="colorDark" value="#000000" />
+            </label>
+            <label class="color-label" title="Background">
+              <span>Light</span>
+              <input type="color" id="colorLight" value="#ffffff" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-area" id="previewArea">
+        <div class="placeholder" id="placeholder">
+          <svg width="64" height="64" viewBox="0 0 32 32" fill="none" opacity="0.25">
+            <rect width="13" height="13" rx="2" fill="currentColor" />
+            <rect x="19" width="13" height="13" rx="2" fill="currentColor" />
+            <rect y="19" width="13" height="13" rx="2" fill="currentColor" />
+            <rect x="3" y="3" width="7" height="7" rx="1" fill="var(--bg)" />
+            <rect x="22" y="3" width="7" height="7" rx="1" fill="var(--bg)" />
+            <rect x="3" y="22" width="7" height="7" rx="1" fill="var(--bg)" />
+            <rect x="19" y="19" width="3" height="3" fill="currentColor" />
+            <rect x="25" y="19" width="3" height="3" fill="currentColor" />
+            <rect x="19" y="25" width="3" height="3" fill="currentColor" />
+            <rect x="25" y="25" width="3" height="3" fill="currentColor" />
+            <rect x="22" y="22" width="3" height="3" fill="currentColor" />
+          </svg>
+          <span>Paste a link to generate</span>
+        </div>
+        <canvas id="qrCanvas" style="display:none;"></canvas>
+      </div>
+
+      <div class="actions" id="actions" style="display:none;">
+        <button class="btn btn-primary" id="downloadPng">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download PNG
+        </button>
+        <button class="btn btn-secondary" id="downloadJpeg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download JPEG
+        </button>
+        <button class="btn btn-ghost" id="copyBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          Copy Image
+        </button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      All processing happens in your browser — nothing is sent to any server.
+    </footer>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
