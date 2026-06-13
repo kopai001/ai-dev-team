@@ -17,37 +17,37 @@
       --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
 
       /* Surface */
-      --color-bg:        #09090b; /* zinc-950 */
-      --color-surface:   #18181b; /* zinc-900 */
-      --color-surface-2: rgba(24,24,27,0.40); /* zinc-900/40 */
-      --color-surface-3: rgba(24,24,27,0.50); /* zinc-900/50 */
+      --color-bg:        #ffffff;
+      --color-surface:   #f8f8f8;
+      --color-surface-2: rgba(248,248,248,0.80);
+      --color-surface-3: rgba(248,248,248,0.90);
 
       /* Border */
-      --color-border:    #27272a; /* zinc-800 */
-      --color-border-2:  #18181b; /* zinc-900 */
-      --color-border-3:  #3f3f46; /* zinc-700 */
+      --color-border:    #e4e4e7; /* zinc-200 */
+      --color-border-2:  #f0f0f0;
+      --color-border-3:  #d4d4d8; /* zinc-300 */
 
-      /* Text scale */
-      --color-text-100:  #f4f4f5; /* zinc-100 — primary */
-      --color-text-200:  #e4e4e7; /* zinc-200 */
-      --color-text-300:  #d4d4d8; /* zinc-300 — secondary */
-      --color-text-400:  #a1a1aa; /* zinc-400 — muted */
+      /* Text scale — inverted from dark theme */
+      --color-text-100:  #09090b; /* zinc-950 — primary */
+      --color-text-200:  #18181b; /* zinc-900 */
+      --color-text-300:  #27272a; /* zinc-800 — secondary */
+      --color-text-400:  #52525b; /* zinc-600 — muted */
       --color-text-500:  #71717a; /* zinc-500 — subtle */
-      --color-text-600:  #52525b; /* zinc-600 — dim */
-      --color-text-700:  #3f3f46; /* zinc-700 — faint */
-      --color-text-800:  #27272a; /* zinc-800 — ghost */
+      --color-text-600:  #a1a1aa; /* zinc-400 — dim */
+      --color-text-700:  #d4d4d8; /* zinc-300 — faint */
+      --color-text-800:  #e4e4e7; /* zinc-200 — ghost */
 
-      /* Accent */
-      --color-accent:    #34d399; /* emerald-400 */
-      --color-accent-bg: rgba(52,211,153,0.20); /* emerald-400/20 — selection */
-      --color-accent-dim:#6ee7b7; /* emerald-300 — inline code text */
+      /* Accent — brand blue */
+      --color-accent:    #264486;
+      --color-accent-bg: rgba(38,68,134,0.10);
+      --color-accent-dim:#3a5ca8; /* lighter blue for code text */
 
       /* Semantic */
-      --color-error:     #f87171; /* red-400 */
+      --color-error:     #dc2626; /* red-600 */
 
       /* Code surfaces */
-      --color-code-bg:   #18181b; /* zinc-900 */
-      --color-code-border:#27272a;
+      --color-code-bg:   #f4f4f5;
+      --color-code-border:#e4e4e7;
 
       /* Radius */
       --radius-sm:   0.3rem;
@@ -164,7 +164,7 @@
     }
     .swatch-info {
       padding: 0.75rem 1rem;
-      background: var(--color-surface-2);
+      background: var(--color-surface);
     }
     .swatch-name {
       font-family: var(--font-mono);
@@ -202,13 +202,11 @@
     .zinc-strip .label {
       font-family: var(--font-mono);
       font-size: 0.6rem;
-      color: rgba(255,255,255,0.5);
       letter-spacing: 0.05em;
     }
     .zinc-strip .hex {
       font-family: var(--font-mono);
       font-size: 0.55rem;
-      color: rgba(255,255,255,0.3);
       margin-top: 0.25rem;
     }
 
@@ -253,7 +251,6 @@
     .type-h3 {
       font-size: 1.125rem;
       font-weight: 600;
-      letter-spacing: 0;
       line-height: 1.3;
       color: var(--color-text-100);
     }
@@ -302,7 +299,7 @@
     .weight-num {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: var(--color-text-700);
+      color: var(--color-text-600);
       width: 2.5rem;
       flex-shrink: 0;
     }
@@ -337,9 +334,9 @@
     }
     .btn-primary {
       background: var(--color-accent);
-      color: #09090b;
+      color: #ffffff;
     }
-    .btn-primary:hover { background: #6ee7b7; }
+    .btn-primary:hover { background: #1e3a6e; }
     .btn-ghost {
       background: transparent;
       color: var(--color-text-300);
@@ -353,7 +350,7 @@
       border-radius: 0.375rem;
       background: transparent;
       color: var(--color-text-500);
-      border: none;
+      border: 1px solid var(--color-border);
     }
     .btn-nav:hover { background: var(--color-surface); color: var(--color-text-100); }
 
@@ -370,8 +367,8 @@
       color: var(--color-text-300);
     }
     .badge-accent {
-      border-color: rgba(52,211,153,0.3);
-      background: rgba(52,211,153,0.08);
+      border-color: rgba(38,68,134,0.3);
+      background: var(--color-accent-bg);
       color: var(--color-accent);
     }
     .badge-mono {
@@ -455,18 +452,20 @@
       color: var(--color-text-300);
     }
     code {
-      background: #27272a;
+      background: var(--color-code-bg);
       color: var(--color-accent-dim);
       padding: 0.15em 0.4em;
       border-radius: var(--radius-sm);
       font-size: 0.9em;
       font-family: var(--font-mono);
+      border: 1px solid var(--color-border);
     }
     pre code {
       background: none;
       color: inherit;
       padding: 0;
       border-radius: 0;
+      border: none;
     }
     kbd {
       display: inline-block;
@@ -484,6 +483,7 @@
     .progress-track {
       height: 2px;
       background: var(--color-surface);
+      border: 1px solid var(--color-border);
       border-radius: 1px;
       overflow: hidden;
       width: 100%;
@@ -492,13 +492,12 @@
       height: 100%;
       background: var(--color-accent);
       border-radius: 1px;
-      transition: width 0.3s;
     }
 
     /* Separator dot */
     .dot { color: var(--color-text-700); margin: 0 0.4rem; }
 
-    /* ─── 5. Icons — inline SVG language ─── */
+    /* ─── 5. Icons ─── */
     .icon-grid {
       display: flex;
       flex-wrap: wrap;
@@ -514,7 +513,7 @@
     .icon-item .icon-label {
       font-family: var(--font-mono);
       font-size: 0.6rem;
-      color: var(--color-text-600);
+      color: var(--color-text-500);
       letter-spacing: 0.1em;
     }
     .icon-box {
@@ -522,7 +521,7 @@
       height: 40px;
       border-radius: 0.375rem;
       border: 1px solid var(--color-border);
-      background: var(--color-surface-2);
+      background: var(--color-surface);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -539,7 +538,7 @@
       padding: 2rem 1.75rem;
       border-radius: var(--radius-lg);
       border: 1px solid var(--color-border);
-      background: var(--color-surface-2);
+      background: var(--color-surface);
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -552,30 +551,11 @@
       text-transform: uppercase;
     }
 
-    .wordmark-a {
-      font-size: 1.75rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--color-text-100);
-    }
+    .wordmark-a { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--color-text-100); }
     .wordmark-a em { color: var(--color-accent); font-style: normal; }
-
-    .wordmark-b {
-      font-size: 1.75rem;
-      font-weight: 200;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--color-text-300);
-    }
+    .wordmark-b { font-size: 1.75rem; font-weight: 200; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-400); }
     .wordmark-b strong { font-weight: 700; color: var(--color-text-100); }
-
-    .wordmark-c {
-      font-family: var(--font-mono);
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--color-accent);
-      letter-spacing: 0.05em;
-    }
+    .wordmark-c { font-family: var(--font-mono); font-size: 1.25rem; font-weight: 600; color: var(--color-accent); letter-spacing: 0.05em; }
     .wordmark-c span { color: var(--color-text-500); font-weight: 400; }
 
     /* ─── Footer ─── */
@@ -599,8 +579,8 @@
     <div class="eyebrow">Design System · v1.0</div>
     <h1>AI-First <em>Organization</em></h1>
     <p class="tagline">
-      Dark-first, type-forward design language built on IBM Plex + Tailwind Zinc.
-      Emerald accent. Monospace labels. Technical precision with Thai-friendly spacing.
+      Light-first, type-forward design language built on IBM Plex + Zinc neutrals.
+      Navy blue accent. Monospace labels. Technical precision with Thai-friendly spacing.
     </p>
     <div class="meta">
       <span>Extracted from: ai-first-deck.web.app</span>
@@ -619,50 +599,50 @@
 
     <div class="swatch-grid" style="margin-bottom:2rem">
       <div class="swatch">
-        <div class="swatch-color" style="background:#34d399"></div>
+        <div class="swatch-color" style="background:#264486"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Accent · Emerald 400</div>
-          <div class="swatch-hex">#34d399</div>
-          <div class="swatch-usage">CTAs, labels, borders, progress, highlights</div>
+          <div class="swatch-name">Accent · Brand Blue</div>
+          <div class="swatch-hex">#264486</div>
+          <div class="swatch-usage">CTAs, labels, borders, highlights</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#09090b; border-bottom:1px solid #27272a"></div>
+        <div class="swatch-color" style="background:#3a5ca8"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Background · Zinc 950</div>
-          <div class="swatch-hex">#09090b</div>
+          <div class="swatch-name">Accent Light · Blue 400</div>
+          <div class="swatch-hex">#3a5ca8</div>
+          <div class="swatch-usage">Inline code text, hover states</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#ffffff; border-bottom:1px solid #e4e4e7"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Background · White</div>
+          <div class="swatch-hex">#ffffff</div>
           <div class="swatch-usage">Page background, slide stage</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#18181b"></div>
+        <div class="swatch-color" style="background:#f8f8f8; border-bottom:1px solid #e4e4e7"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Surface · Zinc 900</div>
-          <div class="swatch-hex">#18181b</div>
+          <div class="swatch-name">Surface · Off-white</div>
+          <div class="swatch-hex">#f8f8f8</div>
           <div class="swatch-usage">Cards, code blocks, nav hover</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#f4f4f5"></div>
-        <div class="swatch-info" style="background:var(--color-surface-2)">
-          <div class="swatch-name">Text Primary · Zinc 100</div>
-          <div class="swatch-hex">#f4f4f5</div>
+        <div class="swatch-color" style="background:#09090b"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Text Primary · Zinc 950</div>
+          <div class="swatch-hex">#09090b</div>
           <div class="swatch-usage">Headings, key content</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#a1a1aa"></div>
+        <div class="swatch-color" style="background:#dc2626"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Text Muted · Zinc 400</div>
-          <div class="swatch-hex">#a1a1aa</div>
-          <div class="swatch-usage">Body copy, card descriptions</div>
-        </div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-color" style="background:#f87171"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">Error · Red 400</div>
-          <div class="swatch-hex">#f87171</div>
+          <div class="swatch-name">Error · Red 600</div>
+          <div class="swatch-hex">#dc2626</div>
           <div class="swatch-usage">Error states, warnings</div>
         </div>
       </div>
@@ -673,70 +653,70 @@
   <section class="section">
     <div class="section-label">02 · Extended Palette</div>
     <h2 class="section-title">Zinc Neutral Scale</h2>
-    <p class="section-subtitle">Full text and surface hierarchy</p>
+    <p class="section-subtitle">Full text and surface hierarchy — light theme reads dark-to-light bottom-to-top</p>
 
     <div class="zinc-scale">
       <div class="zinc-strip" style="background:#f4f4f5">
-        <div class="label" style="color:#09090b">100</div>
-        <div class="hex" style="color:#3f3f46">#f4f4f5</div>
+        <div class="label" style="color:#71717a">100</div>
+        <div class="hex" style="color:#a1a1aa">#f4f4f5</div>
+      </div>
+      <div class="zinc-strip" style="background:#e4e4e7">
+        <div class="label" style="color:#71717a">200</div>
+        <div class="hex" style="color:#a1a1aa">#e4e4e7</div>
       </div>
       <div class="zinc-strip" style="background:#d4d4d8">
-        <div class="label" style="color:#09090b">300</div>
-        <div class="hex" style="color:#52525b">#d4d4d8</div>
+        <div class="label" style="color:#52525b">300</div>
+        <div class="hex" style="color:#71717a">#d4d4d8</div>
       </div>
       <div class="zinc-strip" style="background:#a1a1aa">
-        <div class="label" style="color:#09090b">400</div>
-        <div class="hex" style="color:#18181b">#a1a1aa</div>
+        <div class="label" style="color:#27272a">400</div>
+        <div class="hex" style="color:#3f3f46">#a1a1aa</div>
       </div>
       <div class="zinc-strip" style="background:#71717a">
-        <div class="label" style="color:rgba(255,255,255,0.6)">500</div>
-        <div class="hex">#71717a</div>
+        <div class="label" style="color:rgba(255,255,255,0.8)">500</div>
+        <div class="hex" style="color:rgba(255,255,255,0.6)">#71717a</div>
       </div>
       <div class="zinc-strip" style="background:#52525b">
-        <div class="label" style="color:rgba(255,255,255,0.6)">600</div>
-        <div class="hex">#52525b</div>
+        <div class="label" style="color:rgba(255,255,255,0.8)">600</div>
+        <div class="hex" style="color:rgba(255,255,255,0.55)">#52525b</div>
       </div>
       <div class="zinc-strip" style="background:#3f3f46">
-        <div class="label" style="color:rgba(255,255,255,0.5)">700</div>
-        <div class="hex">#3f3f46</div>
+        <div class="label" style="color:rgba(255,255,255,0.8)">700</div>
+        <div class="hex" style="color:rgba(255,255,255,0.5)">#3f3f46</div>
       </div>
       <div class="zinc-strip" style="background:#27272a">
-        <div class="label" style="color:rgba(255,255,255,0.4)">800</div>
-        <div class="hex">#27272a</div>
+        <div class="label" style="color:rgba(255,255,255,0.7)">800</div>
+        <div class="hex" style="color:rgba(255,255,255,0.45)">#27272a</div>
       </div>
-      <div class="zinc-strip" style="background:#18181b">
-        <div class="label" style="color:rgba(255,255,255,0.35)">900</div>
-        <div class="hex">#18181b</div>
-      </div>
-      <div class="zinc-strip" style="background:#09090b; border-left:1px solid #27272a">
-        <div class="label" style="color:rgba(255,255,255,0.3)">950</div>
-        <div class="hex">#09090b</div>
+      <div class="zinc-strip" style="background:#09090b">
+        <div class="label" style="color:rgba(255,255,255,0.6)">950</div>
+        <div class="hex" style="color:rgba(255,255,255,0.4)">#09090b</div>
       </div>
     </div>
 
     <div class="swatch-grid">
       <div class="swatch">
-        <div class="swatch-color" style="background:#6ee7b7"></div>
+        <div class="swatch-color" style="background:rgba(38,68,134,0.10); border-bottom:1px solid #e4e4e7"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Accent Light · Emerald 300</div>
-          <div class="swatch-hex">#6ee7b7</div>
-          <div class="swatch-usage">Inline code text, hover states</div>
+          <div class="swatch-name">Accent Tint · Blue/10</div>
+          <div class="swatch-hex">rgba(38,68,134,0.10)</div>
+          <div class="swatch-usage">Badge backgrounds, selection</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:rgba(52,211,153,0.20)"></div>
+        <div class="swatch-color" style="background:rgba(38,68,134,0.20); border-bottom:1px solid #e4e4e7"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Accent Tint · Emerald/20</div>
-          <div class="swatch-hex">rgba(52,211,153,0.20)</div>
-          <div class="swatch-usage">Text selection background</div>
+          <div class="swatch-name">Accent Tint · Blue/20</div>
+          <div class="swatch-hex">rgba(38,68,134,0.20)</div>
+          <div class="swatch-usage">Hover overlays</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:rgba(52,211,153,0.08)"></div>
+        <div class="swatch-color" style="background:#1e3a6e"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Accent Ghost · Emerald/8</div>
-          <div class="swatch-hex">rgba(52,211,153,0.08)</div>
-          <div class="swatch-usage">Accent badge background</div>
+          <div class="swatch-name">Accent Dark · Navy</div>
+          <div class="swatch-hex">#1e3a6e</div>
+          <div class="swatch-usage">Button hover, pressed states</div>
         </div>
       </div>
     </div>
@@ -748,7 +728,6 @@
     <h2 class="section-title">Type System</h2>
     <p class="section-subtitle">IBM Plex Sans Thai (sans) + IBM Plex Mono (mono)</p>
 
-    <!-- Type scale -->
     <div class="type-sample">
       <div class="type-label">Display · 700 · −0.02em · lh 1.05</div>
       <div class="type-display">AI-First<br>Organization</div>
@@ -806,40 +785,21 @@
     <div class="divider"></div>
 
     <div class="type-sample">
-      <div class="type-label">Mono Body</div>
+      <div class="type-label">Mono Body · IBM Plex Mono</div>
       <div class="type-mono-body">@analyst · @pm · @architect · @ux-designer · @dev · @tech-writer</div>
-      <div class="type-meta">font-family: mono · font-size: 0.9rem · color: zinc-300</div>
+      <div class="type-meta">font-family: mono · font-size: 0.9rem · color: zinc-800</div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Weight ladder -->
     <div class="type-label" style="margin-bottom:1rem">IBM Plex Sans Thai — Weight Ladder</div>
     <div class="weight-ladder">
-      <div class="weight-row">
-        <span class="weight-num">200</span>
-        <span class="weight-text" style="font-weight:200">AI-First Organization · ExtraLight</span>
-      </div>
-      <div class="weight-row">
-        <span class="weight-num">300</span>
-        <span class="weight-text" style="font-weight:300">AI-First Organization · Light</span>
-      </div>
-      <div class="weight-row">
-        <span class="weight-num">400</span>
-        <span class="weight-text" style="font-weight:400">AI-First Organization · Regular</span>
-      </div>
-      <div class="weight-row">
-        <span class="weight-num">500</span>
-        <span class="weight-text" style="font-weight:500">AI-First Organization · Medium</span>
-      </div>
-      <div class="weight-row">
-        <span class="weight-num">600</span>
-        <span class="weight-text" style="font-weight:600">AI-First Organization · SemiBold</span>
-      </div>
-      <div class="weight-row">
-        <span class="weight-num">700</span>
-        <span class="weight-text" style="font-weight:700">AI-First Organization · Bold</span>
-      </div>
+      <div class="weight-row"><span class="weight-num">200</span><span class="weight-text" style="font-weight:200">AI-First Organization · ExtraLight</span></div>
+      <div class="weight-row"><span class="weight-num">300</span><span class="weight-text" style="font-weight:300">AI-First Organization · Light</span></div>
+      <div class="weight-row"><span class="weight-num">400</span><span class="weight-text" style="font-weight:400">AI-First Organization · Regular</span></div>
+      <div class="weight-row"><span class="weight-num">500</span><span class="weight-text" style="font-weight:500">AI-First Organization · Medium</span></div>
+      <div class="weight-row"><span class="weight-num">600</span><span class="weight-text" style="font-weight:600">AI-First Organization · SemiBold</span></div>
+      <div class="weight-row"><span class="weight-num">700</span><span class="weight-text" style="font-weight:700">AI-First Organization · Bold</span></div>
     </div>
   </section>
 
@@ -849,7 +809,6 @@
     <h2 class="section-title">UI Components</h2>
     <p class="section-subtitle">Buttons, badges, cards, blockquote, code, progress</p>
 
-    <!-- Buttons -->
     <div class="type-label" style="margin-bottom:0.75rem">Buttons</div>
     <div class="component-row">
       <button class="btn btn-primary">Primary Action</button>
@@ -860,20 +819,18 @@
 
     <div class="divider"></div>
 
-    <!-- Badges -->
     <div class="type-label" style="margin-bottom:0.75rem">Badges &amp; Tags</div>
     <div class="component-row">
       <span class="badge">SWE</span>
       <span class="badge">AI Automation</span>
       <span class="badge">Cybersecurity</span>
       <span class="badge">UX/UI Design</span>
-      <span class="badge-accent badge">Accent Tag</span>
+      <span class="badge badge-accent">Accent Tag</span>
       <span class="badge badge-mono">Overline</span>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Cards -->
     <div class="type-label" style="margin-bottom:0.75rem">Cards — Pros/Cons pattern</div>
     <div class="card-grid">
       <div class="card">
@@ -900,7 +857,6 @@
 
     <div class="divider"></div>
 
-    <!-- Agent tiles -->
     <div class="type-label" style="margin-bottom:0.75rem">Agent Tiles — 6-col grid</div>
     <div class="agent-grid">
       <div class="agent-tile"><div class="agent-name">Mary</div><div class="agent-role">Analyst</div><div class="agent-handle">@analyst</div></div>
@@ -913,7 +869,6 @@
 
     <div class="divider"></div>
 
-    <!-- Blockquote -->
     <div class="type-label" style="margin-bottom:0.75rem">Blockquote — Accent left border</div>
     <div class="blockquote">
       <p>ศิลปะของการ<span style="color:var(--color-accent);font-weight:500">เลือก</span> · <span style="color:var(--color-accent);font-weight:500">บีบ</span> · <span style="color:var(--color-accent);font-weight:500">จัดวาง</span> ข้อมูลที่ให้ AI เห็น เพื่อให้ตอบได้ถูกในขอบเขต <code>context window</code> ที่จำกัด</p>
@@ -922,7 +877,6 @@
 
     <div class="divider"></div>
 
-    <!-- Code & KBD -->
     <div class="type-label" style="margin-bottom:0.75rem">Code Blocks</div>
     <pre><code>// CLAUDE.md — persistent project memory
 const context = {
@@ -942,17 +896,16 @@ const context = {
 
     <div class="divider"></div>
 
-    <!-- Progress bar -->
     <div class="type-label" style="margin-bottom:0.75rem">Progress Bar</div>
     <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
-    <p style="font-family:var(--font-mono);font-size:0.65rem;color:var(--color-text-600);margin-top:0.4rem">height: 2px · color: emerald-400 · position: fixed top</p>
+    <p style="font-family:var(--font-mono);font-size:0.65rem;color:var(--color-text-600);margin-top:0.4rem">height: 2px · color: #264486 · position: fixed top</p>
   </section>
 
   <!-- ═══ 5. ICONS ═══ -->
   <section class="section">
     <div class="section-label">05 · Icons</div>
     <h2 class="section-title">Icon Language</h2>
-    <p class="section-subtitle">Unicode directional symbols + SVG inline. Minimal, monochrome with accent color.</p>
+    <p class="section-subtitle">Unicode directional symbols + SVG inline. Minimal, navy accent.</p>
 
     <div class="icon-grid">
       <div class="icon-item">
@@ -1004,7 +957,7 @@ const context = {
         <div class="icon-label">activity</div>
       </div>
       <div class="icon-item">
-        <div class="icon-box">⚠</div>
+        <div class="icon-box" style="color:var(--color-error)">⚠</div>
         <div class="icon-label" style="color:var(--color-error)">error</div>
       </div>
       <div class="icon-item">
@@ -1018,13 +971,13 @@ const context = {
   <section class="section">
     <div class="section-label">06 · Wordmarks &amp; Lockups</div>
     <h2 class="section-title">Name Treatments</h2>
-    <p class="section-subtitle">Three lockup variants. No external logo SVG — text-mark only.</p>
+    <p class="section-subtitle">Three lockup variants on white surface.</p>
 
     <div class="lockup-grid">
       <div class="lockup-tile">
         <div class="lockup-label">01 · Accent Split</div>
         <div class="wordmark-a">AI-First <em>Organization</em></div>
-        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Bold, second word accent color</p>
+        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Bold, second word navy accent</p>
       </div>
       <div class="lockup-tile">
         <div class="lockup-label">02 · Weight Contrast</div>
@@ -1034,11 +987,10 @@ const context = {
       <div class="lockup-tile">
         <div class="lockup-label">03 · Mono Handle</div>
         <div class="wordmark-c">AI-First <span>/ org</span></div>
-        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Mono font, accent primary, slash suffix</p>
+        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Mono font, navy accent, slash suffix</p>
       </div>
     </div>
 
-    <!-- Tagline treatments -->
     <div style="margin-top:1.5rem">
       <div class="type-label" style="margin-bottom:0.75rem">Tagline Treatments</div>
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center">

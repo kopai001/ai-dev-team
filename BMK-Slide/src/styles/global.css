@@ -5,19 +5,49 @@
 }
 
 :root {
-  --color-bg: #ffffff;
-  --color-surface: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-accent: #2563eb;
-  --color-accent-light: #dbeafe;
-  --color-section-bg: #0f172a;
+  /* Fonts */
+  --font: 'IBM Plex Sans Thai', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Surface */
+  --color-bg:        #ffffff;
+  --color-surface:   #f8f8f8;
+  --color-surface-2: rgba(248,248,248,0.80);
+  --color-surface-3: rgba(248,248,248,0.90);
+
+  /* Border */
+  --color-border:    #e4e4e7;
+  --color-border-2:  #f0f0f0;
+  --color-border-3:  #d4d4d8;
+
+  /* Text */
+  --color-text:      #09090b;
+  --color-text-muted:#71717a;
+  --color-text-dim:  #a1a1aa;
+
+  /* Accent — brand navy */
+  --color-accent:      #264486;
+  --color-accent-bg:   rgba(38,68,134,0.10);
+  --color-accent-dim:  #3a5ca8;
+  --color-accent-dark: #1e3a6e;
+
+  /* Semantic */
+  --color-error:     #dc2626;
+
+  /* Section (dark contrast slides) */
+  --color-section-bg:   #09090b;
   --color-section-text: #ffffff;
-  --nav-height: 48px;
-  --progress-height: 4px;
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
-  --slide-transition: 380ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Radius */
+  --radius-sm:   0.3rem;
+  --radius-md:   0.375rem;
+  --radius-lg:   0.625rem;
+  --radius-full: 9999px;
+
+  /* Misc */
+  --nav-height:       48px;
+  --progress-height:  2px;
+  --slide-transition: 380ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html, body, #root {
@@ -28,6 +58,8 @@ html, body, #root {
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga', 'kern';
 }
 
 button {
