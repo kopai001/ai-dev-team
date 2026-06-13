@@ -14,35 +14,6 @@ export default function Navigation({
         >
           <GridIcon />
         </button>
-      </div>
-
-      <div className="nav-center">
-        <button
-          className="nav-btn arrow-btn"
-          onClick={onPrev}
-          disabled={current === 0}
-          aria-label="Previous slide"
-          title="Previous (←)"
-        >
-          ←
-        </button>
-
-        <span className="nav-counter">
-          {current + 1} <span className="nav-sep">/</span> {total}
-        </span>
-
-        <button
-          className="nav-btn arrow-btn"
-          onClick={onNext}
-          disabled={current === total - 1}
-          aria-label="Next slide"
-          title="Next (→)"
-        >
-          →
-        </button>
-      </div>
-
-      <div className="nav-right">
         <button
           className="nav-btn icon-btn"
           onClick={onFullscreen}
@@ -51,6 +22,34 @@ export default function Navigation({
         >
           {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
         </button>
+      </div>
+
+      <div className="nav-right">
+        <div className="nav-center">
+          <button
+            className="nav-btn arrow-btn"
+            onClick={onPrev}
+            disabled={current === 0}
+            aria-label="Previous slide"
+            title="Previous (←)"
+          >
+            ←
+          </button>
+
+          <span className="nav-counter">
+            {current + 1} <span className="nav-sep">/</span> {total}
+          </span>
+
+          <button
+            className="nav-btn arrow-btn"
+            onClick={onNext}
+            disabled={current === total - 1}
+            aria-label="Next slide"
+            title="Next (→)"
+          >
+            →
+          </button>
+        </div>
       </div>
     </nav>
   )

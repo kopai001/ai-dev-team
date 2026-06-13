@@ -14,7 +14,7 @@
   --color-accent-light: #dbeafe;
   --color-section-bg: #0f172a;
   --color-section-text: #ffffff;
-  --nav-height: 64px;
+  --nav-height: 48px;
   --progress-height: 4px;
   --font: 'Inter', system-ui, -apple-system, sans-serif;
   --slide-transition: 380ms cubic-bezier(0.4, 0, 0.2, 1);
