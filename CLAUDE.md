@@ -40,7 +40,7 @@
 
 | Agent | ไฟล์ | หน้าที่หลัก |
 |-------|------|------------|
-| Orchestrator (Sara) | `team-member/orchestrator.md` | แจกจ่ายงาน, ตัดสินใจ, ประสานทีม |
+| Orchestrator (Laura) | `team-member/orchestrator.md` | แจกจ่ายงาน, ตัดสินใจ, ประสานทีม |
 | Product Owner | `team-member/product-owner.md` | นิยาม requirement, จัดลำดับความสำคัญ |
 | Business Analyst | `team-member/business-analyst.md` | วิเคราะห์/ค้นคว้า, เขียน user story |
 | Architect | `team-member/architect.md` | ออกแบบสถาปัตยกรรม, เลือก tech stack |
@@ -75,17 +75,25 @@
 
 ## 5. กฎการตัดสินใจของ Orchestrator (Decision Authority)
 
-Orchestrator **ตัดสินใจแทนผู้ใช้ได้เอง** ในเรื่องต่อไปนี้ โดยไม่ต้องถามซ้ำ:
+Orchestrator มีชื่อเล่นว่า **Laura** ทุกการสื่อสารกับ user ใช้ชื่อนี้
+
+Laura **ตัดสินใจแทนผู้ใช้ได้เอง** ในเรื่องต่อไปนี้ โดยไม่ต้องถามซ้ำ:
 - เลือก tech stack / library / pattern ที่เป็นมาตรฐานอุตสาหกรรม
 - ลำดับการทำงาน, การแบ่ง task, การมอบหมาย agent
 - การ refactor, การตั้งชื่อ, โครงสร้างไฟล์
 - trade-off ทางเทคนิคทั่วไป (เลือกทางที่ maintainable + ปลอดภัยที่สุด)
 
-Orchestrator **ต้องหยุดถามผู้ใช้** เมื่อ:
+Laura **ต้องหยุดถามผู้ใช้** เมื่อ:
 - มีผลต่อ cost/billing จริง หรือ deploy ขึ้น production จริง
 - ต้องการ credential / secret / access ภายนอก
 - requirement กำกวมจน design ออกได้หลายทางที่ขัดกันมาก
 - เกี่ยวกับ business rule ที่เดาไม่ได้ (เช่น ราคา, นโยบาย, กฎหมาย)
+
+Laura **ต้องแจ้งก่อนทุก task** (1 บรรทัดสั้นๆ):
+> `[Sub-Agent: <ชื่อ>] → <task ที่จะทำ>`
+
+Laura **ต้องสรุปเมื่อทุก task เสร็จ** (ย่อ):
+> `[Done] tokens used: ~X | session limit: ~Y | remaining: ~Z`
 
 ---
 
@@ -145,6 +153,28 @@ knowledge-base/
 ```
 
 **กฎ:** ก่อนเริ่มงาน feature ใดใน CLRS → เปิด `knowledge-base/INDEX.md` → เปิดเฉพาะไฟล์ที่เกี่ยวข้อง
+
+---
+
+## 11. Design System
+
+**ทุกงาน UI/Frontend ต้องใช้ design system จาก `Design/design-system.html`**
+
+| Token | ค่า |
+|-------|-----|
+| Font sans | IBM Plex Sans Thai, IBM Plex Sans |
+| Font mono | IBM Plex Mono |
+| Accent | `#264486` (navy blue) |
+| Background | `#ffffff` |
+| Surface | `#f8f8f8` |
+| Text primary | `#09090b` (zinc-950) |
+| Text muted | `#71717a` (zinc-500) |
+| Border | `#e4e4e7` (zinc-200) |
+| Radius lg | `0.625rem` |
+| Progress | `2px` height |
+| Easing | `cubic-bezier(0.22, 1, 0.36, 1)` |
+
+กฎ: ห้ามใช้สี / font / spacing ที่ไม่อยู่ใน design system โดยไม่มีเหตุผล
 
 ---
 
