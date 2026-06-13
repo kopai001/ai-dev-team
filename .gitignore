@@ -20,6 +20,18 @@ $RECYCLE.BIN/
 .idea/
 *.iml
 
+# ─── Node / npm ───────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # ─── Python ───────────────────────────────────────────
 __pycache__/
 *.py[cod]
