@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   will-change: transform, opacity;
+  zoom: var(--text-scale, 1);
 }
 
 .slide-static {
