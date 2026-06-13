@@ -1,33 +1,57 @@
-.slide-wrapper {
+.slide-container {
   flex: 1;
-  display: flex;
-  align-items: stretch;
+  position: relative;
   overflow: hidden;
-  animation-duration: var(--slide-transition);
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.slide-inner {
-  width: 100%;
+.slide-layer {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
+  will-change: transform, opacity;
 }
 
-@keyframes fadeSlideInNext {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
+.slide-static {
+  transform: translateX(0);
 }
 
-@keyframes fadeSlideInPrev {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
+/* ── Fade up: new slides in from below, old fades out up ─── */
+
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUpOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-16px); }
+}
+
+/* ── Fade down: prev direction (reverse) ─────────────────── */
+
+@keyframes fadeDownIn {
+  from { opacity: 0; transform: translateY(-32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDownOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(16px); }
 }
 
 .slide-enter-next {
-  animation-name: fadeSlideInNext;
+  animation: fadeUpIn 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.slide-exit-next {
+  animation: fadeUpOut 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .slide-enter-prev {
-  animation-name: fadeSlideInPrev;
+  animation: fadeDownIn 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.slide-exit-prev {
+  animation: fadeDownOut 220ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }

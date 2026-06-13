@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import TitleLayout from './layouts/TitleLayout'
 import SectionLayout from './layouts/SectionLayout'
 import ContentLayout from './layouts/ContentLayout'
@@ -17,14 +18,50 @@ const LAYOUTS = {
   blank: BlankLayout,
 }
 
-export default function SlideWrapper({ slide, direction }) {
+function SlideLayer({ slide, className }) {
   const Layout = LAYOUTS[slide?.layout] ?? BlankLayout
+  return (
+    <div className={`slide-layer ${className}`}>
+      <Layout slide={slide} />
+    </div>
+  )
+}
+
+const DURATION = 220
+
+export default function SlideWrapper({ slides, currentIndex, direction }) {
+  const [active, setActive] = useState(currentIndex)
+  const [exiting, setExiting] = useState(null)
+  const [dir, setDir] = useState(direction)
+  const timerRef = useRef(null)
+  const isFirst = useRef(true)
+
+  useEffect(() => {
+    if (isFirst.current) { isFirst.current = false; return }
+    if (currentIndex === active) return
+
+    clearTimeout(timerRef.current)
+    setExiting(active)
+    setDir(direction)
+    setActive(currentIndex)
+
+    timerRef.current = setTimeout(() => setExiting(null), DURATION)
+    return () => clearTimeout(timerRef.current)
+  }, [currentIndex])
 
   return (
-    <div className={`slide-wrapper slide-enter-${direction}`}>
-      <div className="slide-inner">
-        <Layout slide={slide} />
-      </div>
+    <div className="slide-container">
+      {exiting !== null && (
+        <SlideLayer
+          slide={slides[exiting]}
+          className={`slide-exit-${dir}`}
+        />
+      )}
+      <SlideLayer
+        key={active}
+        slide={slides[active]}
+        className={exiting !== null ? `slide-enter-${dir}` : 'slide-static'}
+      />
     </div>
   )
 }
