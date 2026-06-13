@@ -21,12 +21,27 @@ export const slides = [
   },
   {
     id: 2,
+    layout: 'profile',
+    eyebrow: 'แนะนำตัว',
+    nameTh: 'สาธิน ปึงพิพัฒน์ตระกูล',
+    nameEn: 'Sathin Pungpipattrakul',
+    nickname: 'กอไผ่',
+    birthYear: 1996,
+    birthMonth: 2,
+    birthDay: 8,
+    email: 'kopai.bmk@gmail.com',
+    phone: '087-398-5100',
+    line: 'kopaisathin',
+    location: 'สงขลา หาดใหญ่',
+  },
+  {
+    id: 3,
     layout: 'section',
     title: 'Section One',
     subtitle: 'Overview',
   },
   {
-    id: 3,
+    id: 4,
     layout: 'content',
     title: 'Key Points',
     bullets: [
@@ -37,7 +52,7 @@ export const slides = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     layout: 'two-column',
     title: 'Side by Side',
     left: {
@@ -50,13 +65,13 @@ export const slides = [
     },
   },
   {
-    id: 5,
+    id: 6,
     layout: 'quote',
     quote: 'The best way to predict the future is to create it.',
     author: 'Peter Drucker',
   },
   {
-    id: 6,
+    id: 7,
     layout: 'title',
     title: 'Thank You',
     subtitle: 'Questions?',

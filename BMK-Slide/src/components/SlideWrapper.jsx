@@ -6,6 +6,7 @@ import TwoColumnLayout from './layouts/TwoColumnLayout'
 import QuoteLayout from './layouts/QuoteLayout'
 import ImageLayout from './layouts/ImageLayout'
 import BlankLayout from './layouts/BlankLayout'
+import ProfileLayout from './layouts/ProfileLayout'
 import './SlideWrapper.css'
 
 const LAYOUTS = {
@@ -16,6 +17,7 @@ const LAYOUTS = {
   quote: QuoteLayout,
   image: ImageLayout,
   blank: BlankLayout,
+  profile: ProfileLayout,
 }
 
 function SlideLayer({ slide, className }) {
