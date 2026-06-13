@@ -1,0 +1,603 @@
+<style>
+  h2.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .plan-wrap {
+    padding: 1rem;
+    font-size: 14px;
+    color: var(--color-text-primary);
+  }
+
+  /* Target Bar */
+  .target-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #EEF9F5 0%, #EEF5FD 100%);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    border: 1px solid #D6EFF8;
+  }
+
+  .target-bar .label {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .target-bar .pb {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .target-bar .arrow {
+    font-size: 18px;
+    color: var(--color-text-secondary);
+  }
+
+  .target-bar .goal {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #185FA5;
+  }
+
+  .target-bar .pace-info {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  /* Phase Cards */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .phase-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-top-width: 3px;
+  }
+
+  .phase-card .phase-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .phase-card .phase-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .phase-card .phase-days {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .phase-card .phase-focus {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+  }
+
+  .phase-card .phase-pace {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .p1 {
+    background: #EEF9F5;
+    border-color: #C2EAD9;
+    border-top-color: #1D9E75;
+  }
+
+  .p1 .phase-label,
+  .p1 .phase-pace {
+    color: #0F6E56;
+  }
+
+  .p2 {
+    background: #EEF5FD;
+    border-color: #C4DAF3;
+    border-top-color: #378ADD;
+  }
+
+  .p2 .phase-label,
+  .p2 .phase-pace {
+    color: #185FA5;
+  }
+
+  .p3 {
+    background: #FEF8EE;
+    border-color: #F5DFB0;
+    border-top-color: #EF9F27;
+  }
+
+  .p3 .phase-label,
+  .p3 .phase-pace {
+    color: #854F0B;
+  }
+
+  /* Schedule Table */
+  .weeks-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .schedule-wrap {
+    border: 1px solid var(--color-border-tertiary);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .week-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 80px;
+    border-bottom: 1px solid var(--color-border-tertiary);
+  }
+
+  .week-row:last-child {
+    border-bottom: none;
+  }
+
+  .week-row.header {
+    background: #F7F8FA;
+  }
+
+  .week-row.header .cell {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cell {
+    padding: 11px 12px;
+    border-right: 1px solid var(--color-border-tertiary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cell:last-child {
+    border-right: none;
+  }
+
+  .week-num {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .week-phase {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+
+  .session-type {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .session-detail {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+
+  .km-cell {
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .taper-row .cell-week {
+    background: #FEF8EE;
+  }
+
+  /* Session cell colors */
+  .cell-week-green {
+    background: #F0FAF6;
+  }
+
+  .cell-week-blue {
+    background: #EFF5FD;
+  }
+
+  .cell-week-amber {
+    background: #FEF8EE;
+  }
+
+  .cell-easy {
+    background: #F2FCF8;
+  }
+
+  .cell-tempo {
+    background: #EFF5FD;
+  }
+
+  .cell-interval {
+    background: #FDF8F0;
+  }
+
+  .cell-long {
+    background: #FDF3F7;
+  }
+
+  .cell-race {
+    background: #F2F9E6;
+  }
+
+  .cell-km {
+    background: #F7F8FA;
+  }
+
+  /* Session type label colors */
+  .cell-easy .session-type {
+    color: #0F6E56;
+  }
+
+  .cell-tempo .session-type {
+    color: #185FA5;
+  }
+
+  .cell-interval .session-type {
+    color: #854F0B;
+  }
+
+  .cell-long .session-type {
+    color: #993556;
+  }
+
+  .cell-race .session-type {
+    color: #3B6D11;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-easy {
+    background: #C8F0E0;
+    color: #0A5C46;
+  }
+
+  .tag-tempo {
+    background: #C8DEF6;
+    color: #124A84;
+  }
+
+  .tag-interval {
+    background: #F5DFB0;
+    color: #6B3D08;
+  }
+
+  .tag-long {
+    background: #F5C9D8;
+    color: #7A2845;
+  }
+
+  .tag-race {
+    background: #D4ECAD;
+    color: #2D5509;
+  }
+
+  /* Legend & Tip */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 16px 0 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .tip-box {
+    background: #F7F8FA;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-tertiary);
+  }
+
+  .tip-box strong {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+</style>
+
+<div class="plan-wrap">
+  <h2 class="sr-only">แผนการซ้อมวิ่ง 10km mini marathon 60 วัน สำหรับผู้ชาย เป้าหมาย sub-50 นาที</h2>
+
+  <div class="target-bar">
+    <div>
+      <div class="label">PB ล่าสุด</div>
+      <div class="pb">55:00</div>
+    </div>
+    <div class="arrow">→</div>
+    <div>
+      <div class="label">เป้าหมาย 60 วัน</div>
+      <div class="goal">Sub-50:00</div>
+    </div>
+    <div class="pace-info">
+      <div>ต้องลด <strong style="color:var(--color-text-primary)">5 นาที</strong> (9.1%)</div>
+      <div>เป้า pace: <strong style="color:var(--color-text-primary)">4:55–5:00 นาที/กม.</strong></div>
+      <div>จาก 5:30 นาที/กม. เดิม</div>
+    </div>
+  </div>
+
+  <div class="phases">
+    <div class="phase-card p1">
+      <div class="phase-label">เฟส 1</div>
+      <div class="phase-name">Lactate Base</div>
+      <div class="phase-days">วันที่ 1–21 (3 สัปดาห์)</div>
+      <div class="phase-focus">เพิ่ม mileage คุณภาพ เน้น tempo threshold ดัน lactate threshold ให้สูงขึ้นก่อน</div>
+      <div class="phase-pace">Tempo pace: 5:30–5:45 น./กม.</div>
+    </div>
+    <div class="phase-card p2">
+      <div class="phase-label">เฟส 2</div>
+      <div class="phase-name">VO₂max + Speed</div>
+      <div class="phase-days">วันที่ 22–42 (3 สัปดาห์)</div>
+      <div class="phase-focus">Interval สั้น-เร็ว กด VO₂max ให้พีค เพิ่ม neuromuscular speed ด้วย strides</div>
+      <div class="phase-pace">Interval pace: 4:30–4:45 น./กม.</div>
+    </div>
+    <div class="phase-card p3">
+      <div class="phase-label">เฟส 3</div>
+      <div class="phase-name">Race Sharpening</div>
+      <div class="phase-days">วันที่ 43–60 (2.5 สัปดาห์)</div>
+      <div class="phase-focus">ซ้อม race pace จริง ลด volume แต่รักษา intensity เพื่อความคมของขา</div>
+      <div class="phase-pace">Race pace: 4:55–5:00 น./กม.</div>
+    </div>
+  </div>
+
+  <div class="weeks-title">ตารางซ้อมรายสัปดาห์</div>
+  <div class="schedule-wrap">
+    <div class="week-row header">
+      <div class="cell">สัปดาห์</div>
+      <div class="cell">วันที่ 1</div>
+      <div class="cell">วันที่ 2 (Quality)</div>
+      <div class="cell">วันที่ 3 (Long)</div>
+      <div class="cell km-cell">รวม/สัปดาห์</div>
+    </div>
+
+    <!-- Week 1 -->
+    <div class="week-row">
+      <div class="cell cell-week-green">
+        <div class="week-num">สป. 1</div>
+        <div class="week-phase">Lactate Base</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy Run</div>
+        <div class="session-detail">7 กม. easy (6:30–7:00)</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-tempo">
+        <div class="session-type">Tempo Run</div>
+        <div class="session-detail">1 กม. WU + 4 กม. tempo (5:40) + 1 กม. CD</div><span
+          class="tag tag-tempo">Tempo</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">10 กม. easy-moderate (6:20–6:40)</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">23 กม.</div>
+    </div>
+
+    <!-- Week 2 -->
+    <div class="week-row">
+      <div class="cell cell-week-green">
+        <div class="week-num">สป. 2</div>
+        <div class="week-phase">Lactate Base</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy + Strides</div>
+        <div class="session-detail">7 กม. easy + 6×100ม. strides</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-tempo">
+        <div class="session-type">Tempo Run</div>
+        <div class="session-detail">1 กม. WU + 5 กม. tempo (5:35) + 1 กม. CD</div><span
+          class="tag tag-tempo">Tempo</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">11 กม. + 2 กม. @ tempo ช่วงท้าย</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">26 กม.</div>
+    </div>
+
+    <!-- Week 3 -->
+    <div class="week-row">
+      <div class="cell cell-week-green">
+        <div class="week-num">สป. 3</div>
+        <div class="week-phase">Lactate Base</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy Run</div>
+        <div class="session-detail">6 กม. easy (recovery week)</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-tempo">
+        <div class="session-type">Cruise Intervals</div>
+        <div class="session-detail">3×2 กม. @ 5:30 พัก 90 วิ ระหว่าง set</div><span class="tag tag-tempo">Tempo</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">10 กม. easy (recovery long)</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">24 กม.</div>
+    </div>
+
+    <!-- Week 4 -->
+    <div class="week-row">
+      <div class="cell cell-week-blue">
+        <div class="week-num">สป. 4</div>
+        <div class="week-phase">VO₂max</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy + Strides</div>
+        <div class="session-detail">7 กม. easy + 6×100ม. strides</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-interval">
+        <div class="session-type">Interval สั้น</div>
+        <div class="session-detail">8×400ม. @ 4:40/กม. พัก 90 วิ jog</div><span class="tag tag-interval">Interval</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">12 กม. moderate (6:10–6:20)</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">26 กม.</div>
+    </div>
+
+    <!-- Week 5 -->
+    <div class="week-row">
+      <div class="cell cell-week-blue">
+        <div class="week-num">สป. 5</div>
+        <div class="week-phase">VO₂max</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy Run</div>
+        <div class="session-detail">7 กม. easy</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-interval">
+        <div class="session-type">Interval ยาว</div>
+        <div class="session-detail">5×1,000ม. @ 4:45/กม. พัก 2 นาที jog</div><span
+          class="tag tag-interval">Interval</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">13 กม. + 3 กม. @ tempo ช่วงท้าย</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">28 กม.</div>
+    </div>
+
+    <!-- Week 6 -->
+    <div class="week-row">
+      <div class="cell cell-week-blue">
+        <div class="week-num">สป. 6</div>
+        <div class="week-phase">VO₂max</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy + Strides</div>
+        <div class="session-detail">6 กม. easy + 8×100ม. strides</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-interval">
+        <div class="session-type">Mixed Interval</div>
+        <div class="session-detail">4×400ม. @ 4:30 + 3×800ม. @ 4:45 พัก 90วิ / 2นาที</div><span
+          class="tag tag-interval">Interval</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">12 กม. moderate + 2 กม. @ race pace</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">27 กม.</div>
+    </div>
+
+    <!-- Week 7 -->
+    <div class="week-row">
+      <div class="cell cell-week-amber">
+        <div class="week-num">สป. 7</div>
+        <div class="week-phase">Sharpen</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy Run</div>
+        <div class="session-detail">6 กม. easy</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-tempo">
+        <div class="session-type">Race Pace Run</div>
+        <div class="session-detail">2 กม. WU + 6 กม. @ race pace (5:00) + 1 กม. CD</div><span class="tag tag-tempo">Race
+          pace</span>
+      </div>
+      <div class="cell cell-long">
+        <div class="session-type">Long Run</div>
+        <div class="session-detail">12 กม. moderate (6:00–6:20)</div><span class="tag tag-long">Long</span>
+      </div>
+      <div class="cell km-cell cell-km">27 กม.</div>
+    </div>
+
+    <!-- Week 8 Taper -->
+    <div class="week-row">
+      <div class="cell cell-week-amber">
+        <div class="week-num">สป. 8</div>
+        <div class="week-phase">Taper</div>
+      </div>
+      <div class="cell cell-easy">
+        <div class="session-type">Easy Run</div>
+        <div class="session-detail">5 กม. easy สบาย (ขาต้องสด)</div><span class="tag tag-easy">Easy</span>
+      </div>
+      <div class="cell cell-tempo">
+        <div class="session-type">Shakeout</div>
+        <div class="session-detail">3 กม. easy + 6×200ม. @ race pace พัก 90 วิ</div><span
+          class="tag tag-tempo">Shakeout</span>
+      </div>
+      <div class="cell cell-race">
+        <div class="session-type">🏁 วันแข่ง</div>
+        <div class="session-detail" style="font-weight:700;color:#185FA5">Mini Marathon 10km — Sub-50!</div><span
+          class="tag tag-race">Race Day</span>
+      </div>
+      <div class="cell km-cell cell-km">18 กม.*</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="tag tag-easy">Easy</span> 60–70% HR สบาย พูดได้ยาว</div>
+    <div class="legend-item"><span class="tag tag-tempo">Tempo</span> 80–87% HR หนักแต่คุมได้</div>
+    <div class="legend-item"><span class="tag tag-interval">Interval</span> 90–97% HR เกือบเต็มที่ มีพัก</div>
+    <div class="legend-item"><span class="tag tag-long">Long</span> วิ่งไกล ลด pace</div>
+  </div>
+  <div class="tip-box">
+    <strong>⚡ Key Workout:</strong> Session กลางสัปดาห์คือ session ที่สำคัญที่สุด — ให้ร่างกายสดก่อนซ้อมเสมอ
+    วันอีซี่ต้องอีซี่จริง ถ้าขาหนักให้เลื่อน interval ไป 1 วัน ได้เลย | WU = Warm Up | CD = Cool Down
+  </div>
+</div>
