@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Book A4 — AI-First Organization</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@200;300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @page { size: A4; margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-sans: 'IBM Plex Sans Thai', 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+      --accent:    #34d399;
+      --accent-dim:#6ee7b7;
+      --bg:        #09090b;
+      --surface:   #18181b;
+      --surface-2: rgba(24,24,27,0.60);
+      --border:    #27272a;
+      --border-2:  #18181b;
+      --t100:      #f4f4f5;
+      --t300:      #d4d4d8;
+      --t400:      #a1a1aa;
+      --t500:      #71717a;
+      --t600:      #52525b;
+      --t700:      #3f3f46;
+    }
+
+    html, body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--t100);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 14mm 14mm 12mm;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* ── 1. Head ── */
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 6mm;
+      border-bottom: 1px solid var(--border-2);
+      margin-bottom: 6mm;
+    }
+    .brand-lockup h1 {
+      font-size: 22pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .brand-lockup h1 em { color: var(--accent); font-style: normal; }
+    .brand-lockup .sub {
+      font-family: var(--font-mono);
+      font-size: 6.5pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--t500);
+      margin-top: 2mm;
+    }
+    .head-right { text-align: right; }
+    .head-right .tagline {
+      font-size: 8pt;
+      font-weight: 300;
+      color: var(--t400);
+      line-height: 1.6;
+    }
+    .head-right .tagline em { color: var(--accent); font-style: normal; font-weight: 500; }
+    .head-right .version {
+      font-family: var(--font-mono);
+      font-size: 6pt;
+      color: var(--t600);
+      margin-top: 2mm;
+    }
+
+    /* ── 2. Color Swatches ── */
+    .colors {
+      margin-bottom: 5mm;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 5.5pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5mm;
+    }
+    .swatch-row {
+      display: flex;
+      gap: 2mm;
+    }
+    .swatch {
+      flex: 1;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .swatch-fill { height: 14mm; }
+    .swatch-body {
+      padding: 1.5mm 2mm;
+      background: var(--surface-2);
+    }
+    .swatch-name {
+      font-family: var(--font-mono);
+      font-size: 5pt;
+      letter-spacing: 0.08em;
+      color: var(--t300);
+      text-transform: uppercase;
+    }
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 5pt;
+      color: var(--t500);
+      margin-top: 0.5mm;
+    }
+    .swatch-use {
+      font-size: 5pt;
+      color: var(--t600);
+      margin-top: 0.5mm;
+      font-weight: 300;
+    }
+
+    /* ── 3. Two-col middle ── */
+    .middle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin-bottom: 5mm;
+    }
+    .card {
+      padding: 4mm 4mm;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+    .card-title {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 2.5mm;
+      color: var(--t100);
+    }
+
+    /* Typography card */
+    .type-row {
+      margin-bottom: 1.5mm;
+    }
+    .type-row .lbl {
+      font-family: var(--font-mono);
+      font-size: 5pt;
+      color: var(--t600);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5mm;
+    }
+    .type-display { font-size: 16pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+    .type-h2 { font-size: 10pt; font-weight: 600; letter-spacing: -0.01em; }
+    .type-body { font-size: 7pt; font-weight: 300; line-height: 1.7; color: var(--t400); }
+    .type-mono { font-family: var(--font-mono); font-size: 6.5pt; color: var(--t300); }
+    .type-label-eg { font-family: var(--font-mono); font-size: 5.5pt; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); }
+
+    .divider { height: 1px; background: var(--border-2); margin: 2mm 0; }
+
+    /* Principles card */
+    .principle {
+      display: flex;
+      gap: 2mm;
+      align-items: flex-start;
+      margin-bottom: 2mm;
+    }
+    .p-num {
+      font-family: var(--font-mono);
+      font-size: 5pt;
+      color: var(--t600);
+      width: 7mm;
+      flex-shrink: 0;
+      padding-top: 0.5mm;
+    }
+    .p-body {}
+    .p-title { font-size: 7pt; font-weight: 600; color: var(--t100); }
+    .p-desc { font-size: 6pt; font-weight: 300; color: var(--t500); line-height: 1.5; margin-top: 0.3mm; }
+
+    /* ── 4. Agent tiles ── */
+    .agents {
+      margin-bottom: 5mm;
+    }
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.5mm;
+    }
+    .agent-tile {
+      padding: 2.5mm 1.5mm;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      text-align: center;
+    }
+    .agent-name { font-size: 6.5pt; font-weight: 600; color: var(--t100); }
+    .agent-role { font-size: 5pt; font-weight: 300; color: var(--t400); margin-top: 0.5mm; }
+    .agent-handle { font-family: var(--font-mono); font-size: 4.5pt; color: var(--accent); margin-top: 1mm; letter-spacing: 0.05em; }
+
+    /* ── 5. Wordmarks ── */
+    .wordmarks {
+      margin-bottom: 5mm;
+    }
+    .lockup-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2mm;
+    }
+    .lockup-tile {
+      padding: 4mm 4mm;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+    .lockup-lbl {
+      font-family: var(--font-mono);
+      font-size: 4.5pt;
+      color: var(--t600);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .wm-a { font-size: 11pt; font-weight: 700; letter-spacing: -0.02em; color: var(--t100); }
+    .wm-a em { color: var(--accent); font-style: normal; }
+    .wm-b { font-size: 11pt; font-weight: 200; letter-spacing: 0.08em; text-transform: uppercase; color: var(--t300); }
+    .wm-b strong { font-weight: 700; color: var(--t100); }
+    .wm-c { font-family: var(--font-mono); font-size: 10pt; font-weight: 600; color: var(--accent); letter-spacing: 0.03em; }
+    .wm-c span { color: var(--t500); font-weight: 400; }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: auto;
+      padding-top: 4mm;
+      border-top: 1px solid var(--border-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 5pt;
+      color: var(--t700);
+    }
+
+    /* Screen preview wrapper */
+    @media screen {
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: #000;
+      }
+      .page {
+        box-shadow: 0 0 0 1px #27272a, 0 40px 80px rgba(0,0,0,0.8);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- 1. HEAD -->
+    <div class="head">
+      <div class="brand-lockup">
+        <h1>AI-First <em>Organization</em></h1>
+        <div class="sub">Brand Book · v1.0 · 2026-06-13</div>
+      </div>
+      <div class="head-right">
+        <div class="tagline">
+          <em>AI</em> · <em>Software</em> · <em>Security</em><br>
+          สร้างโซลูชันที่ใช้ได้จริงในระดับองค์กร
+        </div>
+        <div class="version">Presenter: Chawan Watthanakitjakul · AI TechLead · @a3r0nz</div>
+      </div>
+    </div>
+
+    <!-- 2. COLORS -->
+    <div class="colors">
+      <div class="section-label">Color Hierarchy</div>
+      <div class="swatch-row">
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#34d399"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">Accent · Emerald 400</div>
+            <div class="swatch-hex">#34d399</div>
+            <div class="swatch-use">Labels, CTAs, borders, highlights</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#09090b;border-bottom:1px solid #27272a"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">Background · Zinc 950</div>
+            <div class="swatch-hex">#09090b</div>
+            <div class="swatch-use">Page background, slide stage</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#18181b"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">Surface · Zinc 900</div>
+            <div class="swatch-hex">#18181b</div>
+            <div class="swatch-use">Cards, code blocks, nav hover</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#f4f4f5"></div>
+          <div class="swatch-body" style="background:var(--surface-2)">
+            <div class="swatch-name">Text Primary · Zinc 100</div>
+            <div class="swatch-hex">#f4f4f5</div>
+            <div class="swatch-use">Headings, key content</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#a1a1aa"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">Text Muted · Zinc 400</div>
+            <div class="swatch-hex">#a1a1aa</div>
+            <div class="swatch-use">Body copy, descriptions</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-fill" style="background:#27272a"></div>
+          <div class="swatch-body">
+            <div class="swatch-name">Border · Zinc 800</div>
+            <div class="swatch-hex">#27272a</div>
+            <div class="swatch-use">Card borders, dividers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TWO-COL MIDDLE -->
+    <div class="middle">
+
+      <!-- Typography -->
+      <div class="card">
+        <div class="card-title">Typography</div>
+        <div class="type-row">
+          <div class="lbl">Display · IBM Plex Sans Thai · 700</div>
+          <div class="type-display">AI-First</div>
+        </div>
+        <div class="divider"></div>
+        <div class="type-row">
+          <div class="lbl">Heading 2 · 600</div>
+          <div class="type-h2">Context Engineering</div>
+        </div>
+        <div class="divider"></div>
+        <div class="type-row">
+          <div class="lbl">Body · 300 · lh 1.85</div>
+          <div class="type-body">สร้างโซลูชันที่ใช้ได้จริง — AI ขยายความเร็ว, dev ตัดสินใจทิศทาง</div>
+        </div>
+        <div class="divider"></div>
+        <div class="type-row">
+          <div class="lbl">Overline Label · Mono · 0.3em</div>
+          <div class="type-label-eg">AI Coding Tools · Foundation</div>
+        </div>
+        <div class="divider"></div>
+        <div class="type-row">
+          <div class="lbl">Mono Body · IBM Plex Mono</div>
+          <div class="type-mono">@analyst · @pm · @architect · @dev</div>
+        </div>
+      </div>
+
+      <!-- Principles -->
+      <div class="card">
+        <div class="card-title">Design Principles</div>
+        <div class="principle">
+          <div class="p-num">01</div>
+          <div class="p-body">
+            <div class="p-title">Dark-First</div>
+            <div class="p-desc">Zinc 950 base, emerald accent on dark surfaces. Never white backgrounds.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="p-num">02</div>
+          <div class="p-body">
+            <div class="p-title">Type-Forward</div>
+            <div class="p-desc">Bold headings carry hierarchy. Light weight body text. Mono for labels + code.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="p-num">03</div>
+          <div class="p-body">
+            <div class="p-title">One Accent</div>
+            <div class="p-desc">Emerald 400 only. Used for CTAs, labels, left-borders, and highlights.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="p-num">04</div>
+          <div class="p-body">
+            <div class="p-title">Thai-Friendly Spacing</div>
+            <div class="p-desc">Line-height 1.85 for body, 1.25 for headings. word-break: break-word.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="p-num">05</div>
+          <div class="p-body">
+            <div class="p-title">Slide Entrance</div>
+            <div class="p-desc">0.45s cubic-bezier(0.22,1,0.36,1) · opacity + translateY(12px) fade-up.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. AGENTS -->
+    <div class="agents">
+      <div class="section-label">BMAD v6 — Named Agents</div>
+      <div class="agent-grid">
+        <div class="agent-tile">
+          <div class="agent-name">Mary</div>
+          <div class="agent-role">Analyst</div>
+          <div class="agent-handle">@analyst</div>
+        </div>
+        <div class="agent-tile">
+          <div class="agent-name">John</div>
+          <div class="agent-role">Product Manager</div>
+          <div class="agent-handle">@pm</div>
+        </div>
+        <div class="agent-tile">
+          <div class="agent-name">Winston</div>
+          <div class="agent-role">Architect</div>
+          <div class="agent-handle">@architect</div>
+        </div>
+        <div class="agent-tile">
+          <div class="agent-name">Sally</div>
+          <div class="agent-role">UX Designer</div>
+          <div class="agent-handle">@ux-designer</div>
+        </div>
+        <div class="agent-tile">
+          <div class="agent-name">Amelia</div>
+          <div class="agent-role">Developer</div>
+          <div class="agent-handle">@dev</div>
+        </div>
+        <div class="agent-tile">
+          <div class="agent-name">Paige</div>
+          <div class="agent-role">Tech Writer</div>
+          <div class="agent-handle">@tech-writer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. WORDMARKS -->
+    <div class="wordmarks">
+      <div class="section-label">Wordmarks · Lockups</div>
+      <div class="lockup-row">
+        <div class="lockup-tile">
+          <div class="lockup-lbl">01 · Accent Split</div>
+          <div class="wm-a">AI-First <em>Organization</em></div>
+        </div>
+        <div class="lockup-tile">
+          <div class="lockup-lbl">02 · Weight Contrast</div>
+          <div class="wm-b"><strong>AI</strong>-First Organization</div>
+        </div>
+        <div class="lockup-tile">
+          <div class="lockup-lbl">03 · Mono Handle</div>
+          <div class="wm-c">AI-First <span>/ org</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <span>Design/brand-book-a4.html</span>
+      <span>AI-First Organization · Brand Book · v1.0 · 2026-06-13</span>
+      <span>Ref: design-system.html</span>
+    </div>
+
+  </div>
+</body>
+</html>

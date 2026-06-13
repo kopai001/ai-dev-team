@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System — AI-First Organization</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@200;300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      /* Fonts */
+      --font-sans: 'IBM Plex Sans Thai', 'IBM Plex Sans', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+      /* Surface */
+      --color-bg:        #09090b; /* zinc-950 */
+      --color-surface:   #18181b; /* zinc-900 */
+      --color-surface-2: rgba(24,24,27,0.40); /* zinc-900/40 */
+      --color-surface-3: rgba(24,24,27,0.50); /* zinc-900/50 */
+
+      /* Border */
+      --color-border:    #27272a; /* zinc-800 */
+      --color-border-2:  #18181b; /* zinc-900 */
+      --color-border-3:  #3f3f46; /* zinc-700 */
+
+      /* Text scale */
+      --color-text-100:  #f4f4f5; /* zinc-100 — primary */
+      --color-text-200:  #e4e4e7; /* zinc-200 */
+      --color-text-300:  #d4d4d8; /* zinc-300 — secondary */
+      --color-text-400:  #a1a1aa; /* zinc-400 — muted */
+      --color-text-500:  #71717a; /* zinc-500 — subtle */
+      --color-text-600:  #52525b; /* zinc-600 — dim */
+      --color-text-700:  #3f3f46; /* zinc-700 — faint */
+      --color-text-800:  #27272a; /* zinc-800 — ghost */
+
+      /* Accent */
+      --color-accent:    #34d399; /* emerald-400 */
+      --color-accent-bg: rgba(52,211,153,0.20); /* emerald-400/20 — selection */
+      --color-accent-dim:#6ee7b7; /* emerald-300 — inline code text */
+
+      /* Semantic */
+      --color-error:     #f87171; /* red-400 */
+
+      /* Code surfaces */
+      --color-code-bg:   #18181b; /* zinc-900 */
+      --color-code-border:#27272a;
+
+      /* Radius */
+      --radius-sm:   0.3rem;
+      --radius-md:   0.3em;
+      --radius-lg:   0.625rem;
+      --radius-full: 9999px;
+
+      /* Animation */
+      --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--color-bg);
+      color: var(--color-text-100);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: 'liga', 'kern';
+      scroll-behavior: smooth;
+    }
+
+    body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 3rem 8rem;
+      word-break: break-word;
+    }
+
+    /* ─── Section layout ─── */
+    .section { margin-bottom: 6rem; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--color-text-100);
+      margin-bottom: 0.5rem;
+    }
+    .section-subtitle {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--color-text-500);
+      margin-bottom: 2.5rem;
+    }
+    .divider {
+      height: 1px;
+      background: var(--color-border-2);
+      margin: 2.5rem 0;
+    }
+
+    /* ─── 1. Header ─── */
+    .ds-header {
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--color-border-2);
+      margin-bottom: 6rem;
+    }
+    .ds-header .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+    }
+    .ds-header h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .ds-header h1 em { color: var(--color-accent); font-style: normal; }
+    .ds-header .tagline {
+      font-size: 1.125rem;
+      font-weight: 300;
+      color: var(--color-text-400);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+    .ds-header .meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-600);
+    }
+    .ds-header .meta span { color: var(--color-text-500); }
+
+    /* ─── 2. Color Swatches ─── */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    .swatch {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .swatch-color {
+      height: 80px;
+    }
+    .swatch-info {
+      padding: 0.75rem 1rem;
+      background: var(--color-surface-2);
+    }
+    .swatch-name {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--color-text-300);
+      text-transform: uppercase;
+    }
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-text-500);
+      margin-top: 0.2rem;
+    }
+    .swatch-usage {
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--color-text-600);
+      margin-top: 0.3rem;
+    }
+
+    /* Zinc scale strip */
+    .zinc-scale {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+    }
+    .zinc-strip {
+      padding: 1rem 0.5rem 0.75rem;
+      text-align: center;
+    }
+    .zinc-strip .label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+    .zinc-strip .hex {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 0.25rem;
+    }
+
+    /* ─── 3. Typography ─── */
+    .type-sample { margin-bottom: 2rem; }
+    .type-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-text-600);
+      margin-bottom: 0.5rem;
+    }
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--color-text-700);
+      margin-top: 0.35rem;
+    }
+
+    .type-display {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--color-text-100);
+    }
+    .type-h1 {
+      font-size: clamp(2rem, 4vw, 3.75rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      color: var(--color-text-100);
+    }
+    .type-h2 {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-text-100);
+    }
+    .type-h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: 0;
+      line-height: 1.3;
+      color: var(--color-text-100);
+    }
+    .type-body-large {
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--color-text-300);
+    }
+    .type-body {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--color-text-400);
+    }
+    .type-body-small {
+      font-size: 0.875rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--color-text-400);
+    }
+    .type-label-overline {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+    .type-mono-body {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--color-text-300);
+      line-height: 1.7;
+    }
+
+    .weight-ladder {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .weight-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+    .weight-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--color-text-700);
+      width: 2.5rem;
+      flex-shrink: 0;
+    }
+    .weight-text {
+      font-size: 1.25rem;
+      color: var(--color-text-200);
+    }
+
+    /* ─── 4. Components ─── */
+    .component-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.375rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--color-accent);
+      color: #09090b;
+    }
+    .btn-primary:hover { background: #6ee7b7; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-300);
+      border: 1px solid var(--color-border);
+    }
+    .btn-ghost:hover { background: var(--color-surface); color: var(--color-text-100); }
+    .btn-nav {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border-radius: 0.375rem;
+      background: transparent;
+      color: var(--color-text-500);
+      border: none;
+    }
+    .btn-nav:hover { background: var(--color-surface); color: var(--color-text-100); }
+
+    /* Badges / Tags */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.75rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-3);
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--color-text-300);
+    }
+    .badge-accent {
+      border-color: rgba(52,211,153,0.3);
+      background: rgba(52,211,153,0.08);
+      color: var(--color-accent);
+    }
+    .badge-mono {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      padding: 0.1rem 0.5rem;
+    }
+
+    /* Cards */
+    .card {
+      padding: 1.25rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .card-icon {
+      font-size: 0.75rem;
+      color: var(--color-text-500);
+      margin-bottom: 0.5rem;
+    }
+    .card-icon .up { color: var(--color-accent); }
+    .card-icon .down { color: var(--color-text-600); }
+    .card-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+    .card-body { font-size: 0.875rem; font-weight: 300; color: var(--color-text-400); line-height: 1.75; margin-top: 0.4rem; }
+
+    /* Agent tile */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+    }
+    .agent-tile {
+      padding: 0.75rem 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      text-align: center;
+    }
+    .agent-name { font-weight: 600; font-size: 0.9375rem; color: var(--color-text-100); }
+    .agent-role { font-size: 0.75rem; font-weight: 300; color: var(--color-text-400); margin-top: 0.1rem; }
+    .agent-handle { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--color-accent); margin-top: 0.5rem; }
+
+    /* Blockquote */
+    .blockquote {
+      border-left: 2px solid var(--color-accent);
+      padding-left: 1.75rem;
+      max-width: 680px;
+    }
+    .blockquote p {
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--color-text-200);
+    }
+    .blockquote .attr {
+      font-size: 0.8rem;
+      color: var(--color-text-600);
+      font-weight: 300;
+      margin-top: 0.75rem;
+      font-family: var(--font-mono);
+    }
+
+    /* Code */
+    pre {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-code-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: var(--color-text-300);
+    }
+    code {
+      background: #27272a;
+      color: var(--color-accent-dim);
+      padding: 0.15em 0.4em;
+      border-radius: var(--radius-sm);
+      font-size: 0.9em;
+      font-family: var(--font-mono);
+    }
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+    kbd {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-3);
+      border-bottom-width: 2px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85em;
+      color: var(--color-text-300);
+      font-family: var(--font-mono);
+    }
+
+    /* Progress bar */
+    .progress-track {
+      height: 2px;
+      background: var(--color-surface);
+      border-radius: 1px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--color-accent);
+      border-radius: 1px;
+      transition: width 0.3s;
+    }
+
+    /* Separator dot */
+    .dot { color: var(--color-text-700); margin: 0 0.4rem; }
+
+    /* ─── 5. Icons — inline SVG language ─── */
+    .icon-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .icon-item .icon-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--color-text-600);
+      letter-spacing: 0.1em;
+    }
+    .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 0.375rem;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-accent);
+    }
+
+    /* ─── 6. Wordmarks ─── */
+    .lockup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .lockup-tile {
+      padding: 2rem 1.75rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface-2);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .lockup-tile .lockup-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--color-text-600);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .wordmark-a {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-100);
+    }
+    .wordmark-a em { color: var(--color-accent); font-style: normal; }
+
+    .wordmark-b {
+      font-size: 1.75rem;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-300);
+    }
+    .wordmark-b strong { font-weight: 700; color: var(--color-text-100); }
+
+    .wordmark-c {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      letter-spacing: 0.05em;
+    }
+    .wordmark-c span { color: var(--color-text-500); font-weight: 400; }
+
+    /* ─── Footer ─── */
+    .ds-footer {
+      border-top: 1px solid var(--color-border-2);
+      padding-top: 2rem;
+      margin-top: 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-text-600);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="ds-header">
+    <div class="eyebrow">Design System · v1.0</div>
+    <h1>AI-First <em>Organization</em></h1>
+    <p class="tagline">
+      Dark-first, type-forward design language built on IBM Plex + Tailwind Zinc.
+      Emerald accent. Monospace labels. Technical precision with Thai-friendly spacing.
+    </p>
+    <div class="meta">
+      <span>Extracted from: ai-first-deck.web.app</span>
+      <span>·</span>
+      <span>Slides #2 #8 #24 #27 #28</span>
+      <span>·</span>
+      <span>2026-06-13</span>
+    </div>
+  </header>
+
+  <!-- ═══ 1. COLOR HIERARCHY ═══ -->
+  <section class="section">
+    <div class="section-label">01 · Color Hierarchy</div>
+    <h2 class="section-title">Brand Colors</h2>
+    <p class="section-subtitle">Three-tier system: accent, surface, text</p>
+
+    <div class="swatch-grid" style="margin-bottom:2rem">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#34d399"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Accent · Emerald 400</div>
+          <div class="swatch-hex">#34d399</div>
+          <div class="swatch-usage">CTAs, labels, borders, progress, highlights</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#09090b; border-bottom:1px solid #27272a"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Background · Zinc 950</div>
+          <div class="swatch-hex">#09090b</div>
+          <div class="swatch-usage">Page background, slide stage</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#18181b"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Surface · Zinc 900</div>
+          <div class="swatch-hex">#18181b</div>
+          <div class="swatch-usage">Cards, code blocks, nav hover</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f4f4f5"></div>
+        <div class="swatch-info" style="background:var(--color-surface-2)">
+          <div class="swatch-name">Text Primary · Zinc 100</div>
+          <div class="swatch-hex">#f4f4f5</div>
+          <div class="swatch-usage">Headings, key content</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#a1a1aa"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Text Muted · Zinc 400</div>
+          <div class="swatch-hex">#a1a1aa</div>
+          <div class="swatch-usage">Body copy, card descriptions</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f87171"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Error · Red 400</div>
+          <div class="swatch-hex">#f87171</div>
+          <div class="swatch-usage">Error states, warnings</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2. EXTENDED PALETTE ═══ -->
+  <section class="section">
+    <div class="section-label">02 · Extended Palette</div>
+    <h2 class="section-title">Zinc Neutral Scale</h2>
+    <p class="section-subtitle">Full text and surface hierarchy</p>
+
+    <div class="zinc-scale">
+      <div class="zinc-strip" style="background:#f4f4f5">
+        <div class="label" style="color:#09090b">100</div>
+        <div class="hex" style="color:#3f3f46">#f4f4f5</div>
+      </div>
+      <div class="zinc-strip" style="background:#d4d4d8">
+        <div class="label" style="color:#09090b">300</div>
+        <div class="hex" style="color:#52525b">#d4d4d8</div>
+      </div>
+      <div class="zinc-strip" style="background:#a1a1aa">
+        <div class="label" style="color:#09090b">400</div>
+        <div class="hex" style="color:#18181b">#a1a1aa</div>
+      </div>
+      <div class="zinc-strip" style="background:#71717a">
+        <div class="label" style="color:rgba(255,255,255,0.6)">500</div>
+        <div class="hex">#71717a</div>
+      </div>
+      <div class="zinc-strip" style="background:#52525b">
+        <div class="label" style="color:rgba(255,255,255,0.6)">600</div>
+        <div class="hex">#52525b</div>
+      </div>
+      <div class="zinc-strip" style="background:#3f3f46">
+        <div class="label" style="color:rgba(255,255,255,0.5)">700</div>
+        <div class="hex">#3f3f46</div>
+      </div>
+      <div class="zinc-strip" style="background:#27272a">
+        <div class="label" style="color:rgba(255,255,255,0.4)">800</div>
+        <div class="hex">#27272a</div>
+      </div>
+      <div class="zinc-strip" style="background:#18181b">
+        <div class="label" style="color:rgba(255,255,255,0.35)">900</div>
+        <div class="hex">#18181b</div>
+      </div>
+      <div class="zinc-strip" style="background:#09090b; border-left:1px solid #27272a">
+        <div class="label" style="color:rgba(255,255,255,0.3)">950</div>
+        <div class="hex">#09090b</div>
+      </div>
+    </div>
+
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#6ee7b7"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Accent Light · Emerald 300</div>
+          <div class="swatch-hex">#6ee7b7</div>
+          <div class="swatch-usage">Inline code text, hover states</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(52,211,153,0.20)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Accent Tint · Emerald/20</div>
+          <div class="swatch-hex">rgba(52,211,153,0.20)</div>
+          <div class="swatch-usage">Text selection background</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:rgba(52,211,153,0.08)"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Accent Ghost · Emerald/8</div>
+          <div class="swatch-hex">rgba(52,211,153,0.08)</div>
+          <div class="swatch-usage">Accent badge background</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. TYPOGRAPHY ═══ -->
+  <section class="section">
+    <div class="section-label">03 · Typography</div>
+    <h2 class="section-title">Type System</h2>
+    <p class="section-subtitle">IBM Plex Sans Thai (sans) + IBM Plex Mono (mono)</p>
+
+    <!-- Type scale -->
+    <div class="type-sample">
+      <div class="type-label">Display · 700 · −0.02em · lh 1.05</div>
+      <div class="type-display">AI-First<br>Organization</div>
+      <div class="type-meta">font-size: clamp(3rem, 6vw, 5rem) · font-weight: 700</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Heading 1 · 700 · −0.01em · lh 1.1</div>
+      <div class="type-h1">โลกเปลี่ยนเร็วเกินกว่าที่คิด</div>
+      <div class="type-meta">font-size: clamp(2rem, 4vw, 3.75rem) · font-weight: 700</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Heading 2 · 600 · −0.01em · lh 1.2</div>
+      <div class="type-h2">Context Engineering</div>
+      <div class="type-meta">font-size: clamp(1.5rem, 3vw, 2.5rem) · font-weight: 600</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Heading 3 · 600 · 0em · lh 1.3</div>
+      <div class="type-h3">Knowledge Access · Trust Gap · Speed</div>
+      <div class="type-meta">font-size: 1.0625rem · font-weight: 600</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Body Large · 300 · lh 1.85</div>
+      <div class="type-body-large">สร้างโซลูชันที่ใช้ได้จริงในระดับองค์กร — AI · Software · Security</div>
+      <div class="type-meta">font-size: 1.25rem · font-weight: 300 · line-height: 1.85</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Body · 300 · lh 1.85</div>
+      <div class="type-body">Boilerplate, scaffolding, refactor เร็วขึ้น 5–10× · เริ่มต้น project จาก idea ได้ในชั่วโมง</div>
+      <div class="type-meta">font-size: 0.9375rem · font-weight: 300 · line-height: 1.85</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Overline Label · Mono · 700 · 0.3em · uppercase</div>
+      <div class="type-label-overline">AI Coding Tools · Context Engineering · Foundation</div>
+      <div class="type-meta">font-family: mono · font-size: 0.7rem · letter-spacing: 0.3em · uppercase · color: accent</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-sample">
+      <div class="type-label">Mono Body</div>
+      <div class="type-mono-body">@analyst · @pm · @architect · @ux-designer · @dev · @tech-writer</div>
+      <div class="type-meta">font-family: mono · font-size: 0.9rem · color: zinc-300</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Weight ladder -->
+    <div class="type-label" style="margin-bottom:1rem">IBM Plex Sans Thai — Weight Ladder</div>
+    <div class="weight-ladder">
+      <div class="weight-row">
+        <span class="weight-num">200</span>
+        <span class="weight-text" style="font-weight:200">AI-First Organization · ExtraLight</span>
+      </div>
+      <div class="weight-row">
+        <span class="weight-num">300</span>
+        <span class="weight-text" style="font-weight:300">AI-First Organization · Light</span>
+      </div>
+      <div class="weight-row">
+        <span class="weight-num">400</span>
+        <span class="weight-text" style="font-weight:400">AI-First Organization · Regular</span>
+      </div>
+      <div class="weight-row">
+        <span class="weight-num">500</span>
+        <span class="weight-text" style="font-weight:500">AI-First Organization · Medium</span>
+      </div>
+      <div class="weight-row">
+        <span class="weight-num">600</span>
+        <span class="weight-text" style="font-weight:600">AI-First Organization · SemiBold</span>
+      </div>
+      <div class="weight-row">
+        <span class="weight-num">700</span>
+        <span class="weight-text" style="font-weight:700">AI-First Organization · Bold</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. COMPONENTS ═══ -->
+  <section class="section">
+    <div class="section-label">04 · Components</div>
+    <h2 class="section-title">UI Components</h2>
+    <p class="section-subtitle">Buttons, badges, cards, blockquote, code, progress</p>
+
+    <!-- Buttons -->
+    <div class="type-label" style="margin-bottom:0.75rem">Buttons</div>
+    <div class="component-row">
+      <button class="btn btn-primary">Primary Action</button>
+      <button class="btn btn-ghost">Ghost / Outline</button>
+      <button class="btn btn-nav">←</button>
+      <button class="btn btn-nav">→</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Badges -->
+    <div class="type-label" style="margin-bottom:0.75rem">Badges &amp; Tags</div>
+    <div class="component-row">
+      <span class="badge">SWE</span>
+      <span class="badge">AI Automation</span>
+      <span class="badge">Cybersecurity</span>
+      <span class="badge">UX/UI Design</span>
+      <span class="badge-accent badge">Accent Tag</span>
+      <span class="badge badge-mono">Overline</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Cards -->
+    <div class="type-label" style="margin-bottom:0.75rem">Cards — Pros/Cons pattern</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon"><span class="up">▲</span></div>
+        <div class="card-title">Speed</div>
+        <div class="card-body">Boilerplate, scaffolding, refactor เร็วขึ้น 5–10× · เริ่มต้น project จาก idea ได้ในชั่วโมง</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><span class="up">▲</span></div>
+        <div class="card-title">Knowledge Access</div>
+        <div class="card-body">เขียนได้หลายภาษา/framework โดยไม่ต้อง google · อธิบาย code, ช่วย learn เทคโนโลยีใหม่</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><span class="down">▼</span></div>
+        <div class="card-title">Trust Gap</div>
+        <div class="card-body">Hallucinate · มั่ว API/library ที่ไม่มี · ต้อง verify ทุก commit ก่อน merge</div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><span class="down">▼</span></div>
+        <div class="card-title">Context Limit</div>
+        <div class="card-body">Codebase ใหญ่ AI ไม่เห็นทั้งหมด · domain knowledge เฉพาะธุรกิจ AI ไม่รู้</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Agent tiles -->
+    <div class="type-label" style="margin-bottom:0.75rem">Agent Tiles — 6-col grid</div>
+    <div class="agent-grid">
+      <div class="agent-tile"><div class="agent-name">Mary</div><div class="agent-role">Analyst</div><div class="agent-handle">@analyst</div></div>
+      <div class="agent-tile"><div class="agent-name">John</div><div class="agent-role">Product Manager</div><div class="agent-handle">@pm</div></div>
+      <div class="agent-tile"><div class="agent-name">Winston</div><div class="agent-role">Architect</div><div class="agent-handle">@architect</div></div>
+      <div class="agent-tile"><div class="agent-name">Sally</div><div class="agent-role">UX Designer</div><div class="agent-handle">@ux-designer</div></div>
+      <div class="agent-tile"><div class="agent-name">Amelia</div><div class="agent-role">Developer</div><div class="agent-handle">@dev</div></div>
+      <div class="agent-tile"><div class="agent-name">Paige</div><div class="agent-role">Tech Writer</div><div class="agent-handle">@tech-writer</div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Blockquote -->
+    <div class="type-label" style="margin-bottom:0.75rem">Blockquote — Accent left border</div>
+    <div class="blockquote">
+      <p>ศิลปะของการ<span style="color:var(--color-accent);font-weight:500">เลือก</span> · <span style="color:var(--color-accent);font-weight:500">บีบ</span> · <span style="color:var(--color-accent);font-weight:500">จัดวาง</span> ข้อมูลที่ให้ AI เห็น เพื่อให้ตอบได้ถูกในขอบเขต <code>context window</code> ที่จำกัด</p>
+      <div class="attr">Context Engineering — slide #27</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Code & KBD -->
+    <div class="type-label" style="margin-bottom:0.75rem">Code Blocks</div>
+    <pre><code>// CLAUDE.md — persistent project memory
+const context = {
+  role: "AI-First Organization",
+  method: "BMAD v6",
+  agents: ["@analyst", "@pm", "@architect", "@ux-designer", "@dev", "@tech-writer"]
+};</code></pre>
+
+    <div style="margin-top:1rem">
+      <div class="type-label" style="margin-bottom:0.5rem">Inline code &amp; Keyboard hints</div>
+      <p style="font-size:0.9rem;color:var(--color-text-400);line-height:1.85">
+        Use <code>CLAUDE.md</code> for persistent context.
+        Press <kbd>→</kbd> or <kbd>Space</kbd> to advance slides.
+        Run <code>/bmad-create-story</code> to scaffold a new story.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Progress bar -->
+    <div class="type-label" style="margin-bottom:0.75rem">Progress Bar</div>
+    <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
+    <p style="font-family:var(--font-mono);font-size:0.65rem;color:var(--color-text-600);margin-top:0.4rem">height: 2px · color: emerald-400 · position: fixed top</p>
+  </section>
+
+  <!-- ═══ 5. ICONS ═══ -->
+  <section class="section">
+    <div class="section-label">05 · Icons</div>
+    <h2 class="section-title">Icon Language</h2>
+    <p class="section-subtitle">Unicode directional symbols + SVG inline. Minimal, monochrome with accent color.</p>
+
+    <div class="icon-grid">
+      <div class="icon-item">
+        <div class="icon-box">▲</div>
+        <div class="icon-label">pro / up</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box" style="color:var(--color-text-500)">▼</div>
+        <div class="icon-label">con / down</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">←</div>
+        <div class="icon-label">prev</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">→</div>
+        <div class="icon-label">next</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+        </div>
+        <div class="icon-label">terminal</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="icon-label">time</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="icon-label">team</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <div class="icon-label">activity</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">⚠</div>
+        <div class="icon-label" style="color:var(--color-error)">error</div>
+      </div>
+      <div class="icon-item">
+        <div class="icon-box">∞</div>
+        <div class="icon-label">compound</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. WORDMARKS ═══ -->
+  <section class="section">
+    <div class="section-label">06 · Wordmarks &amp; Lockups</div>
+    <h2 class="section-title">Name Treatments</h2>
+    <p class="section-subtitle">Three lockup variants. No external logo SVG — text-mark only.</p>
+
+    <div class="lockup-grid">
+      <div class="lockup-tile">
+        <div class="lockup-label">01 · Accent Split</div>
+        <div class="wordmark-a">AI-First <em>Organization</em></div>
+        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Bold, second word accent color</p>
+      </div>
+      <div class="lockup-tile">
+        <div class="lockup-label">02 · Weight Contrast</div>
+        <div class="wordmark-b"><strong>AI</strong>-First Organization</div>
+        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">ExtraLight + Bold contrast, uppercase</p>
+      </div>
+      <div class="lockup-tile">
+        <div class="lockup-label">03 · Mono Handle</div>
+        <div class="wordmark-c">AI-First <span>/ org</span></div>
+        <p style="font-size:0.75rem;color:var(--color-text-600);font-family:var(--font-mono)">Mono font, accent primary, slash suffix</p>
+      </div>
+    </div>
+
+    <!-- Tagline treatments -->
+    <div style="margin-top:1.5rem">
+      <div class="type-label" style="margin-bottom:0.75rem">Tagline Treatments</div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center">
+        <span style="color:var(--color-accent);font-weight:500">AI</span>
+        <span class="dot">·</span>
+        <span style="color:var(--color-accent);font-weight:500">Software</span>
+        <span class="dot">·</span>
+        <span style="color:var(--color-accent);font-weight:500">Security</span>
+        <span style="color:var(--color-text-700);margin:0 0.5rem">—</span>
+        <span style="color:var(--color-text-300);font-weight:300">สร้างโซลูชันที่ใช้ได้จริงในระดับองค์กร</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="ds-footer">
+    <span>Design/design-system.html</span>
+    <span>AI-First Organization · v1.0 · 2026-06-13</span>
+    <span>Ref: brand-book-a4.html</span>
+  </footer>
+
+</body>
+</html>
