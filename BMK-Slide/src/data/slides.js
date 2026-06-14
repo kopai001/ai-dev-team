@@ -8,8 +8,12 @@
 //    'two-column'  — title + left/right columns
 //    'quote'       — large pull quote + author
 //    'image'       — full-bleed image + optional caption
+//    'profile'     — self-introduction card
+//    'gallery'     — eyebrow + title + photo grid
 //    'blank'       — empty canvas (add custom JSX via 'children')
 // ─────────────────────────────────────────────────────────────
+
+import { familyFeatured, familyColumns } from './familyImages'
 
 export const slides = [
   {
@@ -36,9 +40,11 @@ export const slides = [
   },
   {
     id: 3,
-    layout: 'section',
-    title: 'Section One',
-    subtitle: 'Overview',
+    layout: 'gallery',
+    eyebrow: 'แนะนำตัว',
+    title: 'ครอบครัว',
+    featured: familyFeatured,
+    columns: familyColumns,
   },
   {
     id: 4,
