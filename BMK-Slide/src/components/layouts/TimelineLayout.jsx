@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import './layouts.css'
 
 const ICONS = {
@@ -60,20 +61,24 @@ export default function TimelineLayout({ slide }) {
 
         <div className="timeline-track" role="list" aria-label={slide.title}>
           {steps.map((step, i) => (
-            <article key={i} className="timeline-card" role="listitem">
-              {i < steps.length - 1 && <span className="timeline-connector" aria-hidden="true" />}
-              <div className="timeline-card-step" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </div>
-              <div className="timeline-card-icon">
-                {ICONS[step.icon] ?? ICONS.requirements}
-              </div>
-              <h2 className="timeline-card-title">{step.title}</h2>
-              <StepBadges badges={step.badge ?? step.badges} />
-              {step.description && (
-                <p className="timeline-card-desc">{step.description}</p>
+            <Fragment key={i}>
+              <article className="timeline-card" role="listitem">
+                <div className="timeline-card-step" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <div className="timeline-card-icon">
+                  {ICONS[step.icon] ?? ICONS.requirements}
+                </div>
+                <h2 className="timeline-card-title">{step.title}</h2>
+                <StepBadges badges={step.badge ?? step.badges} />
+                {step.description && (
+                  <p className="timeline-card-desc">{step.description}</p>
+                )}
+              </article>
+              {i < steps.length - 1 && (
+                <span className="timeline-connector" aria-hidden="true" />
               )}
-            </article>
+            </Fragment>
           ))}
         </div>
       </div>
