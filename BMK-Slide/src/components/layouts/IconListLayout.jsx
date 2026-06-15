@@ -1,6 +1,6 @@
 import './layouts.css'
 
-const ICONS = {
+export const ICONS = {
   trust: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -50,6 +50,35 @@ const ICONS = {
       <rect x="10" y="5" width="5" height="15" rx="1" />
       <rect x="17" y="10" width="5" height="10" rx="1" />
       <path d="M3 20h19" />
+    </svg>
+  ),
+  extension: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+      <path d="m12 3 4 4-4 4-4-4 4-4Z" />
+      <path d="m3 12 4 4-4 4-4-4 4-4Z" />
+      <path d="m12 13 4 4-4 4-4-4 4-4Z" />
+      <path d="M16 7h5v5M8 17H3v-5" />
+    </svg>
+  ),
+  roi: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 6v6l4 2" />
+      <path d="M16 8h2v2" />
+    </svg>
+  ),
+  'low-priority': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  'no-authority': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      <path d="m18 9-6 6M12 9l6 6" />
     </svg>
   ),
 }

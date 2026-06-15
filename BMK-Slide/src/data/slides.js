@@ -34,6 +34,7 @@ import bismillah from "../Assets/Bonmek/Bismillah.png";
 import iotProject from "../Assets/Bonmek/iot-project.png";
 import ddcProject from "../Assets/Bonmek/กรมควบคุมโรค.png";
 import thaiMap from "../Assets/Bonmek/ThaiMap.png";
+import hurryup from "../Assets/Bonmek/Hurryup.png";
 
 export const slides = [
   {
@@ -316,6 +317,38 @@ export const slides = [
         text: "ต้องการจะ IPO",
       },
     ],
+  },
+  {
+    id: 17,
+    layout: "two-column",
+    left: {
+      heading: "Hurry Up",
+      image: {
+        src: hurryup,
+        alt: "Hurry Up — ระดับความเร่งด่วน 1 ถึง 5",
+      },
+    },
+    right: {
+      heading: "Ref Not match",
+      items: [
+        {
+          icon: "extension",
+          text: "ทำระบบต่อยอดจากของคนอื่น",
+        },
+        {
+          icon: "roi",
+          text: "ลูกค้าไม่เข้าใจความคุ้มทุนที่จะทำ",
+        },
+        {
+          icon: "low-priority",
+          text: "ลูกค้าไม่ให้ความสำคัญกับระบบหรือโปรแกรม ทำฟรี",
+        },
+        {
+          icon: "no-authority",
+          text: "ลูกค้าไม่มีอำนาจตัดสินใจ หรือปรับพฤติกรรม พนักงาน",
+        },
+      ],
+    },
   },
   // {
   //   id: 5,

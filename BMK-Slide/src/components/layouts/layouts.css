@@ -181,6 +181,35 @@
   border: 1px solid var(--color-border);
 }
 
+.two-col-pane--icon-list {
+  justify-content: flex-start;
+}
+
+.two-col-pane .icon-list--compact {
+  gap: 12px;
+}
+
+.two-col-pane .icon-list--compact .icon-list-item {
+  padding: 14px 16px;
+  gap: 14px;
+}
+
+.two-col-pane .icon-list--compact .icon-list-item-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.two-col-pane .icon-list--compact .icon-list-item-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.two-col-pane .icon-list--compact .icon-list-item-text {
+  font-size: clamp(0.85rem, 1.4vw, 0.98rem);
+  padding-top: 8px;
+  line-height: 1.6;
+}
+
 /* ── Quote ────────────────────────────────────────────────── */
 
 .slide--quote {
