@@ -13,6 +13,7 @@
 //    'hobby'       — photo grid + info sections
 //    'product-cards' — horizontal cards with image + pros/cons
 //    'timeline'    — horizontal timeline cards with icon + badge
+//    'icon-list'   — title + subtitle + icon bullet items
 //    'blank'       — empty canvas (add custom JSX via 'children')
 // ─────────────────────────────────────────────────────────────
 
@@ -32,6 +33,7 @@ import phamaplex from "../Assets/Bonmek/Phamaplex.png";
 import bismillah from "../Assets/Bonmek/Bismillah.png";
 import iotProject from "../Assets/Bonmek/iot-project.png";
 import ddcProject from "../Assets/Bonmek/กรมควบคุมโรค.png";
+import thaiMap from "../Assets/Bonmek/ThaiMap.png";
 
 export const slides = [
   {
@@ -249,6 +251,71 @@ export const slides = [
     alt: "Department of Disease Control — border checkpoint monitoring dashboard",
     fit: "contain",
     bg: "#ffffff",
+  },
+  {
+    id: 14,
+    layout: "two-column",
+    eyebrow: "ธุรกิจของเรา",
+    title: "Difference",
+    left: {
+      bullets: [
+        "ดูแล พัฒนา เคียงข้างลูกค้า",
+        "คุณภาพกทม.แต่ภูกกว่า",
+        "มีงานอ้างอิง เป็นที่รู้จักในพื้นที่",
+        "supervisor of PSU(Consult)",
+        "Knowledge Base over 10 years (and always update)",
+      ],
+    },
+    right: {
+      image: {
+        src: thaiMap,
+        alt: "Bonmek Co., Ltd. — Support Area กรุงเทพฯ และภาคใต้",
+      },
+    },
+  },
+  {
+    id: 15,
+    layout: "icon-list",
+    eyebrow: "ธุรกิจของเรา",
+    title: "Customer",
+    subtitle: "Focus Group: กลุ่มโรงงาน",
+    items: [
+      {
+        icon: "trust",
+        text: "เป็น Reference ที่ดีเพราะบริษัทอยู่ในช่วงการสร้างความน่าเชื่อถือ",
+      },
+      {
+        icon: "key",
+        text: "PKI ชัดเจน",
+      },
+      {
+        icon: "investment",
+        text: "มีกำลังในการลงทุน Technology",
+      },
+    ],
+  },
+  {
+    id: 16,
+    layout: "icon-list",
+    title: "Lead Conversation",
+    items: [
+      {
+        icon: "document",
+        text: "แปลงเอกสารเป็น digital",
+      },
+      {
+        icon: "human-error",
+        text: "Human Error",
+      },
+      {
+        icon: "performance",
+        text: "มีปัญหาการควบคุมคุณภาพ, ควบคุมประสิทธิภาพ",
+      },
+      {
+        icon: "ipo",
+        text: "ต้องการจะ IPO",
+      },
+    ],
   },
   // {
   //   id: 5,

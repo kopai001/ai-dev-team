@@ -168,6 +168,19 @@
   margin-bottom: 8px;
 }
 
+.two-col-pane--image {
+  align-items: center;
+  justify-content: center;
+}
+
+.two-col-image {
+  width: 100%;
+  max-height: min(52vh, 480px);
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
 /* ── Quote ────────────────────────────────────────────────── */
 
 .slide--quote {
@@ -1439,5 +1452,91 @@
 @media (max-width: 560px) {
   .timeline-track {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ── Icon list layout ─────────────────────────────────────── */
+
+.slide--icon-list {
+  background: var(--color-bg);
+}
+
+.icon-list-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.icon-list-title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.icon-list-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 500;
+  color: var(--color-accent);
+  line-height: 1.5;
+}
+
+.icon-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.icon-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.icon-list-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+.icon-list-item-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-list-item-text {
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-text);
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .icon-list-item {
+    padding: 16px 18px;
+    gap: 16px;
+  }
+
+  .icon-list-item-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .icon-list-item-text {
+    padding-top: 8px;
   }
 }

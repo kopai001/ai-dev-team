@@ -11,6 +11,7 @@ import GalleryLayout from './layouts/GalleryLayout'
 import HobbyLayout from './layouts/HobbyLayout'
 import ProductCardsLayout from './layouts/ProductCardsLayout'
 import TimelineLayout from './layouts/TimelineLayout'
+import IconListLayout from './layouts/IconListLayout'
 import './SlideWrapper.css'
 
 const LAYOUTS = {
@@ -26,6 +27,7 @@ const LAYOUTS = {
   hobby: HobbyLayout,
   'product-cards': ProductCardsLayout,
   timeline: TimelineLayout,
+  'icon-list': IconListLayout,
 }
 
 function SlideLayer({ slide, className }) {

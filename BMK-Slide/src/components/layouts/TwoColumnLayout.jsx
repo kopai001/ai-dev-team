@@ -4,11 +4,15 @@ export default function TwoColumnLayout({ slide }) {
   return (
     <div className="slide slide--content">
       <div className="slide-content">
+        {slide.eyebrow && <span className="gallery-eyebrow">{slide.eyebrow}</span>}
         {slide.title && <h2 className="content-heading">{slide.title}</h2>}
         <div className="two-col">
           {[slide.left, slide.right].map((col, i) => (
             col && (
-              <div key={i} className="two-col-pane">
+              <div
+                key={i}
+                className={`two-col-pane${col.image ? ' two-col-pane--image' : ''}`}
+              >
                 {col.heading && <h3 className="col-heading">{col.heading}</h3>}
                 {col.bullets && (
                   <ul className="bullet-list">
@@ -18,6 +22,13 @@ export default function TwoColumnLayout({ slide }) {
                   </ul>
                 )}
                 {col.body && <p className="content-body">{col.body}</p>}
+                {col.image && (
+                  <img
+                    src={col.image.src}
+                    alt={col.image.alt ?? ''}
+                    className={`two-col-image${col.image.fit === 'cover' ? ' two-col-image--cover' : ''}`}
+                  />
+                )}
               </div>
             )
           ))}
