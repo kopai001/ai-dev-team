@@ -13,8 +13,8 @@ const IMAGE_META = {
 const COL_ORDER = {
   1: ['TripleTrouble.jpg', 'DadAndMom.jpg'],
   2: [
-    '505918121_10238124573837934_6429275098397938042_n.jpg',
     'IMG_7955.jpg',
+    '505918121_10238124573837934_6429275098397938042_n.jpg',
     'LINE_ALBUM_2026 กุ๊กๆ_260614_1.jpg',
     'LINE_ALBUM_Faifai_September2020_260614_1.jpg',
   ],

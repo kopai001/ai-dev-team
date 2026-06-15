@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import profilePhoto from '../../Assets/Profile/Profile.JPG?url'
 import './layouts.css'
 
 function calcAge(birthYear, birthMonth, birthDay) {
@@ -18,6 +19,17 @@ function formatBirthDate(year, month, day) {
   return `${day} ${months[month - 1]} ${year + 543}`
 }
 
+const DEFAULT_EDUCATION = [
+  'โรงเรียนศรีสว่างวงส์',
+  { title: 'โรงเรียน ญ.ส.', subtitle: 'Math & Computer Program' },
+  { title: 'ม.อ. วิศวกรรมศาสตร์', subtitle: 'สาขาวิศวกรรมคอมพิวเตอร์' },
+]
+
+function normalizeEducationItem(item) {
+  if (typeof item === 'string') return { title: item, subtitle: null }
+  return { title: item.title, subtitle: item.subtitle ?? null }
+}
+
 export default function ProfileLayout({ slide }) {
   const age = useMemo(
     () => calcAge(slide.birthYear, slide.birthMonth, slide.birthDay),
@@ -27,6 +39,9 @@ export default function ProfileLayout({ slide }) {
     () => formatBirthDate(slide.birthYear, slide.birthMonth, slide.birthDay),
     [slide.birthYear, slide.birthMonth, slide.birthDay]
   )
+  const education = slide.education ?? DEFAULT_EDUCATION
+  const photoSrc = slide.photo ?? profilePhoto
+  const photoAlt = slide.photoAlt ?? `${slide.nameTh} — รูปโปรไฟล์`
 
   return (
     <div className="slide slide--profile">
@@ -48,11 +63,35 @@ export default function ProfileLayout({ slide }) {
             <span className="profile-nick-label">ชื่อเล่น</span>
             <span className="profile-nick-value">{slide.nickname}</span>
           </div>
+
+          <div className="profile-education">
+            <span className="profile-education-label">การศึกษา</span>
+            <ol className="profile-timeline">
+              {education.map((school, i) => {
+                const { title, subtitle } = normalizeEducationItem(school)
+                return (
+                  <li key={i} className="profile-timeline-item">
+                    <span className="profile-timeline-marker" aria-hidden="true" />
+                    <span className="profile-timeline-text">
+                      {title}
+                      {subtitle && (
+                        <span className="profile-timeline-subtext">{subtitle}</span>
+                      )}
+                    </span>
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
         </div>
 
         <div className="profile-divider" />
 
         <div className="profile-right">
+          <figure className="profile-photo">
+            <img src={photoSrc} alt={photoAlt} />
+          </figure>
+
           <ul className="profile-info-list">
             <li className="profile-info-row">
               <span className="profile-info-key">เกิด</span>
