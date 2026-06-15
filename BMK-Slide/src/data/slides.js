@@ -28,6 +28,10 @@ import workflowAutomation from "../Assets/Bonmek/ai-workflow-automation.webp";
 import bnkShow02 from "../Assets/Bonmek/BNK-SHOW-02.jpg";
 import erDiagramPpSa from "../Assets/Bonmek/ER-Diagram-PP-SA.png";
 import bnkShow from "../Assets/Bonmek/BNK-SHOW.jpg";
+import phamaplex from "../Assets/Bonmek/Phamaplex.png";
+import bismillah from "../Assets/Bonmek/Bismillah.png";
+import iotProject from "../Assets/Bonmek/iot-project.png";
+import ddcProject from "../Assets/Bonmek/กรมควบคุมโรค.png";
 
 export const slides = [
   {
@@ -205,6 +209,46 @@ export const slides = [
         thumbnails: [{ src: bnkShow, alt: "Deployed system showcase" }],
       },
     ],
+  },
+  {
+    id: 10,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "My Product",
+    src: phamaplex,
+    alt: "Phamaplex — pharmaceutical e-commerce platform",
+    fit: "contain",
+    bg: "#ffffff",
+  },
+  {
+    id: 11,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "My Product",
+    src: bismillah,
+    alt: "Bismillah — Muslim community mobile application",
+    fit: "contain",
+    bg: "#ffffff",
+  },
+  {
+    id: 12,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "My Product",
+    src: iotProject,
+    alt: "IoT project — industrial monitoring device",
+    fit: "contain",
+    bg: "#ffffff",
+  },
+  {
+    id: 13,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "My Product",
+    src: ddcProject,
+    alt: "Department of Disease Control — border checkpoint monitoring dashboard",
+    fit: "contain",
+    bg: "#ffffff",
   },
   // {
   //   id: 5,
