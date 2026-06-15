@@ -2,7 +2,7 @@ import './layouts.css'
 
 export default function ImageLayout({ slide }) {
   return (
-    <div className="slide slide--image">
+    <div className="slide slide--image" style={slide.bg ? { background: slide.bg } : undefined}>
       {slide.src && (
         <img
           src={slide.src}

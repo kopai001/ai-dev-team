@@ -10,18 +10,29 @@
 //    'image'       — full-bleed image + optional caption
 //    'profile'     — self-introduction card
 //    'gallery'     — eyebrow + title + photo grid
+//    'hobby'       — photo grid + info sections
+//    'product-cards' — horizontal cards with image + pros/cons
+//    'timeline'    — horizontal timeline cards with icon + badge
 //    'blank'       — empty canvas (add custom JSX via 'children')
 // ─────────────────────────────────────────────────────────────
 
 import { familyFeatured, familyColumns } from "./familyImages";
 import { freetimeImages } from "./freetimeImages";
+import bonmekLogo from "../Assets/Bonmek/bonmekTransparent.png";
+import ourCustomers from "../Assets/Bonmek/our-customers.png";
+import desktopApp from "../Assets/Bonmek/Desktop-app.avif";
+import webApp from "../Assets/Bonmek/webApp.png";
+import mobileApp from "../Assets/Bonmek/close-up-hand-holding-smartphone (1).jpg";
+import iotImage from "../Assets/Bonmek/Iot.png";
+import workflowAutomation from "../Assets/Bonmek/ai-workflow-automation.webp";
 
 export const slides = [
   {
     id: 1,
     layout: "title",
-    title: "BMK Presentation",
-    subtitle: "Your subtitle goes here",
+    logo: bonmekLogo,
+    // title: "Bonmek Co., Ltd.",
+    subtitle: "เชื่อมโยงธุรกิจด้วยเทคโนโลยี",
     badge: "", // optional small badge above title
   },
   {
@@ -77,38 +88,150 @@ export const slides = [
   },
   {
     id: 5,
-    layout: "content",
-    title: "Key Points",
-    bullets: [
-      "First key point goes here",
-      "Second key point goes here",
-      "Third key point goes here",
-      "Fourth key point goes here",
-    ],
+    layout: "title",
+    title: "บริษัท Bonmek จำกัด",
+    subtitle: "ประวัติ ทำอะไร? อย่างไร? ผลงานของเรา",
+    badge: "ธุรกิจของเรา", // optional small badge above title
   },
   {
     id: 6,
-    layout: "two-column",
-    title: "Side by Side",
-    left: {
-      heading: "Before",
-      bullets: ["Manual process", "Slow feedback", "High error rate"],
-    },
-    right: {
-      heading: "After",
-      bullets: ["Automated flow", "Real-time data", "Near-zero errors"],
-    },
+    layout: "image",
+    src: ourCustomers,
+    alt: "Our Customers",
+    fit: "contain",
+    bg: "#ffffff",
   },
   {
     id: 7,
-    layout: "quote",
-    quote: "The best way to predict the future is to create it.",
-    author: "Peter Drucker",
+    layout: "product-cards",
+    eyebrow: "ธุรกิจของเรา",
+    title: "Type of Product",
+    cards: [
+      {
+        title: "Desktop Program",
+        image: desktopApp,
+        alt: "Desktop application",
+        pros: ["เข้าถึงฮาร์ดแวร์ได้ดี", "ความปลอดภัยสูง"],
+        cons: ["ติดตั้งยุ่งยาก", "จัดการเวอร์ชั่นยุ่งยาก", "ใช้พื้นที่จัดเก็บ"],
+      },
+      {
+        title: "Web Application",
+        image: webApp,
+        alt: "Web application",
+        pros: [
+          "ใช้งานได้ทุกอุปกรณ์ผ่าน browser",
+          "สำรองข้อมูลบน cloud",
+          "ค่าบำรุงรักษาถูกกว่า",
+        ],
+        cons: ["Internet required", "Security"],
+      },
+      {
+        title: "Mobile Application",
+        image: mobileApp,
+        alt: "Mobile application",
+        pros: [
+          "ประสบการณ์การใช้งานดีที่สุด",
+          "Feature เฉพาะตัว",
+          "ส่งเสริมภาพลักษณ์",
+        ],
+        cons: ["ต้นทุนสูง", "ต้องดูแลสองระบบ"],
+      },
+    ],
   },
   {
     id: 8,
-    layout: "title",
-    title: "Thank You",
-    subtitle: "Questions?",
+    layout: "product-cards",
+    eyebrow: "ธุรกิจของเรา",
+    title: "Extra Feature",
+    cards: [
+      {
+        title: "IoT (Internet Of Things)",
+        image: iotImage,
+        alt: "IoT system — industrial gateway and mobile monitoring",
+        pros: [
+          "ติดตามสถานะอุปกรณ์แบบ real-time",
+          "เชื่อมต่อเครื่องจักรกับระบบ cloud",
+          "ตัดสินใจจากข้อมูลที่วัดได้จริง",
+        ],
+      },
+      {
+        title: "Workflow Automation",
+        image: workflowAutomation,
+        alt: "AI workflow automation",
+        pros: [
+          "ลดงาน manual ที่ซ้ำซ้อน",
+          "กระบวนการทำงานเร็วและสม่ำเสมอ",
+          "ลด human error",
+        ],
+      },
+    ],
   },
+  {
+    id: 9,
+    layout: "timeline",
+    eyebrow: "ธุรกิจของเรา",
+    title: "กระบวนการพัฒนาโปรแกรม",
+    steps: [
+      {
+        icon: "requirements",
+        title: "Requirement Gathering",
+        badge: "ศึกษาความต้องการลูกค้า",
+        description: "รวบรวมและวิเคราะห์ความต้องการ เพื่อกำหนดขอบเขตและเป้าหมายของโครงการ",
+      },
+      {
+        icon: "design",
+        title: "System Design & Architecture",
+        badges: ["UX/UI", "ER-Diagram", "DB"],
+        description: "ออกแบบโครงสร้างระบบ หน้าจอผู้ใช้ และฐานข้อมูลให้สอดคล้องกับความต้องการ",
+      },
+      {
+        icon: "development",
+        title: "Development",
+        badge: "Coding & Testing",
+        description: "พัฒนาโค้ด ทดสอบระบบ และปรับปรุงจนได้ซอฟต์แวร์ที่ใช้งานได้จริง",
+      },
+      {
+        icon: "deploy",
+        title: "Deploy & Maintenance",
+        badge: "Go Live & Support",
+        description: "นำระบบขึ้นใช้งานจริง และดูแลบำรุงรักษาอย่างต่อเนื่อง",
+      },
+    ],
+  },
+  // {
+  //   id: 5,
+  //   layout: "content",
+  //   title: "Key Points",
+  //   bullets: [
+  //     "First key point goes here",
+  //     "Second key point goes here",
+  //     "Third key point goes here",
+  //     "Fourth key point goes here",
+  //   ],
+  // },
+  // {
+  //   id: 6,
+  //   layout: "two-column",
+  //   title: "Side by Side",
+  //   left: {
+  //     heading: "Before",
+  //     bullets: ["Manual process", "Slow feedback", "High error rate"],
+  //   },
+  //   right: {
+  //     heading: "After",
+  //     bullets: ["Automated flow", "Real-time data", "Near-zero errors"],
+  //   },
+  // },
+  // {
+  //   id: 7,
+  //   layout: "quote",
+  //   quote: "The best way to predict the future is to create it.",
+  //   author: "Peter Drucker",
+  // },
+  // {
+  //   id: 8,
+  //   layout: "title",
+  //   title: "Thank You",
+  //   subtitle: "Questions?",
+  // },
 ];

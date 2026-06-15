@@ -9,6 +9,8 @@ import BlankLayout from './layouts/BlankLayout'
 import ProfileLayout from './layouts/ProfileLayout'
 import GalleryLayout from './layouts/GalleryLayout'
 import HobbyLayout from './layouts/HobbyLayout'
+import ProductCardsLayout from './layouts/ProductCardsLayout'
+import TimelineLayout from './layouts/TimelineLayout'
 import './SlideWrapper.css'
 
 const LAYOUTS = {
@@ -22,6 +24,8 @@ const LAYOUTS = {
   profile: ProfileLayout,
   gallery: GalleryLayout,
   hobby: HobbyLayout,
+  'product-cards': ProductCardsLayout,
+  timeline: TimelineLayout,
 }
 
 function SlideLayer({ slide, className }) {
