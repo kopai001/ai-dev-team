@@ -25,6 +25,9 @@ import webApp from "../Assets/Bonmek/webApp.png";
 import mobileApp from "../Assets/Bonmek/close-up-hand-holding-smartphone (1).jpg";
 import iotImage from "../Assets/Bonmek/Iot.png";
 import workflowAutomation from "../Assets/Bonmek/ai-workflow-automation.webp";
+import bnkShow02 from "../Assets/Bonmek/BNK-SHOW-02.jpg";
+import erDiagramPpSa from "../Assets/Bonmek/ER-Diagram-PP-SA.png";
+import bnkShow from "../Assets/Bonmek/BNK-SHOW.jpg";
 
 export const slides = [
   {
@@ -183,6 +186,10 @@ export const slides = [
         title: "System Design & Architecture",
         badges: ["UX/UI", "ER-Diagram", "DB"],
         description: "ออกแบบโครงสร้างระบบ หน้าจอผู้ใช้ และฐานข้อมูลให้สอดคล้องกับความต้องการ",
+        thumbnails: [
+          { src: bnkShow02, alt: "UX/UI mockup" },
+          { src: erDiagramPpSa, alt: "ER-Diagram" },
+        ],
       },
       {
         icon: "development",
@@ -195,6 +202,7 @@ export const slides = [
         title: "Deploy & Maintenance",
         badge: "Go Live & Support",
         description: "นำระบบขึ้นใช้งานจริง และดูแลบำรุงรักษาอย่างต่อเนื่อง",
+        thumbnails: [{ src: bnkShow, alt: "Deployed system showcase" }],
       },
     ],
   },

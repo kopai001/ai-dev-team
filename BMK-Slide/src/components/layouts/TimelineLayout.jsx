@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+import { Fragment, useCallback, useState } from 'react'
+import ImageLightbox from './ImageLightbox'
 import './layouts.css'
 
 const ICONS = {
@@ -48,8 +49,42 @@ function StepBadges({ badges }) {
   )
 }
 
+function StepThumbnails({ thumbnails, onOpen }) {
+  if (!thumbnails?.length) return null
+
+  return (
+    <div className="timeline-card-thumbs">
+      {thumbnails.map((thumb, i) => (
+        <button
+          key={i}
+          type="button"
+          className="timeline-card-thumb-btn"
+          onClick={() => onOpen(i)}
+          aria-label={`ดูรูป: ${thumb.alt ?? ''}`}
+        >
+          <img
+            src={thumb.src}
+            alt={thumb.alt ?? ''}
+            className="timeline-card-thumb"
+            loading="lazy"
+          />
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function TimelineLayout({ slide }) {
   const steps = slide.steps ?? []
+  const [lightboxImages, setLightboxImages] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
+
+  const openLightbox = useCallback((thumbnails, index) => {
+    setLightboxImages(thumbnails)
+    setLightboxIndex(index)
+  }, [])
+
+  const closeLightbox = useCallback(() => setLightboxImages(null), [])
 
   return (
     <div className="slide slide--timeline">
@@ -74,6 +109,10 @@ export default function TimelineLayout({ slide }) {
                 {step.description && (
                   <p className="timeline-card-desc">{step.description}</p>
                 )}
+                <StepThumbnails
+                  thumbnails={step.thumbnails}
+                  onOpen={(index) => openLightbox(step.thumbnails, index)}
+                />
               </article>
               {i < steps.length - 1 && (
                 <span className="timeline-connector" aria-hidden="true" />
@@ -82,6 +121,15 @@ export default function TimelineLayout({ slide }) {
           ))}
         </div>
       </div>
+
+      {lightboxImages && (
+        <ImageLightbox
+          images={lightboxImages}
+          index={lightboxIndex}
+          onClose={closeLightbox}
+          onChangeIndex={setLightboxIndex}
+        />
+      )}
     </div>
   )
 }
