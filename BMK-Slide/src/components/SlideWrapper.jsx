@@ -8,6 +8,7 @@ import ImageLayout from './layouts/ImageLayout'
 import BlankLayout from './layouts/BlankLayout'
 import ProfileLayout from './layouts/ProfileLayout'
 import GalleryLayout from './layouts/GalleryLayout'
+import HobbyLayout from './layouts/HobbyLayout'
 import './SlideWrapper.css'
 
 const LAYOUTS = {
@@ -20,6 +21,7 @@ const LAYOUTS = {
   blank: BlankLayout,
   profile: ProfileLayout,
   gallery: GalleryLayout,
+  hobby: HobbyLayout,
 }
 
 function SlideLayer({ slide, className }) {
