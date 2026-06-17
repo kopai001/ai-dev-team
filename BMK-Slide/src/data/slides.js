@@ -14,6 +14,7 @@
 //    'product-cards' — horizontal cards with image + pros/cons
 //    'timeline'    — horizontal timeline cards with icon + badge
 //    'icon-list'   — title + subtitle + icon bullet items
+//    'thank-you'   — closing slide with contact info + logo + customers
 //    'blank'       — empty canvas (add custom JSX via 'children')
 // ─────────────────────────────────────────────────────────────
 
@@ -35,6 +36,9 @@ import iotProject from "../Assets/Bonmek/iot-project.png";
 import ddcProject from "../Assets/Bonmek/กรมควบคุมโรค.png";
 import thaiMap from "../Assets/Bonmek/ThaiMap.png";
 import hurryup from "../Assets/Bonmek/Hurryup.png";
+import notMyProduct from "../Assets/Bonmek/NotMyProduct.png";
+import profileTy from "../Assets/Bonmek/ProfileTy.JPG?url";
+import ourCustomersCut from "../Assets/Bonmek/our-customers-cut.png";
 
 export const slides = [
   {
@@ -349,6 +353,31 @@ export const slides = [
         },
       ],
     },
+  },
+  {
+    id: 18,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "Not My Product",
+    src: notMyProduct,
+    alt: "Not My Product — บริการที่เราไม่ได้ให้",
+    fit: "contain",
+    bg: "#ffffff",
+  },
+  {
+    id: 19,
+    layout: "thank-you",
+    title: "Thank You",
+    logo: bonmekLogo,
+    nameTh: "สาธิน ปึงพิพัฒน์ตระกูล",
+    nickname: "กอไผ่",
+    email: "kopai.bmk@gmail.com",
+    line: "kopaisathin",
+    phone: "0873985100",
+    photo: profileTy,
+    photoAlt: "สาธิน ปึงพิพัฒน์ตระกูล",
+    customers: ourCustomersCut,
+    customersAlt: "Our Customers",
   },
   // {
   //   id: 5,

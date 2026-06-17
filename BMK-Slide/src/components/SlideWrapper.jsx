@@ -12,6 +12,7 @@ import HobbyLayout from './layouts/HobbyLayout'
 import ProductCardsLayout from './layouts/ProductCardsLayout'
 import TimelineLayout from './layouts/TimelineLayout'
 import IconListLayout from './layouts/IconListLayout'
+import ThankYouLayout from './layouts/ThankYouLayout'
 import './SlideWrapper.css'
 
 const LAYOUTS = {
@@ -28,6 +29,7 @@ const LAYOUTS = {
   'product-cards': ProductCardsLayout,
   timeline: TimelineLayout,
   'icon-list': IconListLayout,
+  'thank-you': ThankYouLayout,
 }
 
 function SlideLayer({ slide, className }) {
