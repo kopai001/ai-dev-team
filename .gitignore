@@ -30,6 +30,14 @@ lib64/
 .env.*
 !.env.example
 
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm/
+
 # IDE / editors
 .vscode/
 .idea/
