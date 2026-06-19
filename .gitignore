@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyw
+*.pyc
+.Python
+env/
+venv/
+.venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# Virtual environments
+.env
+.env.*
+!.env.example
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS
+desktop.ini
+$RECYCLE.BIN/
+
+# Secrets / credentials
+*.pem
+*.key
+*.cert
+*.p12
+secrets.json
+credentials.json
+config.local.*
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Temp / cache
+.cache/
+.tmp/
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# Claude Code
+.claude/cache/
+.claude/sessions/
+
+# Knowledge base generated artifacts
+knowledge-base/working-file/**/*.generated.*
