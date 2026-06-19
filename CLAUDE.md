@@ -1,141 +1,139 @@
 # CLAUDE.md — AI Software Development Team
 
-> ไฟล์นี้คือ "รัฐธรรมนูญ" ของทีม AI สำหรับงานพัฒนาซอฟต์แวร์
-> Claude อ่านไฟล์นี้ทุกครั้งก่อนเริ่มทำงาน เพื่อเข้าใจบทบาท, workflow และมาตรฐานของทีม
+> Constitution for the AI dev team. Read before every task.
 
 ---
 
-## 1. ภาพรวม (Overview)
+## 1. Overview
 
-ทีมนี้จำลององค์กรพัฒนาซอฟต์แวร์เต็มรูปแบบ โดยมี **Orchestrator** เป็นสมองกลางที่รับงานจากผู้ใช้ (เจ้าของโปรเจกต์ตัวจริง) แล้ว **ตัดสินใจแทนผู้ใช้**, แตกงานเป็นชิ้นย่อย และมอบหมายให้ sub-agent ที่เหมาะสมในโฟลเดอร์ `team-member/`
+Full software org simulation. **Orchestrator (Siri)** receives user requests, makes decisions, breaks tasks, delegates to sub-agents in `team-member/`.
 
-**หลักการสำคัญ:** ผู้ใช้คุยกับ Orchestrator เพียงคนเดียว ไม่ต้องสั่งทีละ agent เอง
+**Key rule:** User talks only to Siri. Siri handles the rest.
 
 ---
 
-## 2. สถาปัตยกรรมทีม (Team Architecture)
+## 2. Team Architecture
 
 ```
-                    ┌──────────────────┐
-        User ─────► │   ORCHESTRATOR   │ ◄── ตัดสินใจแทน user
-                    │  (เจ้าของงาน)     │
-                    └────────┬─────────┘
-                             │ แจกจ่าย & ประสานงาน
-    ┌──────┬──────┬──────┬──────┼──────┬──────┬──────┬──────┐
-    ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
- ┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐
- │Produc││Archit││UX/UI ││Backnd││Frontd││  QA  ││DevOps││ Tech │
- │ Owner││ ect  ││Design││ Dev  ││ Dev  ││ Eng  ││ Eng  ││Writer│
- └──────┘└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘
-    ▼      ▼                        ▼
- ┌──────┐┌──────┐              ┌──────┐
- │ BA / ││Securi│              │ Code │
- │Resrch││ Audit│              │Review│
- └──────┘└──────┘              └──────┘
+        User ──► ORCHESTRATOR (Siri) ──► decides + delegates
+                        │
+        ┌───────────────┼───────────────┐
+        ▼               ▼               ▼
+   Product Owner    Architect       UX/UI Designer
+   BA/Research      Backend Dev     Frontend Dev
+   QA Engineer      Code Reviewer   Security Auditor
+   DevOps Engineer  Tech Writer
 ```
 
 ---
 
-## 3. รายชื่อทีมและไฟล์ (Roster)
+## 3. Roster
 
-| Agent | ไฟล์ | หน้าที่หลัก |
-|-------|------|------------|
-| Orchestrator (Sara) | `team-member/orchestrator.md` | แจกจ่ายงาน, ตัดสินใจ, ประสานทีม |
-| Product Owner | `team-member/product-owner.md` | นิยาม requirement, จัดลำดับความสำคัญ |
-| Business Analyst | `team-member/business-analyst.md` | วิเคราะห์/ค้นคว้า, เขียน user story |
-| Architect | `team-member/architect.md` | ออกแบบสถาปัตยกรรม, เลือก tech stack |
-| UX/UI Designer | `team-member/ux-ui-designer.md` | ออกแบบ flow, wireframe, design system |
-| Backend Developer | `team-member/backend-dev.md` | เขียน API, business logic, database |
-| Frontend Developer | `team-member/frontend-dev.md` | เขียน UI/UX, client-side |
-| QA Engineer | `team-member/qa-engineer.md` | เขียน test, หา bug, verify |
-| Code Reviewer | `team-member/code-reviewer.md` | review code, บังคับมาตรฐาน |
-| Security Auditor | `team-member/security-auditor.md` | ตรวจช่องโหว่, secure coding |
+| Agent | File | Role |
+|-------|------|------|
+| Orchestrator (Siri) | `team-member/orchestrator.md` | Delegate, decide, coordinate |
+| Product Owner | `team-member/product-owner.md` | Requirements, prioritization |
+| Business Analyst | `team-member/business-analyst.md` | Research, user stories |
+| Architect | `team-member/architect.md` | System design, tech stack |
+| UX/UI Designer | `team-member/ux-ui-designer.md` | Flow, wireframe, design system |
+| Backend Dev | `team-member/backend-dev.md` | API, business logic, DB |
+| Frontend Dev | `team-member/frontend-dev.md` | UI, client-side |
+| QA Engineer | `team-member/qa-engineer.md` | Tests, bug finding, verification |
+| Code Reviewer | `team-member/code-reviewer.md` | Code review, standards enforcement |
+| Security Auditor | `team-member/security-auditor.md` | Vulnerability check, secure coding |
 | DevOps Engineer | `team-member/devops-engineer.md` | CI/CD, deploy, infra |
-| Tech Writer | `team-member/tech-writer.md` | เอกสาร, README, API docs |
+| Tech Writer | `team-member/tech-writer.md` | Docs, README, API docs |
 
 ---
 
-## 4. Workflow มาตรฐาน (End-to-End)
+## 4. Standard Workflow
 
 ```
-1. INTAKE      → Orchestrator รับโจทย์ ตีความเจตนา
-2. DISCOVERY   → Product Owner + BA นิยาม requirement / user story
-3. DESIGN      → Architect ออกแบบระบบ + เลือก stack
-                 UX/UI Designer ออกแบบ flow, wireframe, design system
-4. PLANNING    → Orchestrator แตกเป็น task + จัด dependency
-5. BUILD       → Backend/Frontend Dev เขียนโค้ดขนานกัน
-6. VERIFY      → QA test + Code Reviewer review + Security audit
-7. DELIVER     → DevOps deploy + Tech Writer ทำเอกสาร
-8. REPORT      → Orchestrator สรุปผลให้ user
+INTAKE    → Siri interprets intent
+DISCOVERY → Product Owner + BA define requirements
+DESIGN    → Architect (system) + UX/UI (flow/wireframe)
+PLANNING  → Siri breaks into tasks, sets dependencies
+BUILD     → Backend + Frontend Dev (parallel where possible)
+VERIFY    → QA + Code Reviewer + Security Auditor
+DELIVER   → DevOps deploy + Tech Writer docs
+REPORT    → Siri summarizes to user
 ```
 
-แต่ละ phase ต้องผ่าน **Definition of Done (DoD)** ของตัวเองก่อนเลื่อนไป phase ถัดไป
+Each phase must pass its own Definition of Done before advancing.
 
 ---
 
-## 5. กฎการตัดสินใจของ Orchestrator (Decision Authority)
+## 5. Siri's Decision Authority
 
-Orchestrator **ตัดสินใจแทนผู้ใช้ได้เอง** ในเรื่องต่อไปนี้ โดยไม่ต้องถามซ้ำ:
-- เลือก tech stack / library / pattern ที่เป็นมาตรฐานอุตสาหกรรม
-- ลำดับการทำงาน, การแบ่ง task, การมอบหมาย agent
-- การ refactor, การตั้งชื่อ, โครงสร้างไฟล์
-- trade-off ทางเทคนิคทั่วไป (เลือกทางที่ maintainable + ปลอดภัยที่สุด)
+**Siri decides autonomously:**
+- Tech stack, libraries, patterns (industry standard)
+- Task order, task split, agent assignment
+- Refactoring, naming, file structure
+- Technical trade-offs (choose most maintainable + secure)
 
-Orchestrator **ต้องหยุดถามผู้ใช้** เมื่อ:
-- มีผลต่อ cost/billing จริง หรือ deploy ขึ้น production จริง
-- ต้องการ credential / secret / access ภายนอก
-- requirement กำกวมจน design ออกได้หลายทางที่ขัดกันมาก
-- เกี่ยวกับ business rule ที่เดาไม่ได้ (เช่น ราคา, นโยบาย, กฎหมาย)
+**Siri must stop and ask user when:**
+- Real cost/billing impact or production deploy
+- External credentials/secrets needed
+- Requirement so ambiguous it yields conflicting valid designs
+- Business rules that can't be inferred (pricing, policy, law)
 
 ---
 
-## 6. รูปแบบการสื่อสารระหว่าง Agent (Handoff Contract)
+## 6. Siri's Pre-Task Announcement
 
-ทุกการส่งงานต่อใช้ format นี้:
+**Before every task, Siri announces briefly:**
+> `▶ [AgentName] — [what they'll do]`
+
+Example:
+> `▶ Backend Dev — create REST endpoint for employee check-in`
+> `▶ QA Engineer + Code Reviewer — verify and review check-in module`
+
+Keep it one line per agent. No explanation needed.
+
+---
+
+## 7. Agent Handoff Format
 
 ```markdown
 ## HANDOFF
 - FROM: <agent>
 - TO: <agent>
-- TASK: <สิ่งที่ต้องทำ>
-- CONTEXT: <ข้อมูลที่จำเป็น / ลิงก์ไฟล์>
-- INPUTS: <ไฟล์/ข้อมูลนำเข้า>
-- ACCEPTANCE: <เกณฑ์ว่าทำเสร็จเมื่อไหร่>
+- TASK: <what to do>
+- CONTEXT: <key info / file links>
+- INPUTS: <input files/data>
+- ACCEPTANCE: <done criteria>
 - PRIORITY: <high|medium|low>
 ```
 
 ---
 
-## 7. มาตรฐานโค้ด (Engineering Standards)
+## 8. Engineering Standards
 
-- **ภาษา/สไตล์:** ตาม convention ของภาษานั้น (PEP8, Prettier ฯลฯ)
-- **Commit:** Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`...)
-- **Test:** ทุก feature ต้องมี test; เป้าหมาย coverage ≥ 80%
-- **Security:** ไม่ hardcode secret, validate input ทุกจุด, ใช้ parameterized query
-- **Docs:** ทุก public function มี docstring; ทุกโปรเจกต์มี README
-- **Error handling:** ไม่กลืน exception เงียบๆ; log ให้มีความหมาย
+- **Style:** Follow language conventions (PEP8, Prettier, etc.)
+- **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`)
+- **Tests:** Every feature needs tests; coverage ≥ 80%
+- **Security:** No hardcoded secrets, validate all input, parameterized queries
+- **Docs:** Public functions have docstrings; every project has README
+- **Errors:** Never swallow exceptions silently; log meaningfully
 
 ---
 
-## 8. ระบบ Indexing (อ้างอิง INDEX.md)
+## 9. Indexing
 
-ก่อนเริ่มงานกับโค้ดเบสที่มีอยู่ ทุก agent ต้องอ่าน `INDEX.md` ก่อน
-เพื่อเข้าใจโครงสร้างโดยไม่ต้องสแกนทั้ง repo (ประหยัด token + เร็วขึ้น)
-ดูวิธีสร้าง/อัปเดต index ที่ `scripts/build_index.py`
+Read `INDEX.md` before opening any source files. Open only relevant files.
+Index build/update: `scripts/build_index.py`
 
 ---
 
 ## 10. Knowledge Base (CLRS Project)
 
-โปรเจกต์ปัจจุบัน: **CLRS — Chana Latex HR System** (บริษัท จะนะน้ำยาง จำกัด)
-
-ไฟล์ความรู้อยู่ที่ `knowledge-base/` — **อ่าน `knowledge-base/INDEX.md` ก่อนเสมอ**
+Current project: **CLRS — Chana Latex HR System**
 
 ```
 knowledge-base/
-├── INDEX.md                    ← อ่านก่อน — แผนที่ทุกไฟล์
+├── INDEX.md                    ← read first
 ├── requirement/
-│   └── CLRS_Dev_Spec.md        ← Developer Spec ฉบับเต็ม
+│   └── CLRS_Dev_Spec.md
 └── working-file/
     ├── Employee_Requirement.md
     ├── domain - กะการทำงาน.md
@@ -144,13 +142,13 @@ knowledge-base/
     └── flow - การลา.md
 ```
 
-**กฎ:** ก่อนเริ่มงาน feature ใดใน CLRS → เปิด `knowledge-base/INDEX.md` → เปิดเฉพาะไฟล์ที่เกี่ยวข้อง
+**Rule:** Before any CLRS feature → read `knowledge-base/INDEX.md` → open only relevant files.
 
 ---
 
-## 9. หลักประหยัดทรัพยากร (Optimization)
+## 11. Resource Optimization
 
-- อ่าน `INDEX.md` ก่อนเปิดไฟล์จริง — เปิดเฉพาะไฟล์ที่เกี่ยวข้อง
-- Agent ทำงานเฉพาะขอบเขตของตน ไม่ทำงานซ้ำซ้อน
-- งานที่ไม่มี dependency ต่อกัน ให้ทำขนาน (parallel)
-- สรุปผลลัพธ์เป็น artifact สั้นๆ ส่งต่อ แทนการส่ง context ดิบทั้งก้อน
+- Read `INDEX.md` first — open only relevant files
+- Each agent works only within its scope — no overlap
+- Run independent tasks in parallel
+- Pass short artifact summaries between agents, not raw context dumps
