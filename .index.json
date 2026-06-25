@@ -1,0 +1,106 @@
+{
+  "files": [
+    {
+      "path": "CLAUDE.md",
+      "lang": "Markdown",
+      "size": 5439,
+      "symbols": [],
+      "doc": "CLAUDE.md — AI Software Development Team"
+    },
+    {
+      "path": "README.md",
+      "lang": "Markdown",
+      "size": 3481,
+      "symbols": [],
+      "doc": "AI Software Development Team"
+    },
+    {
+      "path": "knowledge-base\\output\\domain-เงินเดือน.md",
+      "lang": "Markdown",
+      "size": 43292,
+      "symbols": [],
+      "doc": "Domain Design — ระบบเงินเดือน (Payroll)"
+    },
+    {
+      "path": "knowledge-base\\output\\flow-เงินเดือน.md",
+      "lang": "Markdown",
+      "size": 49618,
+      "symbols": [],
+      "doc": "UI/UX Flow — ระบบเงินเดือน (Payroll Module)"
+    },
+    {
+      "path": "knowledge-base\\output\\system-design-เงินเดือน.md",
+      "lang": "Markdown",
+      "size": 28400,
+      "symbols": [],
+      "doc": "System Design — ระบบเงินเดือน (Payroll Module)"
+    },
+    {
+      "path": "knowledge-base\\output\\system-requirement-เงินเดือน.md",
+      "lang": "Markdown",
+      "size": 44565,
+      "symbols": [],
+      "doc": "System Requirement — การคำนวณเงินเดือน (Payroll Calculation)"
+    },
+    {
+      "path": "knowledge-base\\requirement\\CLRS_Dev_Spec.md",
+      "lang": "Markdown",
+      "size": 32591,
+      "symbols": [],
+      "doc": "CLRS – Chana Latex HR System | Developer Spec"
+    },
+    {
+      "path": "knowledge-base\\working-file\\Employee_Requirement.md",
+      "lang": "Markdown",
+      "size": 18204,
+      "symbols": [],
+      "doc": "เอกสารข้อกำหนดความต้องการ"
+    },
+    {
+      "path": "knowledge-base\\working-file\\domain - กะการทำงาน.md",
+      "lang": "Markdown",
+      "size": 55212,
+      "symbols": [],
+      "doc": "Domain Design — ระบบวางแผนการทำงานของพนักงาน (Shift Planning)"
+    },
+    {
+      "path": "knowledge-base\\working-file\\domain - การลา.md",
+      "lang": "Markdown",
+      "size": 51359,
+      "symbols": [],
+      "doc": "Database Design — โมดูลการลา (Leave Management)"
+    },
+    {
+      "path": "knowledge-base\\working-file\\flow - กะการทำงาน.md",
+      "lang": "Markdown",
+      "size": 32608,
+      "symbols": [],
+      "doc": "Flow การทำงาน: หน้าวางแผนการทำงานพนักงาน (Shift Planning)"
+    },
+    {
+      "path": "knowledge-base\\working-file\\flow - การลา.md",
+      "lang": "Markdown",
+      "size": 40492,
+      "symbols": [],
+      "doc": "Flow การทำงาน: โมดูลการลา (Leave Management)"
+    },
+    {
+      "path": "scripts\\build_index.py",
+      "lang": "Python",
+      "size": 9343,
+      "symbols": [
+        "def lang_of",
+        "def extract_symbols",
+        "def first_doc_line",
+        "def scan",
+        "def human_size",
+        "def build_tree",
+        "def walk",
+        "def render",
+        "def main"
+      ],
+      "doc": "!/usr/bin/env python3"
+    }
+  ],
+  "entry_points": []
+}
