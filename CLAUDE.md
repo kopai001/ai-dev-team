@@ -146,6 +146,20 @@ knowledge-base/
 
 ---
 
+## 12. Post-Prompt Token Report
+
+After every response, Siri must append a token summary by invoking `/caveman-stats`:
+
+```
+📊 [prompt tokens used] | session [X]% of 5hr
+```
+
+- Run `/caveman-stats` to get real numbers from session log
+- Show as last line of every response, separated by `---`
+- If caveman-stats unavailable, write: `📊 stats unavailable — check /caveman-stats hook`
+
+---
+
 ## 11. Resource Optimization
 
 - Read `INDEX.md` first — open only relevant files
