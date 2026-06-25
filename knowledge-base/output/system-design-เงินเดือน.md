@@ -46,7 +46,7 @@ src/modules/payroll/
 ├── interfaces/
 │   ├── payroll-employee-provider.interface.ts
 │   ├── ot-provider.interface.ts
-│   ├── special-pay-provider.interface.ts      // [MOCK] design TBD
+│   ├── special-pay-provider.interface.ts
 │   ├── attendance-payroll-provider.interface.ts
 │   └── leave-payroll-provider.interface.ts
 ├── guards/
@@ -133,7 +133,7 @@ class PayrollCalculationService {
   // คำนวณ OT pay รวม
   calculateOTPay(otItems: OTLineItem[]): number
 
-  // [MOCK] คำนวณ special pay รวม — สูตรเหมือน OT แต่ rate = 1.0
+  // คำนวณ special pay รวม — สูตรเหมือน OT แต่ rate = 1.0 (ไม่มีประเภทย่อย)
   calculateSpecialPay(specialPayItems: SpecialPayLineItem[]): number
   // specialPayLineItem: { hours: number; hourlyRate: number } → amount = hours × hourlyRate × 1.0
 
@@ -420,7 +420,7 @@ GET    /payroll/reports/attendance            รายงานเข้า-อ
 │  │  ─────────────────────────────────────────────  │              │
 │  │  1. getPayrollEmployees()  ──► IEmployeeProvider│──► Employee  │
 │  │  2. getApprovedOT()        ──► IOTProvider      │──► OT Module │
-│  │  3. getApprovedSpecialPay()──► ISpecialPayProv  │──► SPay[MOCK]│
+│  │  3. getApprovedSpecialPay()──► ISpecialPayProv  │──► SpecialPay│
 │  │  4. getAttendanceSummary() ──► IAttendProvider  │──► Attendance│
 │  │  5. getLeavePayrollData()  ──► ILeaveProvider   │──► Leave Mod │
 │  │                                                 │              │
@@ -502,7 +502,7 @@ calculateAll(periodId):
 4. Batch query (parallel):
    employees      = IEmployeeProvider.getBatch(employeeIds, period.endDate)
    otData         = IOTProvider.getApprovedOTByPeriod(employeeIds, startDate, endDate)
-   specialPayData = ISpecialPayProvider.getApprovedSpecialPayByPeriod(employeeIds, startDate, endDate)  // [MOCK]
+   specialPayData = ISpecialPayProvider.getApprovedSpecialPayByPeriod(employeeIds, startDate, endDate)
    attendance     = IAttendanceProvider.getAttendanceSummary(employeeIds, startDate, endDate)
    leaveData      = ILeaveProvider.getLeavePayrollSummary(employeeIds, startDate, endDate)
 
@@ -514,8 +514,8 @@ calculateAll(periodId):
       BASE_SALARY:      calcBasePay(type, wage, workingDays)
       OT_DAYS:          otData.totalOTDays
       OT_PAY:           calcOTPay(otData.items)
-      SPECIAL_DAYS:     specialPayData.totalSpecialPayDays  // [MOCK] จาก ISpecialPayProvider
-      SPECIAL_PAY:      calcSpecialPay(specialPayData.items)  // [MOCK] rate × 1.0
+      SPECIAL_DAYS:     specialPayData.totalSpecialPayDays
+      SPECIAL_PAY:      calcSpecialPay(specialPayData.items)  // rate × 1.0
       SOCIAL_SECURITY:  calcSS(basePay, type, periodNumber).ssAmt
       WITHHOLDING_TAX:  null  (user กรอกเอง)
       LATE_DEDUCTION:   calcLateDeduction(attendance.lateMinutes)
@@ -646,7 +646,7 @@ interface KrungthaiBankRecord {
 |---|--------|
 | 1 | Payroll adjustment period (เปิด period ใหม่หลัง lock) |
 | 2 | Employer SS report (นายจ้างจ่าย 5% — สำหรับ สปส.1-10) |
-| 3 | กองทุนสำรองเลี้ยงชีพ (Provident Fund) |
+| 3 | Pro-rate สำหรับพนักงานเข้า/ออกกลางงวด (ปัจจุบัน: ไม่ pro-rate) |
 | 4 | Payroll audit log (ใครแก้อะไรเมื่อไหร่) |
 | 5 | Pro-rate สำหรับพนักงานเข้า/ออกกลางงวด |
 | 6 | Employee salary history → ใช้ใน report ทวิ 50 |

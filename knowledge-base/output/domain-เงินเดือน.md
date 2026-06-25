@@ -80,13 +80,13 @@
 ─── External Module Integration (Read-Only) ───────────────────────
 
 ┌───────────┐   ┌────────────┐   ┌─────────────────────┐   ┌───────────────┐   ┌──────────────────┐
-│ Employee  │   │  OTRecord  │   │ SpecialPayRecord[MOCK]│   │  LeaveRequest │   │ AttendanceRecord │
+│ Employee  │   │  OTRecord  │   │ SpecialPayRecord     │   │  LeaveRequest │   │ AttendanceRecord │
 │ Module    │   │  Module    │   │  Module              │   │  Module       │   │  Module          │
 ├───────────┤   ├────────────┤   ├─────────────────────┤   ├───────────────┤   ├──────────────────┤
 │ baseSalary│   │ approvedOT │   │ approvedSPHours      │   │ approvedLeave │   │ lateMinutes      │
-│ dailyWage │   │ hours      │   │ specialPayType       │   │ isPaid        │   │ absentDays       │
+│ dailyWage │   │ hours      │   │ (ไม่มีประเภทย่อย)   │   │ isPaid        │   │ absentDays       │
 │ bankAcct  │   │ rate (1.5x │   │ rate = 1.0x          │   │ totalDays     │   │ per period       │
-│ type      │   │  / 2.0x)  │   │ (design TBD)         │   │               │   │                  │
+│ type      │   │  / 2.0x)  │   │                      │   │               │   │                  │
 └─────▲─────┘   └─────▲──────┘   └──────────▲──────────┘   └───────▲───────┘   └────────▲─────────┘
       │               │                      │                      │                     │
       └───────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
@@ -102,26 +102,27 @@
 
 > Aggregate Root — ควบคุมสถานะของงวด ป้องกันแก้ไขหลัง lock
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | Primary key |
-| `year` | int | ✓ | ปีงบประมาณ (พ.ศ.) |
-| `month` | int (1-12) | ✓ | เดือน |
-| `periodNumber` | int (1\|2) | ✓ | งวด 1 (1-15) หรืองวด 2 (16-สิ้นเดือน) |
-| `employeeType` | enum | ✓ | `MONTHLY` \| `DAILY` (แยกประมวลผล) |
-| `startDate` | date | ✓ | วันเริ่มงวด (1 หรือ 16 ของเดือน) |
-| `endDate` | date | ✓ | วันปิดงวด (15 หรือสิ้นเดือน) |
-| `payDate` | date | ✓ | วันจ่ายเงิน (18 หรือ 3 ของเดือนถัดไป) |
-| `status` | enum | ✓ | `DRAFT` \| `PROCESSING` \| `LOCKED` \| `PAID` |
-| `lockedAt` | timestamp | – | เวลาที่ล็อกงวด |
-| `lockedById` | UUID | – | userId ของผู้ล็อก |
-| `paidAt` | timestamp | – | เวลาที่บันทึกว่าจ่ายแล้ว |
-| `paidById` | UUID | – | userId ของผู้ยืนยันการจ่าย |
-| `note` | text | – | หมายเหตุ |
-| `createdAt` | timestamp | ✓ | |
-| `updatedAt` | timestamp | ✓ | |
+| Field          | Type       | Required | Description                                   |
+| -------------- | ---------- | -------- | --------------------------------------------- |
+| `id`           | UUID       | ✓        | Primary key                                   |
+| `year`         | int        | ✓        | ปีงบประมาณ (พ.ศ.)                             |
+| `month`        | int (1-12) | ✓        | เดือน                                         |
+| `periodNumber` | int (1\|2) | ✓        | งวด 1 (1-15) หรืองวด 2 (16-สิ้นเดือน)         |
+| `employeeType` | enum       | ✓        | `MONTHLY` \| `DAILY` (แยกประมวลผล)            |
+| `startDate`    | date       | ✓        | วันเริ่มงวด (1 หรือ 16 ของเดือน)              |
+| `endDate`      | date       | ✓        | วันปิดงวด (15 หรือสิ้นเดือน)                  |
+| `payDate`      | date       | ✓        | วันจ่ายเงิน (18 หรือ 3 ของเดือนถัดไป)         |
+| `status`       | enum       | ✓        | `DRAFT` \| `PROCESSING` \| `LOCKED` \| `PAID` |
+| `lockedAt`     | timestamp  | –        | เวลาที่ล็อกงวด                                |
+| `lockedById`   | UUID       | –        | userId ของผู้ล็อก                             |
+| `paidAt`       | timestamp  | –        | เวลาที่บันทึกว่าจ่ายแล้ว                      |
+| `paidById`     | UUID       | –        | userId ของผู้ยืนยันการจ่าย                    |
+| `note`         | text       | –        | หมายเหตุ                                      |
+| `createdAt`    | timestamp  | ✓        |                                               |
+| `updatedAt`    | timestamp  | ✓        |                                               |
 
 **Business Rules:**
+
 - Unique constraint: `(year, month, periodNumber, employeeType)` — ห้ามสร้างงวดซ้ำ
 - งวด 1: startDate = วันที่ 1, endDate = วันที่ 15, payDate = วันที่ 18
 - งวด 2: startDate = วันที่ 16, endDate = สิ้นเดือน, payDate = วันที่ 3 ของเดือนถัดไป
@@ -135,33 +136,34 @@
 
 > รายการเงินเดือนของพนักงาน 1 คน ใน 1 งวด — ใช้สร้างสลิป
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | Primary key |
-| `periodId` | UUID | ✓ | FK → PayrollPeriod |
-| `employeeId` | UUID | ✓ | FK → Employee (logical) |
-| `employeeType` | enum | ✓ | snapshot: `MONTHLY` \| `DAILY` |
-| `employeeNo` | string | ✓ | snapshot รหัสพนักงาน |
-| `fullName` | string | ✓ | snapshot ชื่อ-นามสกุล |
-| `departmentName` | string | ✓ | snapshot ชื่อแผนก |
-| `positionName` | string | ✓ | snapshot ตำแหน่ง |
-| `bankCode` | string | – | snapshot รหัสธนาคาร (MONTHLY เท่านั้น) |
-| `bankAccountNo` | string | – | snapshot เลขบัญชี (MONTHLY เท่านั้น) |
-| `basePay` | decimal(12,2) | ✓ | ค่าจ้างพื้นฐาน (เงินเดือน/ค่าจ้างรายวัน × วันทำงาน) |
-| `otPay` | decimal(12,2) | ✓ | รวม OT ทั้งงวด (คำนวณจาก OTRecord) |
-| `specialPay` | decimal(12,2) | ✓ | เงินพิเศษ (วันหยุดนักขัตฤกษ์, ขึ้นยาง ฯลฯ) default 0 |
-| `grossPay` | decimal(12,2) | ✓ | รายรับรวม = basePay + otPay + specialPay (computed) |
-| `socialSecurityBase` | decimal(12,2) | ✓ | ฐาน SS = basePay เท่านั้น (ไม่รวม OT/special) |
-| `socialSecurityAmt` | decimal(12,2) | ✓ | ประกันสังคมที่หัก = socialSecurityBase × 5% |
-| `withholdingTax` | decimal(12,2) | ✓ | ภาษีหัก ณ ที่จ่าย (กรอกโดย HR/Payroll ทุกงวด) |
-| `lateDeduction` | decimal(12,2) | ✓ | หักสาย (คำนวณจาก AttendanceRecord) |
-| `otherDeductions` | decimal(12,2) | ✓ | หักอื่นๆ รวม default 0 |
-| `netPay` | decimal(12,2) | ✓ | เงินสุทธิ = grossPay − SS − tax − late − other (computed) |
-| `status` | enum | ✓ | `DRAFT` \| `CONFIRMED` |
-| `createdAt` | timestamp | ✓ | |
-| `updatedAt` | timestamp | ✓ | |
+| Field                | Type          | Required | Description                                               |
+| -------------------- | ------------- | -------- | --------------------------------------------------------- |
+| `id`                 | UUID          | ✓        | Primary key                                               |
+| `periodId`           | UUID          | ✓        | FK → PayrollPeriod                                        |
+| `employeeId`         | UUID          | ✓        | FK → Employee (logical)                                   |
+| `employeeType`       | enum          | ✓        | snapshot: `MONTHLY` \| `DAILY`                            |
+| `employeeNo`         | string        | ✓        | snapshot รหัสพนักงาน                                      |
+| `fullName`           | string        | ✓        | snapshot ชื่อ-นามสกุล                                     |
+| `departmentName`     | string        | ✓        | snapshot ชื่อแผนก                                         |
+| `positionName`       | string        | ✓        | snapshot ตำแหน่ง                                          |
+| `bankCode`           | string        | –        | snapshot รหัสธนาคาร (MONTHLY เท่านั้น)                    |
+| `bankAccountNo`      | string        | –        | snapshot เลขบัญชี (MONTHLY เท่านั้น)                      |
+| `basePay`            | decimal(12,2) | ✓        | ค่าจ้างพื้นฐาน (เงินเดือน/ค่าจ้างรายวัน × วันทำงาน)       |
+| `otPay`              | decimal(12,2) | ✓        | รวม OT ทั้งงวด (คำนวณจาก OTRecord)                        |
+| `specialPay`         | decimal(12,2) | ✓        | เงินพิเศษ (วันหยุดนักขัตฤกษ์, ขึ้นยาง ฯลฯ) default 0      |
+| `grossPay`           | decimal(12,2) | ✓        | รายรับรวม = basePay + otPay + specialPay (computed)       |
+| `socialSecurityBase` | decimal(12,2) | ✓        | ฐาน SS = basePay เท่านั้น (ไม่รวม OT/special)             |
+| `socialSecurityAmt`  | decimal(12,2) | ✓        | ประกันสังคมที่หัก = socialSecurityBase × 5%               |
+| `withholdingTax`     | decimal(12,2) | ✓        | ภาษีหัก ณ ที่จ่าย (กรอกโดย HR/Payroll ทุกงวด)             |
+| `lateDeduction`      | decimal(12,2) | ✓        | หักสาย (คำนวณจาก AttendanceRecord)                        |
+| `otherDeductions`    | decimal(12,2) | ✓        | หักอื่นๆ รวม default 0                                    |
+| `netPay`             | decimal(12,2) | ✓        | เงินสุทธิ = grossPay − SS − tax − late − other (computed) |
+| `status`             | enum          | ✓        | `DRAFT` \| `CONFIRMED`                                    |
+| `createdAt`          | timestamp     | ✓        |                                                           |
+| `updatedAt`          | timestamp     | ✓        |                                                           |
 
 **Business Invariants:**
+
 - Unique: `(periodId, employeeId)` — 1 คน 1 งวด มีได้ 1 record
 - `socialSecurityBase = basePay` (ห้ามรวม OT หรือ specialPay)
 - `grossPay = basePay + otPay + specialPay` (computed, ต้อง consistent)
@@ -177,36 +179,37 @@
 > Master Data กำหนดหมวดรายรับ/รายหัก — default = built-in, custom = user-defined
 > เมื่อสร้างงวดใหม่ ระบบ snapshot รายการที่ `isActive=true` ณ ขณะนั้น
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | Primary key |
-| `code` | string(30) | ✓ | รหัส unique (เช่น `BASE_SALARY`, `BONUS_DILIGENCE`) |
-| `name` | string(100) | ✓ | ชื่อที่แสดงใน UI และสลิป |
-| `categoryType` | enum | ✓ | `INCOME` \| `DEDUCTION` |
-| `isDefault` | boolean | ✓ | true = built-in (ลบไม่ได้, ปิดไม่ได้) |
-| `isActive` | boolean | ✓ | false = ซ่อนจากงวดที่สร้างใหม่ (default ปิดไม่ได้) |
-| `sortOrder` | int | ✓ | ลำดับ column ใน wizard table |
-| `createdAt` | timestamp | ✓ | |
-| `updatedAt` | timestamp | ✓ | |
+| Field          | Type        | Required | Description                                         |
+| -------------- | ----------- | -------- | --------------------------------------------------- |
+| `id`           | UUID        | ✓        | Primary key                                         |
+| `code`         | string(30)  | ✓        | รหัส unique (เช่น `BASE_SALARY`, `BONUS_DILIGENCE`) |
+| `name`         | string(100) | ✓        | ชื่อที่แสดงใน UI และสลิป                            |
+| `categoryType` | enum        | ✓        | `INCOME` \| `DEDUCTION`                             |
+| `isDefault`    | boolean     | ✓        | true = built-in (ลบไม่ได้, ปิดไม่ได้)               |
+| `isActive`     | boolean     | ✓        | false = ซ่อนจากงวดที่สร้างใหม่ (default ปิดไม่ได้)  |
+| `sortOrder`    | int         | ✓        | ลำดับ column ใน wizard table                        |
+| `createdAt`    | timestamp   | ✓        |                                                     |
+| `updatedAt`    | timestamp   | ✓        |                                                     |
 
 **Business Rules:**
+
 - `isDefault = true` → `isActive` lock = true เสมอ ห้าม deactivate ห้ามลบ
 - `isDefault = false` → ลบได้เฉพาะถ้าไม่มี `PayrollLineItem` ที่ใช้ `categoryCode` นี้อยู่
 - Seed ค่า default 9 หมวด (ดูตาราง Seed ด้านล่าง)
 
 **Default Seed:**
 
-| code | name | categoryType | sortOrder |
-|------|------|--------------|-----------|
-| `WORK_DAYS` | เวลางานรวม (วัน) | INCOME | 1 |
-| `BASE_SALARY` | ฐานเงินเดือน | INCOME | 2 |
-| `OT_DAYS` | เวลา OT (วัน) | INCOME | 3 |
-| `OT_PAY` | เงิน OT | INCOME | 4 |
-| `SPECIAL_DAYS` | เวลาพิเศษ (วัน) | INCOME | 5 |
-| `SPECIAL_PAY` | เงินพิเศษ | INCOME | 6 |
-| `SOCIAL_SECURITY` | ประกันสังคม | DEDUCTION | 1 |
-| `WITHHOLDING_TAX` | ภาษีหัก ณ ที่จ่าย | DEDUCTION | 2 |
-| `LATE_DEDUCTION` | หักสาย | DEDUCTION | 3 |
+| code              | name              | categoryType | sortOrder |
+| ----------------- | ----------------- | ------------ | --------- |
+| `WORK_DAYS`       | เวลางานรวม (วัน)  | INCOME       | 1         |
+| `BASE_SALARY`     | ฐานเงินเดือน      | INCOME       | 2         |
+| `OT_DAYS`         | เวลา OT (วัน)     | INCOME       | 3         |
+| `OT_PAY`          | เงิน OT           | INCOME       | 4         |
+| `SPECIAL_DAYS`    | เวลาพิเศษ (วัน)   | INCOME       | 5         |
+| `SPECIAL_PAY`     | เงินพิเศษ         | INCOME       | 6         |
+| `SOCIAL_SECURITY` | ประกันสังคม       | DEDUCTION    | 1         |
+| `WITHHOLDING_TAX` | ภาษีหัก ณ ที่จ่าย | DEDUCTION    | 2         |
+| `LATE_DEDUCTION`  | หักสาย            | DEDUCTION    | 3         |
 
 ---
 
@@ -215,24 +218,25 @@
 > รายละเอียด breakdown ของ PayrollRecord — แสดงในสลิปและใช้ audit
 > เก็บทั้ง auto-calculated value และ user-overridden value แยกกัน
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | |
-| `recordId` | UUID | ✓ | FK → PayrollRecord |
-| `categoryCode` | string(30) | ✓ | FK → PayrollCategory.code |
-| `description` | string | ✓ | คำอธิบาย เช่น "OT วันที่ 5 ม.ค." |
-| `autoAmount` | decimal(12,2) | – | ค่าที่ระบบคำนวณอัตโนมัติ (null = ไม่ได้คำนวณ) |
-| `userAmount` | decimal(12,2) | – | ค่าที่ user กรอก/แก้ไข (null = ไม่ได้แก้) |
-| `amount` | decimal(12,2) | ✓ | ค่าจริงที่ใช้ = `userAmount ?? autoAmount ?? null` |
-| `isUserOverridden` | boolean | ✓ | true = user แก้จากค่า auto (แสดง ✎ ใน UI) |
-| `isDeduction` | boolean | ✓ | true = รายหัก |
-| `sourceType` | enum | ✓ | `BASE` \| `OT` \| `SPECIAL_PAY_RECORD` \| `LEAVE` \| `ATTENDANCE` \| `MANUAL` \| `COMPUTED` |
-| `sourceId` | UUID | – | อ้างถึง OTRecord.id / LeaveRequest.id (ถ้ามี) |
-| `sortOrder` | int | ✓ | ลำดับแสดงผลในสลิป |
-| `createdAt` | timestamp | ✓ | |
-| `updatedAt` | timestamp | ✓ | |
+| Field              | Type          | Required | Description                                                                                 |
+| ------------------ | ------------- | -------- | ------------------------------------------------------------------------------------------- |
+| `id`               | UUID          | ✓        |                                                                                             |
+| `recordId`         | UUID          | ✓        | FK → PayrollRecord                                                                          |
+| `categoryCode`     | string(30)    | ✓        | FK → PayrollCategory.code                                                                   |
+| `description`      | string        | ✓        | คำอธิบาย เช่น "OT วันที่ 5 ม.ค."                                                            |
+| `autoAmount`       | decimal(12,2) | –        | ค่าที่ระบบคำนวณอัตโนมัติ (null = ไม่ได้คำนวณ)                                               |
+| `userAmount`       | decimal(12,2) | –        | ค่าที่ user กรอก/แก้ไข (null = ไม่ได้แก้)                                                   |
+| `amount`           | decimal(12,2) | ✓        | ค่าจริงที่ใช้ = `userAmount ?? autoAmount ?? null`                                          |
+| `isUserOverridden` | boolean       | ✓        | true = user แก้จากค่า auto (แสดง ✎ ใน UI)                                                   |
+| `isDeduction`      | boolean       | ✓        | true = รายหัก                                                                               |
+| `sourceType`       | enum          | ✓        | `BASE` \| `OT` \| `SPECIAL_PAY_RECORD` \| `LEAVE` \| `ATTENDANCE` \| `MANUAL` \| `COMPUTED` |
+| `sourceId`         | UUID          | –        | อ้างถึง OTRecord.id / LeaveRequest.id (ถ้ามี)                                               |
+| `sortOrder`        | int           | ✓        | ลำดับแสดงผลในสลิป                                                                           |
+| `createdAt`        | timestamp     | ✓        |                                                                                             |
+| `updatedAt`        | timestamp     | ✓        |                                                                                             |
 
 **Business Rules:**
+
 - `amount = userAmount ?? autoAmount` — ถ้า user ไม่แก้ไข ใช้ auto; ถ้าทั้งคู่ null = null (ไม่แสดงในสลิป)
 - `isUserOverridden = (userAmount IS NOT NULL)`
 - เมื่อ [คำนวณใหม่ทั้งหมด]: update `autoAmount`, **อย่า** reset `userAmount` โดยอัตโนมัติ → ถาม user ก่อน
@@ -244,19 +248,19 @@
 
 > MONTHLY เท่านั้น — สร้างหลัง period LOCKED
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | |
-| `periodId` | UUID | ✓ | FK → PayrollPeriod |
-| `bankCode` | string | ✓ | `KRUNGTHAI` (default) |
-| `totalAmount` | decimal(12,2) | ✓ | ยอดโอนรวม |
-| `employeeCount` | int | ✓ | จำนวนพนักงาน |
-| `fileFormat` | string | ✓ | รูปแบบไฟล์ตามมาตรฐานธนาคาร |
-| `filePath` | string | – | path ไฟล์ที่ generate แล้ว |
-| `status` | enum | ✓ | `GENERATED` \| `DOWNLOADED` \| `SUBMITTED` |
-| `generatedAt` | timestamp | ✓ | |
-| `generatedById` | UUID | ✓ | |
-| `downloadedAt` | timestamp | – | |
+| Field           | Type          | Required | Description                                |
+| --------------- | ------------- | -------- | ------------------------------------------ |
+| `id`            | UUID          | ✓        |                                            |
+| `periodId`      | UUID          | ✓        | FK → PayrollPeriod                         |
+| `bankCode`      | string        | ✓        | `KRUNGTHAI` (default)                      |
+| `totalAmount`   | decimal(12,2) | ✓        | ยอดโอนรวม                                  |
+| `employeeCount` | int           | ✓        | จำนวนพนักงาน                               |
+| `fileFormat`    | string        | ✓        | รูปแบบไฟล์ตามมาตรฐานธนาคาร                 |
+| `filePath`      | string        | –        | path ไฟล์ที่ generate แล้ว                 |
+| `status`        | enum          | ✓        | `GENERATED` \| `DOWNLOADED` \| `SUBMITTED` |
+| `generatedAt`   | timestamp     | ✓        |                                            |
+| `generatedById` | UUID          | ✓        |                                            |
+| `downloadedAt`  | timestamp     | –        |                                            |
 
 ---
 
@@ -264,14 +268,14 @@
 
 > DAILY เท่านั้น — พิมพ์ใบเซ็นรับเงิน
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | UUID | ✓ | |
-| `periodId` | UUID | ✓ | FK → PayrollPeriod |
-| `totalAmount` | decimal(12,2) | ✓ | ยอดรวม |
-| `employeeCount` | int | ✓ | จำนวนพนักงาน |
-| `generatedAt` | timestamp | ✓ | |
-| `generatedById` | UUID | ✓ | |
+| Field           | Type          | Required | Description        |
+| --------------- | ------------- | -------- | ------------------ |
+| `id`            | UUID          | ✓        |                    |
+| `periodId`      | UUID          | ✓        | FK → PayrollPeriod |
+| `totalAmount`   | decimal(12,2) | ✓        | ยอดรวม             |
+| `employeeCount` | int           | ✓        | จำนวนพนักงาน       |
+| `generatedAt`   | timestamp     | ✓        |                    |
+| `generatedById` | UUID          | ✓        |                    |
 
 ---
 
@@ -279,15 +283,15 @@
 
 ```typescript
 enum PayrollPeriodStatus {
-  DRAFT      = 'DRAFT',       // กำลังเตรียม ยังไม่คำนวณ
-  PROCESSING = 'PROCESSING',  // กำลังคำนวณ/แก้ไขอยู่
-  LOCKED     = 'LOCKED',      // ล็อกแล้ว ห้ามแก้
-  PAID       = 'PAID',        // จ่ายเงินแล้ว
+  DRAFT = "DRAFT", // กำลังเตรียม ยังไม่คำนวณ
+  PROCESSING = "PROCESSING", // กำลังคำนวณ/แก้ไขอยู่
+  LOCKED = "LOCKED", // ล็อกแล้ว ห้ามแก้
+  PAID = "PAID", // จ่ายเงินแล้ว
 }
 
 enum PayrollRecordStatus {
-  DRAFT     = 'DRAFT',        // ยังแก้ไขได้
-  CONFIRMED = 'CONFIRMED',    // ยืนยันแล้ว (auto-set ตอน period LOCKED)
+  DRAFT = "DRAFT", // ยังแก้ไขได้
+  CONFIRMED = "CONFIRMED", // ยืนยันแล้ว (auto-set ตอน period LOCKED)
 }
 
 // PayrollCategoryCode ไม่ใช่ Enum แล้ว — เป็น DB table `payroll_category`
@@ -297,29 +301,29 @@ enum PayrollRecordStatus {
 // Custom: user กำหนด code เอง ผ่าน PayrollCategory master data
 
 enum PayrollCategoryType {
-  INCOME    = 'INCOME',
-  DEDUCTION = 'DEDUCTION',
+  INCOME = "INCOME",
+  DEDUCTION = "DEDUCTION",
 }
 
 enum PayrollLineSourceType {
-  BASE              = 'BASE',               // คำนวณจาก baseSalary/dailyWage
-  OT                = 'OT',                 // มาจาก OTRecord
-  SPECIAL_PAY_RECORD = 'SPECIAL_PAY_RECORD', // [MOCK] มาจาก SpecialPayRecord (design TBD)
-  LEAVE             = 'LEAVE',              // มาจาก LeaveRequest (หักไม่ได้รับเงิน)
-  ATTENDANCE        = 'ATTENDANCE',         // มาจาก AttendanceRecord (สาย/ขาด)
-  MANUAL            = 'MANUAL',             // กรอกมือ (custom categories เท่านั้น)
-  COMPUTED          = 'COMPUTED',           // คำนวณอัตโนมัติ (SS, tax)
+  BASE = "BASE", // คำนวณจาก baseSalary/dailyWage
+  OT = "OT", // มาจาก OTRecord
+  SPECIAL_PAY_RECORD = "SPECIAL_PAY_RECORD", // มาจาก SpecialPayRecord domain
+  LEAVE = "LEAVE", // มาจาก LeaveRequest (หักไม่ได้รับเงิน)
+  ATTENDANCE = "ATTENDANCE", // มาจาก AttendanceRecord (สาย/ขาด)
+  MANUAL = "MANUAL", // กรอกมือ (custom categories เท่านั้น)
+  COMPUTED = "COMPUTED", // คำนวณอัตโนมัติ (SS, tax)
 }
 
 enum BankTransferFileStatus {
-  GENERATED  = 'GENERATED',
-  DOWNLOADED = 'DOWNLOADED',
-  SUBMITTED  = 'SUBMITTED',   // ส่งธนาคารแล้ว
+  GENERATED = "GENERATED",
+  DOWNLOADED = "DOWNLOADED",
+  SUBMITTED = "SUBMITTED", // ส่งธนาคารแล้ว
 }
 
 enum EmployeePayType {
-  MONTHLY = 'MONTHLY',
-  DAILY   = 'DAILY',
+  MONTHLY = "MONTHLY",
+  DAILY = "DAILY",
 }
 ```
 
@@ -344,11 +348,11 @@ netPay      = grossPay
 
 ### 4.2 ประกันสังคม (มาตรา 33)
 
-| ประเภท | หักเมื่อ | หมายเหตุ |
-|--------|---------|---------|
-| รายเดือน | งวด 2 เท่านั้น (งวดสุดท้ายของเดือน) | `periodNumber = 2` |
-| รายวัน | ทุกงวด (งวด 1 และ 2) | ทั้ง 2 งวด |
-| ฐานคำนวณ | basePay เท่านั้น | ไม่รวม OT ไม่รวม special |
+| ประเภท   | หักเมื่อ                            | หมายเหตุ                 |
+| -------- | ----------------------------------- | ------------------------ |
+| รายเดือน | งวด 2 เท่านั้น (งวดสุดท้ายของเดือน) | `periodNumber = 2`       |
+| รายวัน   | ทุกงวด (งวด 1 และ 2)                | ทั้ง 2 งวด               |
+| ฐานคำนวณ | basePay เท่านั้น                    | ไม่รวม OT ไม่รวม special |
 
 ### 4.3 ภาษีหัก ณ ที่จ่าย
 
@@ -359,29 +363,29 @@ netPay      = grossPay
 
 ### 4.4 OT Rate
 
-| ประเภท | Rate |
-|--------|------|
-| OT วันทำงาน (หลังเวลาเลิก) | ×1.5 |
-| OT วันหยุด ในชั่วโมงกะปกติ | ×2.0 |
+| ประเภท                      | Rate |
+| --------------------------- | ---- |
+| OT วันทำงาน (หลังเวลาเลิก)  | ×1.5 |
+| OT วันหยุด ในชั่วโมงกะปกติ  | ×2.0 |
 | OT วันหยุด นอกชั่วโมงกะปกติ | ×1.5 |
-| OT กะ STR ตี 3 หลัง 12:00 | ×1.5 |
+| OT กะ STR ตี 3 หลัง 12:00   | ×1.5 |
 
-### 4.5 Special Pay Rate [MOCK]
+### 4.5 Special Pay Rate
 
-> ⚠️ ใช้สูตรเหมือน OT แต่อัตราคูณ = 1.0 ทุกประเภท — รอยืนยัน domain design จริง
+> ใช้สูตรเหมือน OT แต่อัตราคูณ = 1.0 ทุกประเภท — ไม่มีประเภทย่อย
 
-| ประเภทเวลา | อัตราคูณ |
-|-----------|---------|
-| วันทำงาน (หลังเวลาเลิกงาน) | × 1.0 |
-| วันหยุด — ชั่วโมงในกะปกติ | × 1.0 |
-| วันหยุด — ชั่วโมงนอกกะปกติ | × 1.0 |
+| ประเภทเวลา                 | อัตราคูณ |
+| -------------------------- | -------- |
+| วันทำงาน (หลังเวลาเลิกงาน) | × 1.0    |
+| วันหยุด — ชั่วโมงในกะปกติ  | × 1.0    |
+| วันหยุด — ชั่วโมงนอกกะปกติ | × 1.0    |
 
 ### 4.6 การจ่ายเงิน
 
-| ประเภท | วิธีจ่าย | เงื่อนไข |
-|--------|---------|---------|
-| รายเดือน | โอนธนาคาร Krungthai | ต้องมีเลขบัญชีในโปรไฟล์ |
-| รายวัน | เงินสด (มีช่องเซ็นรับ) | พิมพ์ใบจ่ายเงินสด |
+| ประเภท   | วิธีจ่าย               | เงื่อนไข                |
+| -------- | ---------------------- | ----------------------- |
+| รายเดือน | โอนธนาคาร Krungthai    | ต้องมีเลขบัญชีในโปรไฟล์ |
+| รายวัน   | เงินสด (มีช่องเซ็นรับ) | พิมพ์ใบจ่ายเงินสด       |
 
 ### 4.7 Period Lock Rules
 
@@ -507,7 +511,7 @@ INSERT INTO payroll_category (code, name, category_type, is_default, sort_order)
 -- ============== PAYROLL LINE ITEM ==============
 CREATE TYPE payroll_line_source AS ENUM
   ('BASE','OT','SPECIAL_PAY_RECORD','LEAVE','ATTENDANCE','MANUAL','COMPUTED');
--- SPECIAL_PAY_RECORD [MOCK]: จาก SpecialPayRecord domain (design TBD)
+-- SPECIAL_PAY_RECORD: จาก SpecialPayRecord domain (ไม่มีประเภทย่อย)
 
 CREATE TABLE payroll_line_item (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -592,13 +596,14 @@ CREATE INDEX idx_cpd_period ON cash_payment_document(period_id);
 │  ─────────────────────────────                          │
 │  • Employee (baseSalary, bankAccount, type)             │
 │  • OTRecord (approved OT per period)                    │
-│  • SpecialPayRecord [MOCK] (approved special pay hours) │
+│  • SpecialPayRecord (approved special pay hours)        │
 │  • AttendanceRecord (late/absent)                       │
 │  • LeaveRequest (approved, isPaid flag)                 │
 └─────────────────────────────────────────────────────────┘
 ```
 
 **กฎสำคัญ:**
+
 - สร้าง/แก้ PayrollRecord ต้องผ่าน PayrollPeriod (ตรวจ status ก่อน)
 - หาก `period.status = LOCKED` → throw `PeriodLockedException`
 - PayrollLineItem เป็น child ของ PayrollRecord — cascade delete
@@ -612,7 +617,10 @@ CREATE INDEX idx_cpd_period ON cash_payment_document(period_id);
 
 interface IPayrollEmployeeProvider {
   // ดึงข้อมูลพนักงานสำหรับ snapshot + คำนวณ
-  getPayrollEmployeeData(employeeId: string, periodDate: string): Promise<PayrollEmployeeDto>
+  getPayrollEmployeeData(
+    employeeId: string,
+    periodDate: string,
+  ): Promise<PayrollEmployeeDto>;
   // return: { employeeNo, fullName, department, position, type,
   //           baseSalary | dailyWage, bankCode, bankAccountNo }
 }
@@ -623,7 +631,7 @@ interface IOTProvider {
     employeeIds: string[],
     startDate: string,
     endDate: string,
-  ): Promise<Map<string, OTSummaryDto>>
+  ): Promise<Map<string, OTSummaryDto>>;
   // OTSummaryDto: { totalOTPay, items: [{ date, hours, rate, amount }] }
 }
 
@@ -633,7 +641,7 @@ interface IAttendancePayrollProvider {
     employeeIds: string[],
     startDate: string,
     endDate: string,
-  ): Promise<Map<string, AttendanceSummaryDto>>
+  ): Promise<Map<string, AttendanceSummaryDto>>;
   // AttendanceSummaryDto: { lateMinutes, lateDeduction, absentDays, absentDeduction }
 }
 
@@ -643,20 +651,19 @@ interface ILeavePayrollProvider {
     employeeIds: string[],
     startDate: string,
     endDate: string,
-  ): Promise<Map<string, LeavePayrollSummaryDto>>
+  ): Promise<Map<string, LeavePayrollSummaryDto>>;
   // LeavePayrollSummaryDto: { unpaidDays, unpaidDeduction }
 }
 
-// [MOCK] ISpecialPayProvider — design TBD, โครงสร้างอาจเปลี่ยน
 interface ISpecialPayProvider {
   // ดึง special pay ที่ approved ของพนักงานในช่วงงวด
   getApprovedSpecialPayByPeriod(
     employeeIds: string[],
     startDate: string,
     endDate: string,
-  ): Promise<Map<string, SpecialPaySummaryDto>>
+  ): Promise<Map<string, SpecialPaySummaryDto>>;
   // SpecialPaySummaryDto: { totalSpecialPayDays, totalSpecialPay,
-  //   items: [{ date, hours, specialPayType, hourlyRate, amount }] }
+  //   items: [{ date, hours, hourlyRate, amount }] }  ← ไม่มี specialPayType
 }
 ```
 
@@ -681,11 +688,10 @@ CashPaymentDocGenerated   { docId, periodId, totalAmount, employeeCount }
 
 ## 9. Open Questions / ขอยืนยัน
 
-| # | หัวข้อ | สถานะ |
-|---|--------|-------|
-| 1 | เงินเดือนรายวัน: คำนวณจากจำนวนวันทำงานจริงหรือวันปฏิทิน? | ❓ ต้องยืนยัน |
-| 2 | กรณีพนักงานเข้าหรือออกกลางงวด: pro-rate ยังไง? | ❓ ต้องยืนยัน |
-| 3 | ฐาน SS ของรายวัน: ใช้ค่าจ้างต่อวัน × วันทำงาน? | ❓ ต้องยืนยัน |
-| 4 | เงินพิเศษ (specialPay): มีประเภทอะไรบ้าง? ใครบันทึก? | ❓ ต้องยืนยัน |
-| 5 | กองทุนสำรองเลี้ยงชีพ: มีหรือไม่? | ❓ ต้องยืนยัน |
-| 6 | การเปิด period ใหม่หลัง lock: process เป็นอย่างไร? | ❓ ต้องออกแบบ |
+| #   | หัวข้อ                                                   | สถานะ                                                     |
+| --- | -------------------------------------------------------- | --------------------------------------------------------- |
+| 1   | เงินเดือนรายวัน: คำนวณจากจำนวนวันทำงานจริงหรือวันปฏิทิน? | ✅ วันทำงานจริง (actual working days)                     |
+| 2   | กรณีพนักงานเข้าหรือออกกลางงวด: pro-rate ยังไง?           | ✅ ไม่ pro-rate — ได้รับ basePay เต็มงวด (baseSalary / 2) |
+| 3   | ฐาน SS ของรายวัน: ใช้ค่าจ้างต่อวัน × วันทำงาน?           | ✅ ใช่ — SS Base = dailyWage × วันทำงานจริง = basePay     |
+| 4   | เงินพิเศษ (specialPay): มีประเภทอะไรบ้าง? ใครบันทึก?     | ✅ ไม่มีประเภทย่อย — เป็นรายรับระดับเดียวกับ OT/basePay   |
+| 5   | กองทุนสำรองเลี้ยงชีพ: มีหรือไม่?                         | ✅ ไม่มี                                                  |

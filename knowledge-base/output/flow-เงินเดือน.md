@@ -14,7 +14,6 @@
 ├── ตั้งค่าหมวดรายรับ/รายหัก ──── [HR Admin, Payroll]   ← Master Data
 ├── สลิปเงินเดือน (HR) ─────────── [HR Admin, Payroll]
 ├── ไฟล์โอนธนาคาร ─────────────── [Payroll]
-├── รายการจ่ายเงินสด ─────────── [Payroll]
 └── สถานะการชำระเงิน ─────────── [Payroll]
 
 เมนู: ของฉัน
@@ -160,7 +159,7 @@
 
 #### Step 1: คำนวณและกรอกข้อมูล
 
-ระบบ auto-คำนวณและเติมค่าเริ่มต้นจาก Attendance / OT / SpecialPay[MOCK] / Leave modules
+ระบบ auto-คำนวณและเติมค่าเริ่มต้นจาก Attendance / OT / SpecialPay / Leave modules
 **ทุก column ยกเว้น รหัส, ชื่อ, สุทธิ = input ที่ user แก้ไขได้**
 เซลล์ที่ user แก้เองจะแสดง mark ✎ (สีส้ม) แทนค่าที่ระบบคำนวณ
 
@@ -413,27 +412,7 @@
 
 ---
 
-## 7. หน้ารายการจ่ายเงินสด (DAILY only)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  รายการจ่ายเงินสด — รายวัน                                    │
-│  งวด: [พ.ค. 2569 งวด 2 — รายวัน ▼]                         │
-├──────┬────────────────┬────────┬──────────────┬─────────────┤
-│ ลำดับ │ ชื่อ-นามสกุล    │ แผนก   │ เงินสุทธิ (฿)│ ลายเซ็น     │
-├──────┼────────────────┼────────┼──────────────┼─────────────┤
-│  1   │ นายจ. รายวัน   │ กล     │    4,500     │  __________│
-│  2   │ นายช. รายวัน   │ กล     │    3,800     │  __________│
-│  3   │ นางฉ. รายวัน   │ บรรจุ  │    4,200     │  __________│
-├──────┴────────────────┴────────┼──────────────┴─────────────┤
-│  ยอดรวม 15 คน                  │    62,500 บาท               │
-└────────────────────────────────┴─────────────────────────────┘
-[พิมพ์ใบจ่ายเงิน]
-```
-
----
-
-## 8. หน้าสถานะการชำระเงิน
+## 7. หน้าสถานะการชำระเงิน
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -466,7 +445,7 @@
 
 ---
 
-## 9. Business Flow สรุป (End-to-End)
+## 8. Business Flow สรุป (End-to-End)
 
 ```
 Payroll Staff                    System                           Output
@@ -478,7 +457,7 @@ Payroll Staff                    System                           Output
 
 2. [ดำเนินการต่อ] ────────►  period.status → PROCESSING
 
-3. [คำนวณใหม่ทั้งหมด] ────►  Batch query: Employee+OT+SpecialPay[MOCK]+Attendance+Leave
+3. [คำนวณใหม่ทั้งหมด] ────►  Batch query: Employee+OT+SpecialPay+Attendance+Leave
    (Step 1)                   Loop พนักงาน → UPSERT PayrollRecord
                               พร้อม line items ทุกหมวด (default + custom)
                               เซลล์ที่ auto-fill จะ mark isAutoCalculated=true
@@ -501,7 +480,7 @@ Payroll Staff                    System                           Output
 
 ---
 
-## 10. State Diagram: PayrollPeriod
+## 9. State Diagram: PayrollPeriod
 
 ```
            สร้างงวด
@@ -532,7 +511,7 @@ Payroll Staff                    System                           Output
 
 ---
 
-## 11. Column Behavior Summary
+## 10. Column Behavior Summary
 
 | Column | ประเภท | ค่าเริ่มต้น | User แก้ได้ | Mark ✎ | แสดงในสลิป |
 |--------|--------|------------|------------|-------|-----------|
@@ -542,8 +521,8 @@ Payroll Staff                    System                           Output
 | ฐานเงินเดือน | default income | auto จาก Employee | ✓ | ✓ ถ้าแก้ | ✓ |
 | เวลา OT (วัน) | default income | auto จาก OT module | ✓ | ✓ ถ้าแก้ | ✓ |
 | เงิน OT | default income | auto จาก OT module | ✓ | ✓ ถ้าแก้ | ✓ |
-| เวลาพิเศษ (วัน) | default income | auto จาก SpecialPayRecord [MOCK] | ✓ | ✓ ถ้าแก้ | ✓ |
-| เงินพิเศษ | default income | auto จาก SpecialPayRecord [MOCK] | ✓ | ✓ ถ้าแก้ | ✓ |
+| เวลาพิเศษ (วัน) | default income | auto จาก SpecialPayRecord | ✓ | ✓ ถ้าแก้ | ✓ |
+| เงินพิเศษ | default income | auto จาก SpecialPayRecord | ✓ | ✓ ถ้าแก้ | ✓ |
 | [custom income] | custom income | null | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |
 | ประกันสังคม | default deduct | auto คำนวณ | ✓ | ✓ ถ้าแก้ | ✓ |
 | ภาษีหัก ณ ที่จ่าย | default deduct | — (null) | ✓ | ✓ ถ้ากรอก | ✓ ถ้าไม่ null |
@@ -553,7 +532,7 @@ Payroll Staff                    System                           Output
 
 ---
 
-## 12. Notification / Alert
+## 11. Notification / Alert
 
 | เหตุการณ์ | ผู้รับ | ข้อความ |
 |-----------|--------|---------|
