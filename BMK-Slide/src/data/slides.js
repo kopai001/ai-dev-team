@@ -34,6 +34,7 @@ import phamaplex from "../Assets/Bonmek/Phamaplex.png";
 import bismillah from "../Assets/Bonmek/Bismillah.png";
 import iotProject from "../Assets/Bonmek/iot-project.png";
 import ddcProject from "../Assets/Bonmek/กรมควบคุมโรค.png";
+import clrsProject from "../Assets/Bonmek/CLRS.png";
 import thaiMap from "../Assets/Bonmek/ThaiMap.png";
 import hurryup from "../Assets/Bonmek/Hurryup.png";
 import notMyProduct from "../Assets/Bonmek/NotMyProduct.png";
@@ -190,13 +191,15 @@ export const slides = [
         icon: "requirements",
         title: "Requirement Gathering",
         badge: "ศึกษาความต้องการลูกค้า",
-        description: "รวบรวมและวิเคราะห์ความต้องการ เพื่อกำหนดขอบเขตและเป้าหมายของโครงการ",
+        description:
+          "รวบรวมและวิเคราะห์ความต้องการ เพื่อกำหนดขอบเขตและเป้าหมายของโครงการ",
       },
       {
         icon: "design",
         title: "System Design & Architecture",
         badges: ["UX/UI", "ER-Diagram", "DB"],
-        description: "ออกแบบโครงสร้างระบบ หน้าจอผู้ใช้ และฐานข้อมูลให้สอดคล้องกับความต้องการ",
+        description:
+          "ออกแบบโครงสร้างระบบ หน้าจอผู้ใช้ และฐานข้อมูลให้สอดคล้องกับความต้องการ",
         thumbnails: [
           { src: bnkShow02, alt: "UX/UI mockup" },
           { src: erDiagramPpSa, alt: "ER-Diagram" },
@@ -206,7 +209,8 @@ export const slides = [
         icon: "development",
         title: "Development",
         badge: "Coding & Testing",
-        description: "พัฒนาโค้ด ทดสอบระบบ และปรับปรุงจนได้ซอฟต์แวร์ที่ใช้งานได้จริง",
+        description:
+          "พัฒนาโค้ด ทดสอบระบบ และปรับปรุงจนได้ซอฟต์แวร์ที่ใช้งานได้จริง",
       },
       {
         icon: "deploy",
@@ -216,6 +220,16 @@ export const slides = [
         thumbnails: [{ src: bnkShow, alt: "Deployed system showcase" }],
       },
     ],
+  },
+  {
+    id: 14,
+    layout: "image",
+    eyebrow: "ธุรกิจของเรา",
+    title: "My Product",
+    src: clrsProject,
+    alt: "CLRS — Chana Latex HR System",
+    fit: "contain",
+    bg: "#ffffff",
   },
   {
     id: 10,
@@ -258,7 +272,7 @@ export const slides = [
     bg: "#ffffff",
   },
   {
-    id: 14,
+    id: 15,
     layout: "two-column",
     eyebrow: "ธุรกิจของเรา",
     title: "Difference",
@@ -278,27 +292,27 @@ export const slides = [
       },
     },
   },
-  {
-    id: 15,
-    layout: "icon-list",
-    eyebrow: "ธุรกิจของเรา",
-    title: "Customer",
-    subtitle: "Focus Group: กลุ่มโรงงาน",
-    items: [
-      {
-        icon: "trust",
-        text: "เป็น Reference ที่ดีเพราะบริษัทอยู่ในช่วงการสร้างความน่าเชื่อถือ",
-      },
-      {
-        icon: "key",
-        text: "PKI ชัดเจน",
-      },
-      {
-        icon: "investment",
-        text: "มีกำลังในการลงทุน Technology",
-      },
-    ],
-  },
+  // {
+  //   id: 15,
+  //   layout: "icon-list",
+  //   eyebrow: "ธุรกิจของเรา",
+  //   title: "Customer",
+  //   subtitle: "Focus Group: กลุ่มโรงงาน",
+  //   items: [
+  //     {
+  //       icon: "trust",
+  //       text: "เป็น Reference ที่ดีเพราะบริษัทอยู่ในช่วงการสร้างความน่าเชื่อถือ",
+  //     },
+  //     {
+  //       icon: "key",
+  //       text: "PKI ชัดเจน",
+  //     },
+  //     {
+  //       icon: "investment",
+  //       text: "มีกำลังในการลงทุน Technology",
+  //     },
+  //   ],
+  // },
   {
     id: 16,
     layout: "icon-list",
