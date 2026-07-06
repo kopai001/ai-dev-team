@@ -1,0 +1,63 @@
+# Dev fixture — NOT for production.
+# `username` links back to user.yaml.
+# role: admin | manager | user
+
+- username: admin
+  firstname: System
+  lastname: Admin
+  role: admin
+
+- username: alice
+  firstname: Alice
+  lastname: Wong
+  role: manager
+
+- username: bob
+  firstname: Bob
+  lastname: Smith
+  role: user
+
+- username: carol
+  firstname: Carol
+  lastname: Diaz
+  role: user
+
+- username: dave
+  firstname: Dave
+  lastname: Kim
+  role: user
+
+- username: eve
+  firstname: Eve
+  lastname: Turner
+  role: user
+
+- username: frank
+  firstname: Frank
+  lastname: Miller
+  role: manager
+
+- username: grace
+  firstname: Grace
+  lastname: Hopper
+  role: user
+
+- username: heidi
+  firstname: Heidi
+  lastname: Klum
+  role: user
+
+- username: ivan
+  firstname: Ivan
+  lastname: Petrov
+  role: user
+
+- username: judy
+  firstname: Judy
+  lastname: Garland
+  role: user
+
+- username: kevin
+  firstname: Kevin
+  lastname: Nguyen
+  role: user

@@ -1,0 +1,63 @@
+# Dev fixture — NOT for production.
+# Passwords stored plaintext here; seed.js bcrypt-hashes them on insert.
+# Link to account via `username` (1:1).
+
+- username: admin
+  password: "1234"
+  email: admin@ff-cms.local
+  isActive: true
+
+- username: alice
+  password: pass1234
+  email: alice@ff-cms.local
+  isActive: true
+
+- username: bob
+  password: pass1234
+  email: bob@ff-cms.local
+  isActive: true
+
+- username: carol
+  password: pass1234
+  email: carol@ff-cms.local
+  isActive: true
+
+- username: dave
+  password: pass1234
+  email: dave@ff-cms.local
+  isActive: true
+
+- username: eve
+  password: pass1234
+  email: eve@ff-cms.local
+  isActive: false
+
+- username: frank
+  password: pass1234
+  email: frank@ff-cms.local
+  isActive: true
+
+- username: grace
+  password: pass1234
+  email: grace@ff-cms.local
+  isActive: true
+
+- username: heidi
+  password: pass1234
+  email: heidi@ff-cms.local
+  isActive: true
+
+- username: ivan
+  password: pass1234
+  email: ivan@ff-cms.local
+  isActive: true
+
+- username: judy
+  password: pass1234
+  email: judy@ff-cms.local
+  isActive: true
+
+- username: kevin
+  password: pass1234
+  email: kevin@ff-cms.local
+  isActive: true
