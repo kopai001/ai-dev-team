@@ -9,8 +9,8 @@
 | branch_id | UUID | ✓ | สาขา |
 | shift_type | Enum | ✓ | morning/afternoon/night/custom |
 | employee_id | UUID | ✓ | พนักงานที่เปิดกะ |
-| status | Enum | ✓ | open/closed |
-| opening_cash | Decimal | ✓ | เงินสดตั้งต้น (นับเมื่อเปิดกะ) |
+| status | Enum | ✓ | open/closed/unclosed_flagged |
+| opening_cash | Decimal | ✓ | เงินสดตั้งต้น (พนักงานนับเอง) |
 | closing_cash_counted | Decimal | - | เงินสดที่นับได้เมื่อปิดกะ |
 | closing_cash_expected | Decimal | - | เงินสดที่ควรมีเมื่อปิดกะ |
 | cash_difference | Decimal | - | ผลต่าง (นับได้ - ควรมี) |
@@ -18,6 +18,9 @@
 | opened_at | DateTime | ✓ | เวลาเปิดกะ |
 | closed_at | DateTime | - | เวลาปิดกะ |
 | previous_shift_id | UUID | - | กะก่อนหน้า |
+| opening_cash_discrepancy | Decimal | - | ผลต่างระหว่าง opening_cash กะนี้ vs closing_cash_counted กะก่อน (คำนวณโดยระบบ เฉพาะแอดมิน/เจ้าของ) |
+| has_unclosed_badge | Boolean | ✓ | true ถ้ากะนี้ยังไม่ปิดและมีกะถัดไปเปิดแล้ว |
+| has_cash_discrepancy_badge | Boolean | ✓ | true ถ้า opening_cash_discrepancy ≠ 0 |
 | note | String | - | หมายเหตุ |
 
 ### 2. ShiftCashDenomination (ชนิดเงินนับกะ)
@@ -77,10 +80,12 @@
 ## Business Rules
 
 ### กฎกะ
-- สาขาหนึ่งมีได้ 1 กะที่ open พร้อมกัน
-- เปิดกะได้เฉพาะเมื่อไม่มีกะเปิดอยู่
-- ขายสินค้าได้เฉพาะเมื่อกะ open
-- ยอดเงินตั้งต้นกะใหม่ = ยอดปิดกะก่อน (ส่งมอบอัตโนมัติ)
+- พนักงานแต่ละคนมีได้ 1 กะที่ open พร้อมกัน (ห้ามเปิดกะซ้อนของตัวเอง)
+- พนักงานกะถัดไปเปิดกะได้แม้กะก่อนหน้า (พนักงานอื่น) ยังไม่ปิด
+- เมื่อพนักงานใหม่เปิดกะ → กะก่อนหน้าที่ยังไม่ปิดถูก flag `has_unclosed_badge = true`
+- ขายสินค้าได้เฉพาะเมื่อกะ open ของตัวเอง
+- ยอดเงินตั้งต้นกะใหม่ = พนักงานนับเองเท่านั้น — ไม่ส่งมอบอัตโนมัติจากกะก่อน
+- ระบบคำนวณ `opening_cash_discrepancy` หลังเปิดกะ เพื่อแสดงแก่แอดมิน/เจ้าของเท่านั้น
 
 ### กฎยอดเงิน
 - `closing_cash_expected = opening_cash + total_cash_sales - total_expenses - total_remittances + cash_received_extra`
