@@ -125,26 +125,23 @@ Orchestrator **ต้องหยุดถามผู้ใช้** เมื�
 
 ---
 
-## 10. Knowledge Base (CLRS Project)
+## 10. Knowledge Base (POS Project)
 
-โปรเจกต์ปัจจุบัน: **CLRS — Chana Latex HR System** (บริษัท จะนะน้ำยาง จำกัด)
+โปรเจกต์ปัจจุบัน: **POS System** — ระบบ POS ร้านค้าปลีกหลายสาขา
 
 ไฟล์ความรู้อยู่ที่ `knowledge-base/` — **อ่าน `knowledge-base/INDEX.md` ก่อนเสมอ**
 
 ```
 knowledge-base/
-├── INDEX.md                    ← อ่านก่อน — แผนที่ทุกไฟล์
-├── requirement/
-│   └── CLRS_Dev_Spec.md        ← Developer Spec ฉบับเต็ม
-└── working-file/
-    ├── Employee_Requirement.md
-    ├── domain - กะการทำงาน.md
-    ├── domain - การลา.md
-    ├── flow - กะการทำงาน.md
-    └── flow - การลา.md
+├── INDEX.md                        ← อ่านก่อน — entry point
+└── pos-requirement/
+    ├── INDEX.md                    ← แผนที่ 11 modules (flow/domain/system-req)
+    ├── flow-{module}.md            ← user journey, process steps
+    ├── domain-{module}.md          ← entities, data model, business rules
+    └── system-requirement-{module}.md ← functional req, permissions
 ```
 
-**กฎ:** ก่อนเริ่มงาน feature ใดใน CLRS → เปิด `knowledge-base/INDEX.md` → เปิดเฉพาะไฟล์ที่เกี่ยวข้อง
+**กฎ:** ก่อนเริ่มงาน feature ใด → เปิด `knowledge-base/INDEX.md` → `pos-requirement/INDEX.md` → เปิดเฉพาะไฟล์ที่เกี่ยวข้อง
 
 ---
 
