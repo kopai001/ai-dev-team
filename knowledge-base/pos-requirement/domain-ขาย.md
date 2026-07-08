@@ -29,9 +29,12 @@
 | id | UUID | ✓ | Primary key |
 | order_id | UUID | ✓ | อ้างอิงบิล |
 | product_id | UUID | ✓ | อ้างอิงสินค้า |
+| product_name_snapshot | String | ✓ | ชื่อสินค้า ณ เวลาขาย (cache) |
 | unit_id | UUID | ✓ | หน่วยที่ขาย |
+| unit_name_snapshot | String | ✓ | ชื่อหน่วย ณ เวลาขาย (cache) |
 | quantity | Decimal | ✓ | จำนวน |
-| unit_price | Decimal | ✓ | ราคาต่อหน่วย ณ เวลาขาย |
+| unit_price | Decimal | ✓ | ราคาต่อหน่วย ณ เวลาขาย (cache) |
+| cost_price_snapshot | Decimal | ✓ | ราคาทุน ณ เวลาขาย (cache) |
 | discount_amount | Decimal | ✓ | ส่วนลดต่อรายการ |
 | total_price | Decimal | ✓ | (unit_price × quantity) - discount |
 | promotion_id | UUID | - | โปรโมชันที่ใช้ |
@@ -68,8 +71,9 @@
 - บิลที่สำเร็จแล้วยกเลิกได้เฉพาะผู้มีสิทธิ์ (แอดมิน/เจ้าของ)
 - การยกเลิกบิลต้องคืนสต็อกทุกรายการ
 
-### กฎราคา
-- ราคาในบิลถูก snapshot ณ เวลาขาย (ไม่เปลี่ยนตามที่แก้ไขทีหลัง)
+### กฎราคาและ Snapshot
+- ข้อมูลสินค้าในบิล (ชื่อ, หน่วย, ราคาขาย, ราคาทุน) ถูก **snapshot ณ เวลาขาย** — ไม่เปลี่ยนแม้ข้อมูลสินค้าต้นทางจะถูกแก้ไขในภายหลัง
+- `product_id` และ `unit_id` คงไว้เพื่อ traceability เท่านั้น — ระบบแสดงผลบิลจาก snapshot fields
 - ส่วนลดมี 2 ระดับ: ระดับรายการ (item discount) และระดับบิล (order discount)
 - ยอดสุทธิ = Σ(item_total) - order_discount - points_discount
 

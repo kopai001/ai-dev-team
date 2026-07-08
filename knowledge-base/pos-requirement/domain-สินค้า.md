@@ -40,14 +40,6 @@
 | is_base | Boolean | ✓ | true = หน่วยฐาน |
 | is_pinned | Boolean | - | ตรึงในหน้าขาย |
 
-### 4. ProductPriceGroup (ราคาแยกกลุ่ม)
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| product_id | UUID | ✓ | อ้างอิงสินค้า |
-| customer_group | Enum | ✓ | general / member / wholesale |
-| unit_id | UUID | ✓ | อ้างอิงหน่วย |
-| price | Decimal | ✓ | ราคาสำหรับกลุ่มนี้ |
-
 ---
 
 ## Business Rules
@@ -82,7 +74,6 @@
 Category (หมวดหลัก) ─── has many ──► Category (หมวดย่อย)
 Category (หมวดย่อย) ─── has many ──► Product
 Product ─── has many ──► ProductUnit
-Product ─── has many ──► ProductPriceGroup
 Product ─── has many ──► StockMovement  [→ module สต็อก]
 Product ─── has many ──► OrderLineItem  [→ module ขาย]
 Product ─── has many ──► BundleItem     [→ module โปรโมชัน]
@@ -97,7 +88,3 @@ Product ─── has many ──► BundleItem     [→ module โปรโม�
 - `hidden` — ซ่อนจากหน้าขายและสต็อก
 - `disabled` — ปิดถาวร (หยุดขาย)
 
-### CustomerGroup (ราคาแยกกลุ่ม)
-- `general` — ลูกค้าทั่วไป
-- `member` — ลูกค้าสมาชิก
-- `wholesale` — ลูกค้าส่ง
