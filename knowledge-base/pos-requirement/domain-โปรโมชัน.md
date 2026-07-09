@@ -7,7 +7,7 @@
 |-------|------|----------|-------------|
 | id | UUID | ✓ | Primary key |
 | name | String | ✓ | ชื่อโปรโมชัน |
-| type | Enum | ✓ | discount/bundle/member_price |
+| type | Enum | ✓ | discount/bundle |
 | discount_type | Enum | - | percent/fixed_amount |
 | discount_value | Decimal | - | ค่าส่วนลด (% หรือบาท) |
 | min_purchase_amount | Decimal | - | ยอดซื้อขั้นต่ำ |
@@ -56,6 +56,12 @@
 - stackable = true → ใช้หลายโปรพร้อมกันได้
 - แต้มสมาชิก: ใช้พร้อมโปรได้เฉพาะเมื่อ allow_with_points = true
 
+### กฎลำดับความสำคัญ (Priority)
+- เมื่อมีหลายโปร match พร้อมกัน: ระบบจัดลำดับตาม **มูลค่าส่วนลดที่คำนวณได้จริง (มากสุดก่อน)** เสมอ
+- ไม่มี field priority ที่ผู้ใช้กำหนดเอง — priority = auto จากมูลค่าส่วนลด
+- Non-stackable: apply เฉพาะโปรที่ส่วนลดสูงสุด
+- Stackable: apply ทุกโปรที่ stackable ตามลำดับส่วนลดจากมากไปน้อย
+
 ### กฎโปรชุด
 - ราคาชุด < ผลรวมราคาปกติของสินค้าทุกชิ้น (ระบบไม่บังคับ แต่แจ้งเตือน)
 - ขายชุดเป็น 1 unit — แยกรายการได้ในบิล
@@ -81,7 +87,6 @@ Promotion ─── has many ──► OrderItem (via promotion_id)  [→ module
 ### PromotionType
 - `discount` — ส่วนลดราคา (% หรือบาท)
 - `bundle` — โปรชุดสินค้า
-- `member_price` — ราคาพิเศษสำหรับสมาชิก
 
 ### DiscountType
 - `percent` — ส่วนลดเป็น %
