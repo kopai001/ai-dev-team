@@ -9,7 +9,7 @@
 | lot_no | String | ✓ | เลขล็อต (auto-generate, format: `LOT-[วันที่]-[running]`) |
 | product_id | UUID | ✓ | อ้างอิงสินค้า |
 | receipt_id | UUID | ✓ | อ้างอิง StockReceipt ที่สร้างล็อตนี้ |
-| supplier_id | UUID | - | ผู้ขายที่นำเข้า (NULL = คลังกลาง) |
+| supplier_id | UUID | - | ผู้ขายที่นำเข้า (NULL = ไม่ระบุ) |
 | received_date | Date | ✓ | วันที่รับสินค้าเข้าล็อต |
 | expiry_date | Date | - | วันหมดอายุ (NULL = ไม่มีวันหมดอายุ) |
 | initial_qty | Decimal | ✓ | จำนวนเริ่มต้นรวมทั้งระบบ (หน่วยฐาน) |
@@ -22,8 +22,8 @@
 |-------|------|----------|-------------|
 | id | UUID | ✓ | Primary key |
 | lot_id | UUID | ✓ | อ้างอิง StockLot |
-| branch_id | UUID | ✓ | สาขา (NULL = คลังกลาง) |
-| quantity | Decimal | ✓ | จำนวนคงเหลือของล็อตนี้ในสาขานี้ |
+| branch_id | UUID | ✓ | Branch ที่ถือสต็อกล็อตนี้ (สาขา หรือ คลังกลาง — Branch record ใดก็ได้) |
+| quantity | Decimal | ✓ | จำนวนคงเหลือของล็อตนี้ใน Branch นี้ |
 | updated_at | DateTime | ✓ | เวลาอัปเดตล่าสุด |
 
 ### 3. StockBalance (ยอดสต็อกคงเหลือรวม)
@@ -31,7 +31,7 @@
 |-------|------|----------|-------------|
 | id | UUID | ✓ | Primary key |
 | product_id | UUID | ✓ | อ้างอิงสินค้า |
-| branch_id | UUID | ✓ | สาขา (NULL = คลังกลาง) |
+| branch_id | UUID | ✓ | Branch ที่ถือสต็อก (สาขา หรือ คลังกลาง — Branch record ใดก็ได้) |
 | quantity | Decimal | ✓ | จำนวนคงเหลือรวมทุกล็อต (หน่วยฐาน) |
 | min_threshold | Decimal | - | ขั้นต่ำแจ้งเตือน |
 | last_updated | DateTime | ✓ | เวลาอัปเดตล่าสุด |
@@ -58,7 +58,7 @@
 |-------|------|----------|-------------|
 | id | UUID | ✓ | Primary key |
 | branch_id | UUID | ✓ | สาขาที่รับ |
-| supplier_id | UUID | - | ผู้ขาย (NULL = คลังกลาง) |
+| supplier_id | UUID | - | ผู้ขาย (NULL = ไม่ระบุ / รับจาก location อื่น) |
 | received_by | UUID | ✓ | พนักงานที่รับ |
 | status | Enum | ✓ | pending/completed |
 | created_at | DateTime | ✓ | วันที่รับ |
@@ -127,16 +127,16 @@
 ### กฎสต็อก
 - สต็อกนับในหน่วยฐานเสมอ
 - สต็อกต่ำสุดคือ 0 (ไม่ติดลบ เว้นแต่ตั้งค่าอนุญาต)
-- สต็อกแต่ละสาขาแยกกัน ไม่รวมกันอัตโนมัติ
-- คลังกลาง (branch_id = NULL) เป็น special case
-- `StockBalance.quantity` = Σ `StockLotBalance.quantity` ของสินค้านั้นในสาขานั้น (ต้องสอดคล้องกันเสมอ)
+- **1 Branch = 1 สต็อก location** — สาขาแต่ละสาขามีสต็อกของตัวเอง คลังกลางก็เป็นอีก Branch (type=warehouse) ที่มีสต็อกของตัวเองเช่นกัน แค่ไม่ผูกกับสาขาปกติ
+- ทุกโครงสร้าง (StockBalance / StockLotBalance / StockMovement) ใช้ `branch_id` NOT NULL ชี้ไปที่ Branch record ใดๆ ก็ได้ — ไม่มี special case สำหรับคลังกลาง
+- `StockBalance.quantity` = Σ `StockLotBalance.quantity` ของสินค้านั้นใน Branch นั้น (ต้องสอดคล้องกันเสมอ)
 
 ### กฎ StockLot
 - StockLot สร้างขึ้นอัตโนมัติเมื่อยืนยันใบรับสินค้า (StockReceipt):
   - สินค้าที่ `has_expiry_date = true`: 1 lot ต่อ 1 (product + expiry_date) ต่อใบรับ (ต้องกรอก expiry_date)
   - สินค้าที่ `has_expiry_date = false`: 1 lot ต่อ product ต่อใบรับ (ไม่มี expiry_date, ใช้ received_date แยก lot)
-- Lot ไม่ผูกกับสาขา — ล็อตเดียวกันสามารถกระจายอยู่หลายสาขาผ่าน StockLotBalance
-- เมื่อโยกย้ายสินค้า: StockLotBalance ต้นทาง ลด, StockLotBalance ปลายทาง เพิ่ม (lot_id เดิม)
+- Lot ไม่ผูกกับ Branch — ล็อตเดียวกันกระจายอยู่หลาย Branch ได้ผ่าน StockLotBalance (รวมทั้งคลังกลาง)
+- เมื่อโยกย้ายสินค้า: StockLotBalance ต้นทาง ลด, StockLotBalance ปลายทาง เพิ่ม (lot_id เดิม) — ใช้กลไกเดียวกันสำหรับทุกคู่ Branch (สาขา↔สาขา, สาขา↔คลังกลาง)
 
 ### กฎ FEFO / FIFO
 - สินค้าที่ `has_expiry_date = true`: ระบบใช้ **FEFO** — ตัด lot ที่ expiry_date ใกล้สุดก่อน
@@ -165,17 +165,17 @@
 - movement ทุกประเภทต้องสร้าง StockMovement record เสมอ (ไม่มีข้อยกเว้น)
 
 ### กฎการนับสต็อก (StockCount)
-- นับสต็อกได้ทีละสาขา (1 StockCount ต่อ 1 สาขา)
-- **เลือกสินค้าที่จะนับได้** — ไม่จำเป็นต้องนับทุกสินค้าในสาขา; สินค้าที่ไม่ถูกเลือกไม่มีผลต่อสต็อก
+- นับสต็อกได้ทีละ Branch (1 StockCount ต่อ 1 Branch — สาขาปกติ หรือ คลังกลาง ก็ใช้กลไกเดียวกัน)
+- **เลือกสินค้าที่จะนับได้** — ไม่จำเป็นต้องนับทุกสินค้าใน Branch; สินค้าที่ไม่ถูกเลือกไม่มีผลต่อสต็อก
 - ขณะนับ (status = in_progress): ระบบยัง process ธุรกรรมปกติได้ (ไม่ lock)
 - พนักงานกรอก counted_qty **รวม** ต่อสินค้า (ไม่แยกล็อต)
 - เมื่อยืนยันผลการนับ: ระบบคำนวณ difference = counted_qty - system_qty
 - ถ้า difference ≠ 0 → สร้าง StockAdjustment (reason_type = count_variance) รอแอดมินอนุมัติ
 
 **เมื่อแอดมินอนุมัติ (ต่อสินค้าแต่ละรายการ):**
-1. ตัดสต็อกล็อตเก่าทั้งหมดในสาขานั้นให้เหลือ 0 (สร้าง StockMovement type=count_adjustment ลบยอดทุกล็อต)
+1. ตัดสต็อกล็อตเก่าทั้งหมดใน Branch นั้นให้เหลือ 0 (สร้าง StockMovement type=count_adjustment ลบยอดทุกล็อต)
 2. สร้าง StockLot ใหม่ 1 lot: `initial_qty = counted_qty`, `received_date = today`, ไม่มี expiry_date (ล็อตจากการนับ — ไม่ใช่จากซื้อ)
-3. สร้าง StockLotBalance ของ lot ใหม่ในสาขา = counted_qty
+3. สร้าง StockLotBalance ของ lot ใหม่ใน Branch = counted_qty
 4. อัปเดต StockBalance ให้ตรงกับ counted_qty
 5. StockMovement type=count_adjustment บันทึกสุทธิ (+ หรือ -)
 
@@ -192,7 +192,7 @@
 StockLot ─── belongs to ► StockReceipt
 StockLot ─── belongs to ► Product         [→ module สินค้า]
 StockLot ─── has many  ──► StockLotBalance
-StockLotBalance ─── belongs to ► Branch   [→ module สาขา]
+StockLotBalance ─── belongs to ► Branch   [→ module สาขา — สาขาปกติ หรือ คลังกลาง]
 StockBalance ─── belongs to ► Product
 StockBalance ─── belongs to ► Branch
 StockMovement ─── belongs to ► Product

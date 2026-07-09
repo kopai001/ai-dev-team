@@ -7,8 +7,8 @@
 |-------|------|----------|-------------|
 | id | UUID | ✓ | Primary key |
 | transfer_no | String | ✓ | เลขที่รายการโยกย้าย |
-| from_branch_id | UUID | ✓ | สาขาต้นทาง (NULL = คลังกลาง) |
-| to_branch_id | UUID | ✓ | สาขาปลายทาง (NULL = คลังกลาง) |
+| from_branch_id | UUID | ✓ | Branch ต้นทาง (สาขาปกติ หรือ คลังกลาง — Branch record ใดก็ได้) |
+| to_branch_id | UUID | ✓ | Branch ปลายทาง (สาขาปกติ หรือ คลังกลาง — Branch record ใดก็ได้) |
 | status | Enum | ✓ | pending/approved/completed/rejected |
 | requested_by | UUID | ✓ | พนักงานที่ขอ |
 | approved_by | UUID | - | แอดมินที่อนุมัติ |
@@ -38,8 +38,8 @@
 ## Business Rules
 
 ### กฎการโอน
-- ต้นทางและปลายทางต้องต่างกัน
-- โอนได้: สาขา → สาขา, สาขา → คลังกลาง, คลังกลาง → สาขา
+- ต้นทางและปลายทางต้องเป็น Branch ที่ต่างกัน (from_branch_id ≠ to_branch_id)
+- **โอนระหว่าง Branch ใดก็ได้** — สาขา↔สาขา, สาขา↔คลังกลาง, คลังกลาง↔คลังกลาง (ถ้ามีหลายคลัง) ใช้ feature/กลไกเบื้องหลังเดียวกันทั้งหมด ไม่มี special case
 - สต็อกต้นทางถูกตัดเมื่ออนุมัติ (ไม่ใช่เมื่อปลายทางรับ)
 - สต็อกปลายทางเพิ่มเมื่อปลายทางยืนยันรับ
 
@@ -56,7 +56,7 @@
 - แต่ต้องผ่านการอนุมัติอีกครั้ง
 
 ### กฎอนุมัติ
-- แอดมินทุกคนอนุมัติได้ ไม่จำกัดสาขา
+- แอดมินทุกคนอนุมัติได้ ไม่จำกัด Branch
 - อนุมัติแบบ "ลดจำนวน" ได้ (approved_qty < requested_qty)
 - เมื่ออนุมัติแล้ว ยกเลิกได้เฉพาะเจ้าของ
 
@@ -69,8 +69,8 @@
 ## Relationships
 ```
 StockTransfer ─── has many ──► StockTransferItem
-StockTransfer ─── belongs to ► Branch (from)      [→ module สาขา]
-StockTransfer ─── belongs to ► Branch (to)
+StockTransfer ─── belongs to ► Branch (from)      [→ module สาขา — Branch ใดก็ได้ รวมคลังกลาง]
+StockTransfer ─── belongs to ► Branch (to)        [Branch ใดก็ได้ รวมคลังกลาง]
 StockTransferItem ─── belongs to ► Product        [→ module สินค้า]
 StockTransferItem ─── belongs to ► StockLot (opt) [→ module สต็อก]
 StockTransfer ─── triggers ──► StockMovement      [→ module สต็อก]
