@@ -13,7 +13,7 @@
 |--------|------------------------|-------|
 | สินค้า | Product, Category, Barcode, Unit, Price | flow / domain / system-req |
 | ขาย/บิล | Sale, Bill, Payment, Discount, Receipt | flow / domain / system-req |
-| สต็อก | StockLevel, StockAdjustment, MinStock alert | flow / domain / system-req |
+| สต็อก | StockBalance, StockLot, StockLotBalance, StockMovement (immutable), StockReceipt, StockAdjustment, StockCount, FEFO, MinStock alert | flow / domain / system-req |
 | โยกย้ายสต็อก | StockTransfer ระหว่างสาขา, Approve/Reject | flow / domain / system-req |
 | ผู้ขาย | Supplier, PurchaseOrder, GoodsReceipt | flow / domain / system-req |
 | กะการทำงาน | Shift, CashDrawer, OpenClose, CashDiff | flow / domain / system-req |

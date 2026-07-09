@@ -17,6 +17,7 @@
 | purpose | String | - | วัตถุประสงค์การใช้งาน |
 | status | Enum | ✓ | active / hidden / disabled |
 | is_pinned | Boolean | - | ติดหมุดในรายการโปรด |
+| has_expiry_date | Boolean | ✓ | true = สินค้ามีวันหมดอายุ (ต้องกรอก expiry_date ตอนรับสินค้า) |
 | created_at | DateTime | ✓ | วันที่สร้าง |
 | updated_at | DateTime | ✓ | วันที่แก้ไขล่าสุด |
 | updated_by | UUID | ✓ | พนักงานที่แก้ไขล่าสุด |
@@ -66,6 +67,10 @@
 - หน่วยฐาน: ratio = 1
 - หน่วยซ้อน: ratio > 1 (เช่น 1 แพ็ค = 12 ชิ้น → ratio = 12)
 - สต็อกนับในหน่วยฐานเสมอ
+
+### กฎวันหมดอายุ
+- `has_expiry_date = true`: บังคับกรอก expiry_date เมื่อรับสินค้าเข้า; ระบบติดตาม StockLot พร้อม expiry; Auto-Expire job ทำงาน
+- `has_expiry_date = false`: ไม่กรอก expiry_date; StockLot ยังสร้าง (เพื่อ traceability รอบรับ) แต่ไม่มี expiry_date; FEFO ไม่มีผล — ระบบตัด lot เรียงตาม received_date (FIFO)
 
 ---
 

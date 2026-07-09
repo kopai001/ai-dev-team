@@ -25,6 +25,7 @@
 | id | UUID | ✓ | Primary key |
 | transfer_id | UUID | ✓ | อ้างอิงรายการโยกย้าย |
 | product_id | UUID | ✓ | อ้างอิงสินค้า |
+| stock_lot_id | UUID | - | ระบุล็อตที่ต้องการโอน (NULL = ระบบเลือก FEFO) |
 | unit_id | UUID | ✓ | หน่วยที่โอน |
 | requested_qty | Decimal | ✓ | จำนวนที่ขอโอน |
 | approved_qty | Decimal | - | จำนวนที่อนุมัติ (อาจน้อยกว่า) |
@@ -41,6 +42,13 @@
 - โอนได้: สาขา → สาขา, สาขา → คลังกลาง, คลังกลาง → สาขา
 - สต็อกต้นทางถูกตัดเมื่ออนุมัติ (ไม่ใช่เมื่อปลายทางรับ)
 - สต็อกปลายทางเพิ่มเมื่อปลายทางยืนยันรับ
+
+### กฎ Lot Tracking ในการโอน
+- ถ้าระบุ stock_lot_id: โอน lot นั้นตามที่กำหนด (override FEFO)
+- ถ้าไม่ระบุ: ระบบเลือก lot ตาม FEFO (expiry_date ใกล้สุดก่อน) จากสต็อกต้นทาง
+- เมื่ออนุมัติ: `StockLotBalance` ต้นทาง ลด, `StockLotBalance` ปลายทาง เพิ่ม (lot_id เดิม)
+- Lot ข้ามสาขาได้โดยไม่สร้าง lot ใหม่ — lot_no เดิมติดไปกับสินค้า
+- StockMovement บันทึก stock_lot_id เสมอ (transfer_out/transfer_in)
 
 ### กฎส่วนต่าง (Shortage)
 - `shortage_qty = approved_qty - received_qty`
@@ -61,10 +69,12 @@
 ## Relationships
 ```
 StockTransfer ─── has many ──► StockTransferItem
-StockTransfer ─── belongs to ► Branch (from)   [→ module สาขา]
+StockTransfer ─── belongs to ► Branch (from)      [→ module สาขา]
 StockTransfer ─── belongs to ► Branch (to)
-StockTransferItem ─── belongs to ► Product     [→ module สินค้า]
-StockTransfer ─── triggers ──► StockMovement   [→ module สต็อก]
+StockTransferItem ─── belongs to ► Product        [→ module สินค้า]
+StockTransferItem ─── belongs to ► StockLot (opt) [→ module สต็อก]
+StockTransfer ─── triggers ──► StockMovement      [→ module สต็อก]
+StockMovement.stock_lot_id ──► StockLot           [→ module สต็อก]
 ```
 
 ## Enum Values

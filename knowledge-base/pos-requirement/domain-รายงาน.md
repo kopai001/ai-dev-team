@@ -34,21 +34,38 @@ GROUP BY date, branch_id
 ```
 
 ### 3. StockReport (รายงานสต็อก)
-**Source**: StockBalance, StockMovement
+**Source**: StockBalance, StockLot, StockLotBalance, StockMovement, StockCount
 ```
-- ยอดคงเหลือปัจจุบัน: StockBalance
-- ความเคลื่อนไหว: StockMovement (by type)
+- ยอดคงเหลือปัจจุบัน: StockBalance (รวม) + StockLotBalance (แยก lot)
+- ความเคลื่อนไหว: StockMovement (by type, by lot)
 - Turnover rate: ยอดขาย / ยอดสต็อกเฉลี่ย
 ```
 
-### 4. ShiftReport (รายงานกะ)
+### 4. StockLotReport (รายงานล็อตสินค้า)
+**Source**: StockLot, StockLotBalance, StockMovement
+```
+- รายการล็อตที่ active แยกต่อสาขา: lot_no, product, expiry_date, qty
+- รายการล็อตใกล้หมดอายุ (expiry_date - today ≤ X วัน)
+- รายการล็อตหมดอายุแล้ว (status = expired) พร้อม qty คงเหลือ
+- ประวัติการเคลื่อนไหวต่อ lot_no (รับเข้า, ขาย, โอน, ตัด)
+```
+
+### 5. StockCountReport (รายงานผลการนับสต็อก)
+**Source**: StockCount, StockCountItem
+```
+- ประวัติการนับสต็อกทุกครั้งต่อสาขา
+- รายการ difference (counted vs system) แยกต่อสินค้า
+- มูลค่าผลต่าง = |difference| × cost_price
+```
+
+### 6. ShiftReport (รายงานกะ)
 **Source**: Shift, ShiftExpense, CashRemittance, Order
 ```
 - ยอดเงินสด = opening_cash + cash_sales - expenses - remittances
 - ผลต่าง = closing_cash_counted - expected_cash
 ```
 
-### 5. MemberReport (รายงานสมาชิก)
+### 7. MemberReport (รายงานสมาชิก)
 **Source**: Member, PointTransaction, Order
 ```
 - สมาชิกใหม่ = COUNT(members WHERE register_date BETWEEN :start AND :end)
@@ -72,10 +89,12 @@ GROUP BY date, branch_id
 
 ## Relationships (Read Only)
 ```
-Reports query ► Order, OrderItem, Payment    [→ module ขาย]
-Reports query ► StockBalance, StockMovement  [→ module สต็อก]
-Reports query ► Shift, ShiftExpense          [→ module กะ]
-Reports query ► Member, PointTransaction     [→ module สมาชิก]
-Reports query ► Employee                     [→ module พนักงาน]
-Reports query ► Branch                       [→ module สาขา]
+Reports query ► Order, OrderItem, Payment                    [→ module ขาย]
+Reports query ► StockBalance, StockMovement                  [→ module สต็อก]
+Reports query ► StockLot, StockLotBalance                    [→ module สต็อก]
+Reports query ► StockCount, StockCountItem                   [→ module สต็อก]
+Reports query ► Shift, ShiftExpense                          [→ module กะ]
+Reports query ► Member, PointTransaction                     [→ module สมาชิก]
+Reports query ► Employee                                     [→ module พนักงาน]
+Reports query ► Branch                                       [→ module สาขา]
 ```
