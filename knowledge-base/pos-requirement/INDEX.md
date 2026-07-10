@@ -1,6 +1,9 @@
 # INDEX — POS Requirement (knowledge-base/pos-requirement/)
 
-ระบบ POS ร้านค้าปลีกหลายสาขา | 11 modules | 33 files
+ระบบ POS ร้านค้าปลีกหลายสาขา | 11 modules | 33 files + 1 overview
+
+## Overview
+- [system-overview.md](system-overview.md) — ภาพรวมระบบทั้งหมด (cross-module)
 
 ## File Pattern
 `{flow|domain|system-requirement}-{module}.md` — 3 files per module
